@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 
-class WelcomeWindow extends JFrame
+public class WelcomeWindow extends JFrame
 {
 	private JLabel lblWelcome = new JLabel("Welcome!");
 	private JButton SignInButton= new JButton("Sign In");
