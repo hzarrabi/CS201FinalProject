@@ -67,7 +67,8 @@ public class WelcomeWindow extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				System.out.println("SignIn");
+				new SignInWindow();
+				dispose();
 			}
 		});
 		

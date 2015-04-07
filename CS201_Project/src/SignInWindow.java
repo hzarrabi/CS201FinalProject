@@ -87,14 +87,7 @@ public class SignInWindow extends JFrame
 		);
 		setLayout(groupLayout);
 		
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
-
-	
-	public static void main(String[] args)
-	{
-		new SignInWindow();
-
-	}
-
 }
