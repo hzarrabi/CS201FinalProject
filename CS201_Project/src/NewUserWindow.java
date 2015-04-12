@@ -17,6 +17,8 @@ import java.awt.FlowLayout;
 import javax.swing.JPasswordField;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.Arrays;
@@ -34,11 +36,6 @@ public class NewUserWindow extends JFrame
 	private JTextField LastNameField;
 	private JPasswordField passwordField;
 	private JPasswordField passwordField2;
-
-	public static void main(String[] args)
-	{
-		new NewUserWindow();
-	}
 
 	public NewUserWindow()
 	{
@@ -152,6 +149,40 @@ public class NewUserWindow extends JFrame
 	
 	private void addActionListener ()
 	{
+		btnConfirm.addActionListener(new ActionListener()
+		{
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Boolean FirstNameEmpty = true;
+				Boolean LastNameEmpty = true;
+				Boolean UserNameEmpty = true;
+				Boolean EmailEmpty = true;
+				Boolean Password = true;
+				Boolean Password2 = true;
+				
+				if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
+				if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
+				if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
+				if(EmailField.getText().length()>11 || EmailField.getText().length()<5) EmailEmpty=false;
+				if(passwordField.getPassword().length>11 || passwordField2.getPassword().length<5) Password=false;
+				if(passwordField2.getPassword().length>11 || passwordField2.getPassword().length<5) Password2=false;
+			
+				if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
+				{
+					//TODO also make sure that the two passwords are the same length
+					//TODO check if username and email are duplicates in the database
+				}
+				
+				else
+				{
+					//TODO put error that we should make sure all fields are between 5 and 10 characters
+					System.out.println("incorrect characters");
+				}
+			
+			}
+		});
+		
 		passwordField2.addFocusListener(new FocusListener()
 		{
 			@Override
@@ -168,10 +199,8 @@ public class NewUserWindow extends JFrame
 			{
 				if(Arrays.equals("Retype Password".toCharArray(), passwordField2.getPassword()))
 				{
-					System.out.println("yes?");
 					passwordField2.setText("");
 					passwordField2.setEchoChar('*');
-					System.out.println("should be working");
 				}
 			}
 		});
@@ -193,10 +222,8 @@ public class NewUserWindow extends JFrame
 			{
 				if(Arrays.equals("Password".toCharArray(), passwordField.getPassword()))
 				{
-					System.out.println("yes?");
 					passwordField.setText("");
 					passwordField.setEchoChar('*');
-					System.out.println("should be working");
 				}
 			}
 		});
@@ -218,7 +245,6 @@ public class NewUserWindow extends JFrame
 				if(EmailField.getText().equals("Email"))
 				{
 					EmailField.setText("");
-					System.out.println("should be working");
 				}
 			}
 		});
@@ -240,7 +266,6 @@ public class NewUserWindow extends JFrame
 				if(UserNameField.getText().equals("UserName"))
 				{
 					UserNameField.setText("");
-					System.out.println("should be working");
 				}
 			}
 		});
@@ -262,7 +287,6 @@ public class NewUserWindow extends JFrame
 				if(LastNameField.getText().equals("Last Name"))
 				{
 					LastNameField.setText("");
-					System.out.println("should be working");
 				}
 			}
 		});
@@ -283,7 +307,6 @@ public class NewUserWindow extends JFrame
 				if(FirstNameField.getText().equals("First Name"))
 				{
 					FirstNameField.setText("");
-					System.out.println("should be working");
 				}
 			}
 		});
