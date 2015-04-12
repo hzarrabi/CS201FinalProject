@@ -17,7 +17,7 @@ public class WelcomeWindow extends JFrame
 	private JLabel lblWelcome = new JLabel("Welcome!");
 	private JButton SignInButton= new JButton("Sign In");
 	private JButton SignUpButton = new JButton("Sign Up");
-	private JButton GuestUserButton = new JButton("New User");
+	private JButton GuestUserButton = new JButton("Guest User");
 	
 	public WelcomeWindow()
 	{
@@ -77,8 +77,8 @@ public class WelcomeWindow extends JFrame
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				System.out.println("SignUp");
-				
+				new NewUserWindow();
+				dispose();
 			}
 		});
 		
