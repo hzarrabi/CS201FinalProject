@@ -16,6 +16,8 @@ import java.awt.FlowLayout;
 
 import javax.swing.JPasswordField;
 
+import com.mysql.jdbc.PreparedStatement;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +25,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 
@@ -50,31 +53,31 @@ public class NewUserWindow extends JFrame
 	private void connect()
 	{
 		Connection connection = null;
-		String dburl = "jdbc:mysql://104.236.176.180:3306/CS201";
-		String userName = "root";
+		String dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
+		String userName = "cs201";
 		String passWord = "manishhostage";
 
 
 
-		 try {
-		        Class.forName("com.mysql.jdbc.Driver");
-
-		        connection = DriverManager.getConnection(dburl, userName, passWord);
-		        Statement st = connection.createStatement();                                 
-		       
-		        String query = "INSERT INTO user_table (`first_name`) VALUES('hello')";
-		        int rsI = st.executeUpdate(query);
-		        System.out.println("Hi");
-		        }catch (Exception e) {
-		        System.out.println(e);
-		    } finally {
-		        if (connection != null) {
-		            try {
-		                connection.close();
-		                System.out.println("Database connection terminated");
-		            } catch (Exception e) { /* ignore close errors */ }
-		        }
-		    }
+		 
+			 try {
+				 Class.forName("com.mysql.jdbc.Driver");
+				 Connection conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+				 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, username, password, followers, following) values (?, ?, ?, ?, ?, ?)");
+				 stmt.setString(1, "Hooman");
+				 stmt.setString(2, "Zarrabi");
+				 stmt.setString(3, "ffiler");
+				 stmt.setString(4, "pass");
+				 stmt.setInt(5, 1);
+				 stmt.setInt(6, 1);
+				 stmt.execute();
+				 } catch (ClassNotFoundException e) {
+				 // TODO Auto-generated catch block
+				 e.printStackTrace();
+				 } catch (SQLException e) {
+				 // TODO Auto-generated catch block
+				 e.printStackTrace();
+				 }
 	}
 	
 	
