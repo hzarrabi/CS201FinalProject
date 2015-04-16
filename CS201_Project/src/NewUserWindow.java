@@ -67,14 +67,6 @@ public class NewUserWindow extends JFrame
 			 try {
 				 Class.forName("com.mysql.jdbc.Driver");
 				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-				 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, username, password, followers, following) values (?, ?, ?, ?, ?, ?)");
-				 stmt.setString(1, "Hooman");
-				 stmt.setString(2, "Zarrabi");
-				 stmt.setString(3, "hzarrabi");
-				 stmt.setString(4, "pass");
-				 stmt.setInt(5, 1);
-				 stmt.setInt(6, 1);
-				 stmt.execute();
 				 } catch (ClassNotFoundException e) {
 				 e.printStackTrace();
 				 } catch (SQLException e) {
@@ -205,7 +197,7 @@ public class NewUserWindow extends JFrame
 				if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
 				if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
 				if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
-				if(EmailField.getText().length()>11 || EmailField.getText().length()<5) EmailEmpty=false;
+				if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
 				if(passwordField.getPassword().length>11 || passwordField2.getPassword().length<5) Password=false;
 				if(passwordField2.getPassword().length>11 || passwordField2.getPassword().length<5) Password2=false;
 			
@@ -229,7 +221,21 @@ public class NewUserWindow extends JFrame
 							Boolean match=Arrays.equals(passwordField.getPassword(),passwordField2.getPassword());
 							if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
 							{
-								System.out.println("making account");
+								String password=new String(passwordField.getPassword());
+								System.out.println("password is "+password);
+								
+								
+								 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, email, username, password) values (?, ?, ?, ?, ?)");
+								 stmt.setString(1, FirstNameField.getText());
+								 stmt.setString(2, LastNameField.getText());
+								 stmt.setString(3, EmailField.getText());
+								 stmt.setString(4, UserNameField.getText());
+								 stmt.setString(5,PasswordHash.hash(password));
+								 stmt.execute();
+								 
+								 //TODO open new page and close connection to db
+								 
+								 System.out.println("new user added!");
 							}
 							else System.out.println("passwords to not match");
 						}
