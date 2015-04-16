@@ -94,6 +94,7 @@ public class WelcomeWindow extends JFrame
 	
 	public static void main(String[] args)
 	{
+		System.out.println("hdsf");
 		new WelcomeWindow();
 	}
 

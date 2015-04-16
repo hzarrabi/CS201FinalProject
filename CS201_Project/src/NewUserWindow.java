@@ -25,6 +25,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
@@ -42,6 +43,12 @@ public class NewUserWindow extends JFrame
 	private JTextField LastNameField;
 	private JPasswordField passwordField;
 	private JPasswordField passwordField2;
+	
+	Connection connection;
+	String dburl;
+	String userName;
+	String passWord;
+	Connection conn;
 
 	public NewUserWindow()
 	{
@@ -52,30 +59,25 @@ public class NewUserWindow extends JFrame
 
 	private void connect()
 	{
-		Connection connection = null;
-		String dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
-		String userName = "cs201";
-		String passWord = "manishhostage";
+		connection = null;
+		dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
+		userName = "cs201";
+		passWord = "manishhostage";
 
-
-
-		 
 			 try {
 				 Class.forName("com.mysql.jdbc.Driver");
-				 Connection conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
 				 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, username, password, followers, following) values (?, ?, ?, ?, ?, ?)");
 				 stmt.setString(1, "Hooman");
 				 stmt.setString(2, "Zarrabi");
-				 stmt.setString(3, "ffiler");
+				 stmt.setString(3, "hzarrabi");
 				 stmt.setString(4, "pass");
 				 stmt.setInt(5, 1);
 				 stmt.setInt(6, 1);
 				 stmt.execute();
 				 } catch (ClassNotFoundException e) {
-				 // TODO Auto-generated catch block
 				 e.printStackTrace();
 				 } catch (SQLException e) {
-				 // TODO Auto-generated catch block
 				 e.printStackTrace();
 				 }
 	}
@@ -209,13 +211,37 @@ public class NewUserWindow extends JFrame
 			
 				if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
 				{
-					//TODO also make sure that the two passwords are the same length
-					//TODO check if username and email are duplicates in the database
+					String userName=UserNameField.getText();
+					try
+					{
+						Statement st = conn.createStatement();
+						String queryCheck = "SELECT * from user_table WHERE username = ?";
+						PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
+						ps.setString(1, userName);
+						ResultSet rs = ps.executeQuery();
+						if(rs.absolute(1))
+						{
+							
+							System.out.println("already exists!");
+						}
+						else
+						{
+							Boolean match=Arrays.equals(passwordField.getPassword(),passwordField2.getPassword());
+							if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
+							{
+								System.out.println("making account");
+							}
+							else System.out.println("passwords to not match");
+						}
+						
+					} catch (SQLException e1)
+					{
+						e1.printStackTrace();
+					}
 				}
 				
 				else
 				{
-					//TODO put error that we should make sure all fields are between 5 and 10 characters
 					System.out.println("incorrect characters");
 				}
 			
