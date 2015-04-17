@@ -38,6 +38,8 @@ public class MusicLibrary extends JFrame {
 		      "Childish-gambino-because-the-internet.gif",
 		   };
 	
+	//testing
+	
 	
 	//change song method to go to the next song
 	public void changeSong() throws UnsupportedAudioFileException, IOException, LineUnavailableException{
