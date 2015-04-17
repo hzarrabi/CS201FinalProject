@@ -14,6 +14,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -43,7 +44,8 @@ public class CreateUserGUI extends JFrame{
 	private JButton btnConfirm;
 	private JButton cancel;
 	private JLabel title;
-	
+	private JPanel bottomColor;
+	private JPanel topColor;
 	//fix this cause its bad coding style
 	Connection connection;
 	String dburl;
@@ -96,39 +98,92 @@ public class CreateUserGUI extends JFrame{
 		setVisible(true);
 		setResizable(false);
 		
-		UserNameField.setPreferredSize(new Dimension(dim.width/3 - 50, 50));
-		passwordField.setPreferredSize(new Dimension(dim.width/3 - 50, 50));
+		bottomColor = new JPanel();
+		bottomColor.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
+		bottomColor.setBackground(FirstPageGUI.color);
+		topColor = new JPanel();
+		topColor.setPreferredSize(new Dimension(dim.width/3, dim.height/15));
+		topColor.setBackground(FirstPageGUI.color);
+		UserNameField.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
+		passwordField.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
 		title.setBackground(Color.CYAN);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
-		title.setPreferredSize(new Dimension(dim.width/3-20, dim.height/5));
-		btnConfirm.setPreferredSize(new Dimension(dim.width/6, dim.height/10));
-		cancel.setPreferredSize(new Dimension(dim.width/6, dim.height/10));
-		FirstNameField.setPreferredSize(new Dimension(dim.width/3 - 50, 50));
-		LastNameField.setPreferredSize(new Dimension(dim.width/3 - 50, 50));
-		EmailField.setPreferredSize(new Dimension(dim.width/3 - 50, 50));
-		passwordField2.setPreferredSize(new Dimension(dim.width/3 - 50, 50));
+		title.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
+		btnConfirm.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
+		cancel.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
+		FirstNameField.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
+		LastNameField.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
+		EmailField.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
+		passwordField2.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
+		
+		passwordField2.setBorder(new RoundedBorder());
+		passwordField.setBorder(new RoundedBorder());
+		UserNameField.setBorder(new RoundedBorder());
+		btnConfirm.setBorder(new RoundedBorder());
+		cancel.setBorder(new RoundedBorder());
+		FirstNameField.setBorder(new RoundedBorder());
+		LastNameField.setBorder(new RoundedBorder());
+		EmailField.setBorder(new RoundedBorder());
+		
+		passwordField.setOpaque(true);
+		passwordField.setFont(FirstPageGUI.font);
+		passwordField2.setFont(FirstPageGUI.font);
+		UserNameField.setFont(FirstPageGUI.font);
+		FirstNameField.setFont(FirstPageGUI.font);
+		LastNameField.setFont(FirstPageGUI.font);
+		EmailField.setFont(FirstPageGUI.font);
+		btnConfirm.setFont(FirstPageGUI.font);
+		cancel.setFont(FirstPageGUI.font);
+		
+		passwordField2.setBackground(FirstPageGUI.grey);
+		passwordField.setBackground(FirstPageGUI.grey);
+		UserNameField.setBackground(FirstPageGUI.grey);
+		btnConfirm.setBackground(FirstPageGUI.color);
+		cancel.setBackground(FirstPageGUI.green);
+		btnConfirm.setOpaque(true);
+		cancel.setOpaque(true);
+		FirstNameField.setBackground(FirstPageGUI.grey);
+		LastNameField.setBackground(FirstPageGUI.grey);
+		EmailField.setBackground(FirstPageGUI.grey);
+		
+		title.setFont(FirstPageGUI.fontTitle);
+		title.setForeground(FirstPageGUI.white);
+		passwordField2.setForeground(FirstPageGUI.lightGrey);
+		passwordField.setForeground(FirstPageGUI.lightGrey);
+		UserNameField.setForeground(FirstPageGUI.lightGrey);
+		btnConfirm.setForeground(FirstPageGUI.white);
+		cancel.setForeground(FirstPageGUI.white);
+		FirstNameField.setForeground(FirstPageGUI.lightGrey);
+		LastNameField.setForeground(FirstPageGUI.lightGrey);
+		EmailField.setForeground(FirstPageGUI.lightGrey);
 		//guest.setPreferredSize(new Dimension(dim.width/3-20, dim.height/8));
 		//newUser.setPreferredSize(new Dimension(dim.width/5, dim.height/8));
 		//newUser.setBackground(Color.cyan);
 		//newUser.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel main = new JPanel();
-		main.add(title);
+		main.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width, dim.height/40));
+		main.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
+		//main.add(title);
+		main.setBackground(FirstPageGUI.white);
 		main.add(FirstNameField);
 		main.add(LastNameField);
 		main.add(UserNameField);
 		main.add(passwordField);
 		main.add(passwordField2);
 		main.add(EmailField);
-		JPanel bottom = new JPanel();
-		bottom.setLayout(new BoxLayout(bottom, BoxLayout.X_AXIS));
-		Box.createGlue();
-		bottom.add(btnConfirm);
-		Box.createGlue();
-		bottom.add(cancel);
-		Box.createGlue();
-		main.add(bottom);
-		add(main);
+		//JPanel bottom = new JPanel();
+		//bottom.setLayout(new BoxLayout(bottom, BoxLayout.X_AXIS));
+		//Box.createGlue();
+		main.add(btnConfirm);
+		//Box.createGlue();
+		main.add(cancel);
+		//Box.createGlue();
+		//main.add(bottom);
+		topColor.add(title);
+		add(topColor, BorderLayout.NORTH);
+		add(main, BorderLayout.CENTER);
+		add(bottomColor, BorderLayout.SOUTH);
 	}
 	
 	private void setEventHandlers(){

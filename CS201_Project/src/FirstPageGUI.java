@@ -35,8 +35,15 @@ public class FirstPageGUI extends JFrame{
 	private JButton login;
 	private JPanel bottomColor;
 	private JPanel topColor;
-	JPanel main = new JPanel();
+	private JPanel main = new JPanel();
 	final static Color color = new Color(0x0AB2D8);
+	final static Color white = new Color(0xf7f7f7);
+	final static Color green = new Color(0xAD89B);
+	final static Color lightGrey = new Color(0xB2B0B0);
+	final static Color grey = new Color(0xE4E4E4);
+	final static Color darkGrey = new Color(0x696969);
+	final static Font font = new Font("Helvetica Neue", Font.PLAIN, 18);
+	final static Font fontTitle = new Font("Helvetica Neue", Font.PLAIN, 24);
 	public FirstPageGUI()
 	{
 		super("Login Screen");
@@ -72,6 +79,7 @@ public class FirstPageGUI extends JFrame{
 		password.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
 		logo.setHorizontalAlignment(SwingConstants.CENTER);
 		logo.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
+		logo.setForeground(white);
 		topColor.add(logo);
 		login.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
 		createNewUser.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
@@ -103,28 +111,22 @@ public class FirstPageGUI extends JFrame{
 	}
 	
 	private void makePretty(){
-		Font font = new Font("Helvetica", Font.PLAIN, 18);
-		logo.setFont(font);
-		Color white = new Color(0xf7f7f7);
-		Color green = new Color(0xAD89B);
-		Color lightGrey = new Color(0xB2B0B0);
-		Color grey = new Color(0xC1C3C4);
-		Color darkGrey = new Color(0x696969);
+		logo.setFont(fontTitle);
 		
 		main.setBackground(white);
-		password.setBorder(new RoundedCornerBorder());
+		password.setBorder(new RoundedBorder());
 		password.setFont(font);
-		userName.setBorder(new RoundedCornerBorder());
+		userName.setBorder(new RoundedBorder());
 		userName.setBackground(grey);
 		userName.setFont(font);
 		password.setBackground(grey);
-		login.setBorder(new RoundedCornerBorder());
+		login.setBorder(new RoundedBorder());
 		login.setBackground(green);
 		login.setFont(font);
-		createNewUser.setBorder(new RoundedCornerBorder());
+		createNewUser.setBorder(new RoundedBorder());
 		createNewUser.setBackground(color);
 		createNewUser.setFont(font);
-		guest.setBorder(new RoundedCornerBorder());
+		guest.setBorder(new RoundedBorder());
 		guest.setOpaque(true);
 		guest.setBackground(darkGrey);
 		guest.setForeground(white);
@@ -162,30 +164,3 @@ public class FirstPageGUI extends JFrame{
 		new FirstPageGUI();
 	}
 }
-
-class RoundedCornerBorder extends AbstractBorder {
-	  @Override public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-	    Graphics2D g2 = (Graphics2D)g.create();
-	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	    int r = height-1;
-	    RoundRectangle2D round = new RoundRectangle2D.Float(x, y, width-1, height-1, r, r);
-	    Container parent = c.getParent();
-	    if(parent!=null) {
-	      g2.setColor(parent.getBackground());
-	      Area corner = new Area(new Rectangle2D.Float(x, y, width, height));
-	      corner.subtract(new Area(round));
-	      g2.fill(corner);
-	    }
-	    g2.setColor(Color.GRAY);
-	    g2.draw(round);
-	    g2.dispose();
-	  }
-	  @Override public Insets getBorderInsets(Component c) {
-	    return new Insets(4, 8, 4, 8);
-	  }
-	  @Override public Insets getBorderInsets(Component c, Insets insets) {
-	    insets.left = insets.right = 8;
-	    insets.top = insets.bottom = 4;
-	    return insets;
-	  }
-	}
