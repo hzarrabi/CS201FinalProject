@@ -162,7 +162,6 @@ public class FirstPageGUI extends JFrame{
 		add(mainPanel, BorderLayout.CENTER);
 		add(bottomColor, BorderLayout.SOUTH);
 		
-		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	
