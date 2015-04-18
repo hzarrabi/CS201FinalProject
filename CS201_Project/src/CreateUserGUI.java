@@ -46,6 +46,7 @@ public class CreateUserGUI extends JFrame{
 	private JLabel title;
 	private JPanel bottomColor;
 	private JPanel topColor;
+	private JLabel incorrectInput;
 	//fix this cause its bad coding style
 	Connection connection;
 	String dburl;
@@ -80,6 +81,7 @@ public class CreateUserGUI extends JFrame{
 	
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		incorrectInput = new JLabel("");
 		UserNameField = new JTextField("UserName");
 		passwordField = new JPasswordField("Password");
 		passwordField.setEchoChar((char)0);
@@ -96,26 +98,27 @@ public class CreateUserGUI extends JFrame{
 	
 	private void createGUI(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0,0,dim.width/3, dim.height);
+		setBounds(0,0,dim.width/3, dim.height-80);
 		setResizable(false);
 		
+		incorrectInput.setForeground(Color.RED);
 		bottomColor = new JPanel();
 		bottomColor.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
 		bottomColor.setBackground(FirstPageGUI.color);
 		topColor = new JPanel();
 		topColor.setPreferredSize(new Dimension(dim.width/3, dim.height/15));
 		topColor.setBackground(FirstPageGUI.color);
-		UserNameField.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
-		passwordField.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
+		UserNameField.setPreferredSize(new Dimension(dim.width/4, dim.height/17));
+		passwordField.setPreferredSize(new Dimension(dim.width/4, dim.height/17));
 		title.setBackground(Color.CYAN);
 		title.setHorizontalAlignment(SwingConstants.CENTER);
 		title.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
-		btnConfirm.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
-		cancel.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
-		FirstNameField.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
-		LastNameField.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
-		EmailField.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
-		passwordField2.setPreferredSize(new Dimension(dim.width/4, dim.height/15));
+		btnConfirm.setPreferredSize(new Dimension(dim.width/4, dim.height/17));
+		cancel.setPreferredSize(new Dimension(dim.width/4, dim.height/17));
+		FirstNameField.setPreferredSize(new Dimension(dim.width/4, dim.height/17));
+		LastNameField.setPreferredSize(new Dimension(dim.width/4, dim.height/17));
+		EmailField.setPreferredSize(new Dimension(dim.width/4, dim.height/17));
+		passwordField2.setPreferredSize(new Dimension(dim.width/4, dim.height/17));
 		
 		passwordField2.setBorder(new RoundedBorder());
 		passwordField.setBorder(new RoundedBorder());
@@ -163,8 +166,12 @@ public class CreateUserGUI extends JFrame{
 		//newUser.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		JPanel main = new JPanel();
+		JPanel bottom = new JPanel();
+		bottom.add(incorrectInput);
+		incorrectInput.setHorizontalAlignment(SwingConstants.CENTER);
+		bottom.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
 		main.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width, dim.height/40));
-		main.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
+		main.setPreferredSize(new Dimension(dim.width/3, 14*dim.height/20));
 		//main.add(title);
 		main.setBackground(FirstPageGUI.white);
 		//JTextField first = new JTextField();
@@ -185,10 +192,16 @@ public class CreateUserGUI extends JFrame{
 		//Box.createGlue();
 		//main.add(bottom);
 		topColor.add(title);
+		JPanel mainPanel = new JPanel();
+		mainPanel.setBackground(FirstPageGUI.white);
+		mainPanel.add(main, BorderLayout.CENTER);
+		bottom.setBackground(FirstPageGUI.white);
+		mainPanel.add(bottom, BorderLayout.SOUTH);
 		add(topColor, BorderLayout.NORTH);
-		add(main, BorderLayout.CENTER);
+		add(mainPanel, BorderLayout.CENTER);
 		add(bottomColor, BorderLayout.SOUTH);
-		
+		setBackground(FirstPageGUI.white);
+		repaint();
 		setLocationRelativeTo(null);
 		setVisible(true);
 	}
@@ -226,6 +239,7 @@ public class CreateUserGUI extends JFrame{
 						if(rs.absolute(1))
 						{
 							System.out.println("already exists!");
+							incorrectInput.setText("username already exists");
 						}
 						else
 						{
@@ -249,6 +263,7 @@ public class CreateUserGUI extends JFrame{
 								 System.out.println("new user added!");
 							}
 							else System.out.println("passwords to not match");
+							incorrectInput.setText("passwords do not match");
 						}
 						
 					} catch (SQLException e1)
@@ -260,6 +275,7 @@ public class CreateUserGUI extends JFrame{
 				else
 				{
 					System.out.println("incorrect characters");
+					incorrectInput.setText("incorrect characters");
 				}
 			
 			}
