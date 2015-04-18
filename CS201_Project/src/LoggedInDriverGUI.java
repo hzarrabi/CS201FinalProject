@@ -42,9 +42,14 @@ public class LoggedInDriverGUI extends JFrame{
 	
 	JPanel bottomColor;
 	
-	public LoggedInDriverGUI()
-	{
+	int userID;
+	
+	public LoggedInDriverGUI(int userID)
+	{		
 		super("Home Screen");
+		
+		this.userID=userID;
+
 		initializeComponents();
 		createGUI();
 		setEventHandlers();
