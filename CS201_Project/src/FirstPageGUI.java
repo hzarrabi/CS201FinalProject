@@ -76,7 +76,7 @@ public class FirstPageGUI extends JFrame{
 	
 	private void createGUI(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0,0,dim.width/3, dim.height);
+		setBounds(0,0,dim.width/3, dim.height-80);
 		setResizable(false);
 		userName.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
 		password.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
