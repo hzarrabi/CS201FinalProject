@@ -215,7 +215,7 @@ public class FirstPageGUI extends JFrame{
 		            else
 		            {
 		            	System.out.println("incorrect username password combo");
-		            //TODO	give out error that username/combo is incorrect
+		            	//TODO	give out error that username/combo is incorrect
 		            }
 				} catch (SQLException e1)
 				{
