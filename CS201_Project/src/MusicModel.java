@@ -11,69 +11,72 @@ public class MusicModel {
 	private String albumPath;
 	
 	//MUSIC ID
-	private int getMusicID(){
+	public int getMusicID(){
 		return musicID;
 	}
-	private void setMusicID(int databaseMusicID){
+	public void setMusicID(int databaseMusicID){
 		musicID = databaseMusicID;
 	}
 	
 	//Song Name
-	private String getSongName(){
+	public String getSongName(){
 		return songName;
 	}
-	private void setSongName(String databaseSongName){
+	public void setSongName(String databaseSongName){
 		songName = databaseSongName;
 	}
 	
 	//Artist Name
-	private String getArtistName(){
+	public String getArtistName(){
 		return artistName;
 	}
-	private void setArtistName(String databaseArtistName){
+	public void setArtistName(String databaseArtistName){
 		artistName = databaseArtistName;
 	}	
 	
 	//Rating Sum
-	private int getRatingSum(){
+	public int getRatingSum(){
 		return ratingSum;
 	}
-	private void setRatingSum(int databseRatingSum){
+	public void setRatingSum(int databseRatingSum){
 		ratingSum = databseRatingSum;
 	}
 	
 	//Number of ratings
-	private int getNumberOfRatings(){
+	public int getNumberOfRatings(){
 		return numberOfRatings;
 	}
-	private void setNumberOfRatings(int databseNumberOfRatings){
+	public void setNumberOfRatings(int databseNumberOfRatings){
 		numberOfRatings = databseNumberOfRatings;
 	}
 	
 	//Number of Play counts
-	private int getnumberOfPlayCounts(){
+	public int getnumberOfPlayCounts(){
 		return numberOfPlayCounts;
 	}
-	private void setnumberOfPlayCounts(int databseNumberOfPlayCounts){
+	public void setnumberOfPlayCounts(int databseNumberOfPlayCounts){
 		numberOfPlayCounts = databseNumberOfPlayCounts;
 	}
 	
 	//Song Path
-	private String getSongPath(){
+	public String getSongPath(){
 		return songPath;
 	}
-	private void setSongPath(String databseSongPath){
+	public void setSongPath(String databseSongPath){
 		songPath = databseSongPath;
 	}
 	
 	//Album path
-	private String getAlbumPath(){
+	public String getAlbumPath(){
 		return albumPath;
 	}
-	private void setAlbumPath(String databseAlbumPath){
+	public void setAlbumPath(String databseAlbumPath){
 		albumPath = databseAlbumPath;
 	}
 	
+	//constrcutor
+	public MusicModel(){
+	}
 	
-
+	
 }
