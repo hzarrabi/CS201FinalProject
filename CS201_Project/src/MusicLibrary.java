@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
@@ -32,6 +33,7 @@ import com.mysql.jdbc.ResultSetMetaData;
 public class MusicLibrary extends JFrame {
 	public static final long serialVersionUID = 1;
 	
+	private Vector<MusicModel> musicModelVector;
 	
 	//fix this cause its bad coding style
 	Connection connection;
@@ -64,31 +66,51 @@ public class MusicLibrary extends JFrame {
 		setLocation(500,0);
 		connect();
 		
+		musicModelVector = new Vector<MusicModel> ();
+		
 		try{
+			
 			Statement st = conn.createStatement();
 			String queryCheck = "SELECT * from music_table"; //WHERE song_name";
 			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
 			ResultSet rs = ps.executeQuery();
 			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
+			
 			while (rs.next()){
-				for (int i = 1; i <= columnsNumber; i++){
-					if (i > 1){
-						System.out.print(", ");
-					}
-					String columnValue = rs.getString(i);
-					System.out.println(columnValue + " " + rsmd.getColumnName(i));
-				}
+
+				
+				//this is where we are creating our Music Objects
+				MusicModel MusicObject = new MusicModel();
+				
+				//adding all of the values from the database to the object
+				MusicObject.setMusicID(rs.getInt(1));
+				MusicObject.setSongName(rs.getString(2));
+				MusicObject.setArtistName(rs.getString(3));
+				MusicObject.setRatingSum(rs.getInt(4));
+				MusicObject.setNumberOfRatings(rs.getInt(5));
+				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
+				MusicObject.setSongPath(rs.getString(7));
+				MusicObject.setAlbumPath(rs.getString(8));
+				
+				//testing 
+				System.out.println(MusicObject.getMusicID());
+				System.out.println(MusicObject.getSongName());
+				System.out.println(MusicObject.getArtistName());
+				System.out.println(MusicObject.getRatingSum());
+				System.out.println(MusicObject.getNumberOfRatings());
+				System.out.println(MusicObject.getnumberOfPlayCounts());
+				System.out.println(MusicObject.getSongPath());
+				System.out.println(MusicObject.getAlbumPath());
+
+				//adding to the vector
+				musicModelVector.add(MusicObject);
+				
 				System.out.println("");
 			}
-			//System.out.println(rs.absolute(1));
-
-			//System.out.println(ps.toString());
-			//ALO
 
 		}catch(Exception E){
-			E.printStackTrace();
-			
+			E.printStackTrace();	
 		}
 	
 
