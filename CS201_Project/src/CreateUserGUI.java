@@ -82,7 +82,9 @@ public class CreateUserGUI extends JFrame{
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		UserNameField = new JTextField("UserName");
 		passwordField = new JPasswordField("Password");
+		passwordField.setEchoChar((char)0);
 		passwordField2 = new JPasswordField("Retype Password");
+		passwordField2.setEchoChar((char)0);
 		FirstNameField = new JTextField("First Name");
 		LastNameField = new JTextField("Last Name");
 		EmailField = new JTextField("Email");
