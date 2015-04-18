@@ -44,11 +44,19 @@ public class LoggedInDriverGUI extends JFrame{
 	
 	int userID;
 	
+	static MusicLibrary sharedMusicLibrary;
+	
 	public LoggedInDriverGUI(int userID)
 	{		
 		super("Home Screen");
 		
 		this.userID=userID;
+		
+		try{
+			sharedMusicLibrary = new MusicLibrary();
+		}catch(Exception e){
+			
+		}
 
 		initializeComponents();
 		createGUI();
