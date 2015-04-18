@@ -167,6 +167,9 @@ public class CreateUserGUI extends JFrame{
 		main.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
 		//main.add(title);
 		main.setBackground(FirstPageGUI.white);
+		JTextField first = new JTextField();
+		add(first);
+		first.setVisible(true);
 		main.add(FirstNameField);
 		main.add(LastNameField);
 		main.add(UserNameField);
