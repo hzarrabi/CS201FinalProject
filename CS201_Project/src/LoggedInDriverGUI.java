@@ -19,7 +19,6 @@ import javax.swing.SwingConstants;
 
 
 public class LoggedInDriverGUI extends JFrame{
-	//private JTabbedPane jtp;
 	private Dimension dim;
 	private TopRatedGUI trg;
 	private TopListenedGUI tlg;
@@ -78,12 +77,7 @@ public class LoggedInDriverGUI extends JFrame{
 		mpgButton.setPreferredSize(new Dimension(dim.width/18, dim.height/16));
 		searchButton.setPreferredSize(new Dimension(dim.width/18, dim.height/16));
 		feedButton.setPreferredSize(new Dimension(dim.width/18, dim.height/16));
-		//buttonPanel.setOpaque(false);
-		//trgButton.setBackground(myColor);
 		tlgButton.setBackground(myColor);
-		//mpgButton.setBackground(myColor);
-		//feedButton.setBackground(myColor);
-		//searchButton.setBackground(myColor);
 		tlgButton.setOpaque(false);
 		tlgButton.setContentAreaFilled(false);
 		tlgButton.setBorderPainted(false);
@@ -101,16 +95,7 @@ public class LoggedInDriverGUI extends JFrame{
 		feedButton.setBorderPainted(false);
 		
 		logout = new JButton("Logout");
-		//jtp = new JTabbedPane();
-		buttonPanel = new JPanel();/*{
-			@Override
-			protected
-			void paintComponent(Graphics g)
-			{
-				g.setColor(myColor);
-			}
-		};
-		*/
+		buttonPanel = new JPanel();
 		buttonPanel.setPreferredSize(new Dimension(dim.width/3, dim.height/15));
 		buttonPanel.setBackground(myColor);
 		buttonPanel.add(feedButton);
@@ -123,38 +108,23 @@ public class LoggedInDriverGUI extends JFrame{
 		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20));
 		trgScroll = new JScrollPane(trg);
 		tlgScroll = new JScrollPane(tlg);
-		//mpgScroll = new JScrollPane(mpg);
 		fgScroll = new JScrollPane(fg);
 		notifications = new JLabel("notifications");
 		trgScroll.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
 		tlgScroll.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
-		//mpgScroll.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
 		fgScroll.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
 		mainPanel.add(fgScroll, BorderLayout.CENTER);
-		//jtp.setBackground(FirstPageGUI.color);
-		//mainPanel.add(mpg);
-		//logout = new JButton("Logout");
 		bottomColor = new JPanel();
 		bottomColor.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
 		bottomColor.setBackground(myColor);
-		//titlePanel.setPreferredSize(new Dimension(dim.width, dim.height));
 	}
 	
 	private void createGUI()
 	{
-		//jtp.addTab("", new ImageIcon("data/headphones1.png"),tlgScroll);
-		//jtp.addTab("",new ImageIcon("data/star1.png"), trgScroll);
-		//jtp.addTab("", new ImageIcon("data/profile.png"), mpgScroll);
-		//jtp.setBorder(null);
 		setLayout(new FlowLayout());
-		//add(jtp);
-		add(buttonPanel);
-		add(mainPanel);
-		add(bottomColor);
-		
-		//jtp.setBackground(FirstPageGUI.color);
-		//jtp.setBackgroundAt(0, FirstPageGUI.color);
-		//jtp.setPreferredSize(new Dimension(dim.width/3, dim.height/10));
+		add(buttonPanel, BorderLayout.NORTH);
+		add(mainPanel, BorderLayout.CENTER);
+		add(bottomColor, BorderLayout.SOUTH);
 	}
 	
 	private void setEventHandlers()
@@ -169,7 +139,6 @@ public class LoggedInDriverGUI extends JFrame{
 				currentJpanel = 3;
 	            mainPanel.revalidate();
 	            mainPanel.repaint();
-	         //   pack();
 			}
 		});
 		
@@ -181,7 +150,6 @@ public class LoggedInDriverGUI extends JFrame{
 				currentJpanel = 4;
 	            mainPanel.revalidate();
 	            mainPanel.repaint();
-	           // pack();
 			}
 		});
 		mpgButton.addActionListener(new ActionListener(){
@@ -191,7 +159,6 @@ public class LoggedInDriverGUI extends JFrame{
 				mainPanel.add(mpg, BorderLayout.CENTER);
 	            mainPanel.revalidate();
 	            mainPanel.repaint();
-	           // pack();
 				currentJpanel = 1;
 			}
 		});
@@ -199,15 +166,12 @@ public class LoggedInDriverGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				removePanel();
-				//mainPanel.add(fg);
 				currentJpanel = 0;
 			    mainPanel.add(fgScroll, BorderLayout.CENTER);
 	            mainPanel.revalidate();
 	            mainPanel.repaint();
-	          //  pack();
 			}
 		});
-		//searchButton;
 		logout.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				dispose();

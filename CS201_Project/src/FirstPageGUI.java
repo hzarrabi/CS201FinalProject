@@ -174,6 +174,7 @@ public class FirstPageGUI extends JFrame{
 				if(userName.getText().equals("UserName"))
 				{
 					userName.setText("");
+					userName.setForeground(FirstPageGUI.darkGrey);
 				}
 			}
 			@Override
@@ -182,6 +183,7 @@ public class FirstPageGUI extends JFrame{
 				if(userName.getText().equals(""))
 				{
 					userName.setText("UserName");
+					userName.setForeground(FirstPageGUI.lightGrey);
 				}
 			}
 		});
@@ -193,12 +195,14 @@ public class FirstPageGUI extends JFrame{
 			public void focusGained(FocusEvent e)
 			{
 				if(password.getText().equals("Password")) password.setText("");
+				password.setForeground(FirstPageGUI.darkGrey);
 			}
 
 			@Override
 			public void focusLost(FocusEvent e)
 			{
 				if(password.getText().equals("")) password.setText("Password");
+				password.setForeground(FirstPageGUI.lightGrey);
 			}
 		});
 	}
