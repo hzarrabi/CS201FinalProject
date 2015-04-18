@@ -80,12 +80,14 @@ public class CreateUserGUI extends JFrame{
 	
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		UserNameField = new JTextField("username");
-		passwordField = new JPasswordField("password");
-		FirstNameField = new JTextField("first name");
-		LastNameField = new JTextField("last name");
-		passwordField2 = new JPasswordField("re-type password");
-		EmailField = new JTextField("email");
+		UserNameField = new JTextField("UserName");
+		passwordField = new JPasswordField("Password");
+		passwordField.setEchoChar((char)0);
+		passwordField2 = new JPasswordField("Retype Password");
+		passwordField2.setEchoChar((char)0);
+		FirstNameField = new JTextField("First Name");
+		LastNameField = new JTextField("Last Name");
+		EmailField = new JTextField("Email");
 		btnConfirm = new JButton("Confirm");
 		cancel = new JButton("Cancel");
 		title = new JLabel("Create Your Account");
@@ -95,7 +97,6 @@ public class CreateUserGUI extends JFrame{
 	private void createGUI(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0,0,dim.width/3, dim.height);
-		setVisible(true);
 		setResizable(false);
 		
 		bottomColor = new JPanel();
@@ -166,6 +167,9 @@ public class CreateUserGUI extends JFrame{
 		main.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
 		//main.add(title);
 		main.setBackground(FirstPageGUI.white);
+		//JTextField first = new JTextField();
+		//first.setVisible(true);//we do this because we don't want focus on first textfield initially
+		add(new JTextField());
 		main.add(FirstNameField);
 		main.add(LastNameField);
 		main.add(UserNameField);
@@ -184,6 +188,9 @@ public class CreateUserGUI extends JFrame{
 		add(topColor, BorderLayout.NORTH);
 		add(main, BorderLayout.CENTER);
 		add(bottomColor, BorderLayout.SOUTH);
+		
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 	
 	private void setEventHandlers(){
@@ -218,7 +225,6 @@ public class CreateUserGUI extends JFrame{
 						ResultSet rs = ps.executeQuery();
 						if(rs.absolute(1))
 						{
-							
 							System.out.println("already exists!");
 						}
 						else
@@ -386,12 +392,13 @@ public class CreateUserGUI extends JFrame{
 					}
 				}
 			});
+			cancel.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					new FirstPageGUI();
+					dispose();
+				}
+			});
 		}
-//		cancel.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent e)
-//			{
-//				dispose();
-//				new FirstPageGUI();
-//			}
-//		});
 }
