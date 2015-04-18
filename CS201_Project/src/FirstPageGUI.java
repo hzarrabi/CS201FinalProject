@@ -206,11 +206,11 @@ public class FirstPageGUI extends JFrame{
 	public static void main(String [] args)
 	{
 		new FirstPageGUI();
-//		try {
-//			new MusicLibrary();
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		try {
+			new MusicLibrary();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
