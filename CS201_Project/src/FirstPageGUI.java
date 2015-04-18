@@ -226,6 +226,7 @@ public class FirstPageGUI extends JFrame{
 		            {
 		            	System.out.println("incorrect username password combo");
 		            	incorrectInput.setText("incorrect username or password");
+		            }
 				} catch (SQLException e1)
 				{
 					// TODO Auto-generated catch block
