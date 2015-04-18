@@ -220,6 +220,8 @@ public class FirstPageGUI extends JFrame{
 					if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
 		            {
 						new LoggedInDriverGUI(rs.getInt("iduser_table"));
+						stat.close();
+						conn.close();
 						dispose();
 		            }
 		            else
