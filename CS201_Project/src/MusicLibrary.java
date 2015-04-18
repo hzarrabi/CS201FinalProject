@@ -30,10 +30,6 @@ import javax.swing.SwingUtilities;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.ResultSetMetaData;
-<<<<<<< HEAD
-//import com.sun.javafx.collections.MappingChange.Map;
-=======
->>>>>>> e0a183357637ae73b1cbc1b56f9fa43ea1ccb98a
 
 public class MusicLibrary extends JFrame {
 	public static final long serialVersionUID = 1;
