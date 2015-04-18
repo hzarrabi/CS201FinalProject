@@ -202,7 +202,6 @@ public class CreateUserGUI extends JFrame{
 		add(bottomColor, BorderLayout.SOUTH);
 		setBackground(FirstPageGUI.white);
 		repaint();
-		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	
@@ -223,8 +222,8 @@ public class CreateUserGUI extends JFrame{
 				if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
 				if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
 				if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
-				if(passwordField.getPassword().length>11 || passwordField2.getPassword().length<5) Password=false;
-				if(passwordField2.getPassword().length>11 || passwordField2.getPassword().length<5) Password2=false;
+				if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
+				if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
 			
 				if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
 				{
@@ -262,8 +261,11 @@ public class CreateUserGUI extends JFrame{
 								 
 								 System.out.println("new user added!");
 							}
-							else System.out.println("passwords to not match");
-							incorrectInput.setText("passwords do not match");
+							else
+							{ 
+								System.out.println("passwords to not match");
+								incorrectInput.setText("passwords do not match");
+							}
 						}
 						
 					} catch (SQLException e1)
