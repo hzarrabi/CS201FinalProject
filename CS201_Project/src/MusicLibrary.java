@@ -60,6 +60,10 @@ public class MusicLibrary extends JFrame {
 				 e.printStackTrace();
 				 }
 	}
+	
+	public HashMap<String,MusicModel> getMusicModelMap(){
+		return musicModelMap;
+	}
 
 	
 	

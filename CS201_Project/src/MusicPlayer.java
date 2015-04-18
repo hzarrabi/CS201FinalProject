@@ -38,7 +38,7 @@ public class MusicPlayer extends JFrame{
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		album = new JLabel("Album Cover");
-		artist = new JLabel("Song Title and Artist");
+		artist = new JLabel("Song");//LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get("Headlines").getSongName());
 		rating = new JLabel("Rating and # of Listens");
 		backButton = new JButton("back");
 		playButton = new JButton("Play");

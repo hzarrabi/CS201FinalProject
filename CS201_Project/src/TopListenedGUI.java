@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -17,17 +18,16 @@ public class TopListenedGUI extends TopGUI{
 	}
 	
 	public void fillButtons() {
-		for (int i = 0; i<100; i++)
-		{
-			JButton b = new JButton("Song");
-			buttons.add(b);
-			//this.add(b);	
-		}
-		for (int i = 0; i<100; i++)
-		{
 
+		for (Entry<String, MusicModel> entry : LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().entrySet()){
+			String key = entry.getKey();
+			buttons.add(LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(key).getPlayButtonThatLeadsToMusicPlayer());	
+		}
+		for (int i = 0; i<((LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().size())); i++){
 			this.add(buttons.get(i));	
+			System.out.println(i);
 		}
 	}
 
 }
+
