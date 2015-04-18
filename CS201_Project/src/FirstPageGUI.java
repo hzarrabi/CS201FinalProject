@@ -50,6 +50,7 @@ public class FirstPageGUI extends JFrame{
 	private JButton login;
 	private JPanel bottomColor;
 	private JPanel topColor;
+	private JLabel incorrectInput;
 	private JPanel main = new JPanel();
 	final static Color color = new Color(0x0AB2D8);
 	final static Color white = new Color(0xf7f7f7);
@@ -129,8 +130,8 @@ public class FirstPageGUI extends JFrame{
 		newUser.setHorizontalAlignment(SwingConstants.CENTER);
 		//Image myImage = image.getScaledInstance(dim.width-1, dim.height-1, Image.SCALE_SMOOTH);
 		
-		main.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width, dim.height/30));
-		main.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
+		main.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width, dim.height/40));
+		main.setPreferredSize(new Dimension(dim.width/3, 13*dim.height/20));
 		//main.setBackground(Color.WHITE);
 		//Box.createGlue();
 		add(new JTextField());//we do this because we don't want focus on first jtexfield initially
@@ -147,8 +148,18 @@ public class FirstPageGUI extends JFrame{
 		//Box.createGlue();
 		main.add(guest);
 		//Box.createGlue();
+		JPanel mainPanel = new JPanel();
+		mainPanel.add(main, BorderLayout.CENTER);
+		incorrectInput = new JLabel("");
+		incorrectInput.setHorizontalAlignment(SwingConstants.CENTER);
+		incorrectInput.setForeground(Color.RED);
+		mainPanel.setBackground(FirstPageGUI.white);
+		mainPanel.add(main);
+		mainPanel.add(incorrectInput);
+		incorrectInput.setPreferredSize(new Dimension(dim.width, dim.height/20));
+		mainPanel.setPreferredSize(new Dimension(dim.width/3, 14*dim.height/20));
 		add(topColor, BorderLayout.NORTH);
-		add(main, BorderLayout.CENTER);
+		add(mainPanel, BorderLayout.CENTER);
 		add(bottomColor, BorderLayout.SOUTH);
 		
 		setLocationRelativeTo(null);
@@ -215,6 +226,7 @@ public class FirstPageGUI extends JFrame{
 		            else
 		            {
 		            	System.out.println("incorrect username password combo");
+		            	incorrectInput.setText("incorrect username or password");
 		            //TODO	give out error that username/combo is incorrect
 		            }
 				} catch (SQLException e1)

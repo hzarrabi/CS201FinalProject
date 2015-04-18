@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -31,11 +32,20 @@ public class ProfileGUI extends JPanel{
 	private JPanel jpFollowers;
 	private JPanel jpFollowing;
 	private JPanel jpFavorites;
-	public ProfileGUI(Dimension d)
+	
+	private JButton edit;
+	private JButton unFollow;
+	private JButton follow;
+	
+	private String key;
+	public ProfileGUI(Dimension d, String key)
 	{
 		dim = d;
+		this.key = key;
 		this.setPreferredSize(dim);
+		initializeComponents();
 		setVisible(true);
+		
 	}
 	
 	private void initializeComponents()
@@ -43,6 +53,11 @@ public class ProfileGUI extends JPanel{
 		name = new JLabel("Name");
 		email = new JLabel("Email");
 		bio = new JTextArea("My Bio");
+		
+		//buttons depending on user
+		edit = new JButton("Edit Profile");
+		unFollow = new JButton("UnFollow");
+		follow = new JButton("Follow");
 		followersButtons = new HashSet<JButton>();
 		followingButtons = new HashSet<JButton>();
 		favoritesButtons = new HashSet<JButton>();
@@ -52,27 +67,41 @@ public class ProfileGUI extends JPanel{
 		jspFollowing = new JScrollPane(jpFollowing);
 		jspFollowers = new JScrollPane(jpFollowers);
 		jspFavorites = new JScrollPane(jpFavorites);
-		jpFollowers.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		jpFollowing.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		jpFavorites.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		jpFollowers.setLayout(new BoxLayout(jpFollowers, BoxLayout.Y_AXIS));
+		jpFollowing.setLayout(new BoxLayout(jpFollowing, BoxLayout.Y_AXIS));
+		jpFavorites.setLayout(new BoxLayout(jpFavorites, BoxLayout.Y_AXIS));
 		populate();
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new GridLayout(1, 3));
-		bottomPanel.setPreferredSize(new Dimension(dim.width/4, dim.height/4));
-		bottomPanel.add(jpFollowers);
-		bottomPanel.add(jpFollowing);
-		bottomPanel.add(jpFavorites);
+		bottomPanel.setPreferredSize(new Dimension(dim.width, dim.height/2));
+		bottomPanel.add(jspFollowers);
+		bottomPanel.add(jspFollowing);
+		bottomPanel.add(jspFavorites);
 		JPanel topPanel = new JPanel();
 		JPanel middlePanel = new JPanel();
 		middlePanel.add(bio);
-		bio.setPreferredSize(new Dimension(dim.width/4, dim.height/4));
+		bio.setPreferredSize(new Dimension(dim.width, dim.height/4));
 		bio.setEditable(false);
-		topPanel.setPreferredSize(new Dimension(dim.width/4, dim.height/4));
+		topPanel.setPreferredSize(new Dimension(dim.width, dim.height/4));
 		topPanel.add(name);
 		topPanel.add(email);
-		add(topPanel);
-		add(middlePanel);
-		add(bottomPanel);
+		if (key.equals("not friends"))
+		{
+			topPanel.add(follow);
+		}
+		else if (key.equals("friends"))
+		{
+			topPanel.add(unFollow);
+		}
+		else if (key.equals("current user"))
+		{
+			topPanel.add(edit);
+		}
+		add(topPanel, BorderLayout.NORTH);
+		add(middlePanel, BorderLayout.CENTER);
+		add(bottomPanel, BorderLayout.SOUTH);//, BorderLayout.SOUTH);
+		//add(new JLabel("OHAI!!!!!"));
+		repaint();
 		setVisible(true);
 		
 	}
@@ -83,7 +112,8 @@ public class ProfileGUI extends JPanel{
 		{
 			JButton temp = new JButton("User");
 			followersButtons.add(temp);
-			followingButtons.add(temp);
+			JButton temp3 = new JButton("User");
+			followingButtons.add(temp3);
 			JButton temp2 = new JButton("Song");
 			favoritesButtons.add(temp2);
 		}
@@ -99,12 +129,12 @@ public class ProfileGUI extends JPanel{
 		while (it2.hasNext())
 		{
 			JButton temp = it2.next();
-			jpFollowers.add(temp);
+			jpFollowing.add(temp);
 		}
 		while (it3.hasNext())
 		{
 			JButton temp = it3.next();
-			jpFollowers.add(temp);
+			jpFavorites.add(temp);
 		}
 		
 	}

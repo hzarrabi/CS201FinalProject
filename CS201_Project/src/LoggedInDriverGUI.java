@@ -110,7 +110,7 @@ public class LoggedInDriverGUI extends JFrame{
 		buttonPanel.add(searchButton);
 		trg = new TopRatedGUI(new Dimension(dim.width/3, 15*dim.height/20));
 		tlg = new TopListenedGUI(new Dimension(dim.width/3, 15*dim.height/20));
-		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20));
+		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user");
 		trgScroll = new JScrollPane(trg);
 		tlgScroll = new JScrollPane(tlg);
 		fgScroll = new JScrollPane(fg);
