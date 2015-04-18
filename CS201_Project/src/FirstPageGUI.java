@@ -205,16 +205,20 @@ public class FirstPageGUI extends JFrame{
 					Statement stat = (Statement) conn.createStatement();
 					String sql = "Select * from user_table Where username='" + theUserName + "' and password='"+thePassword+"'";
 					ResultSet rs = stat.executeQuery(sql);
+					if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
+		            {
+						new LoggedInDriverGUI();
+		            }
+		            else
+		            {
+		            	System.out.println("incorrect username password combo");
+		            //TODO	give out error that username/combo is incorrect
+		            }
 				} catch (SQLException e1)
 				{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
-
-				
-				
-				
-				//new LoggedInDriverGUI();//TODO make this open when the username and login are the 
+				}				
 			}
 		});
 		
