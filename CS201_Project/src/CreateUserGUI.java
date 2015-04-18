@@ -257,7 +257,8 @@ public class CreateUserGUI extends JFrame{
 								 stmt.setString(5,PasswordHash.hash(password));
 								 stmt.execute();
 								 
-								 //TODO open new page and close connection to db
+								 stmt.close();
+								 conn.close();
 								 
 								 System.out.println("new user added!");
 							}
