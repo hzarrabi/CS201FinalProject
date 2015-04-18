@@ -131,7 +131,6 @@ public class LoggedInDriverGUI extends JFrame{
 	{
 		
 		trgButton.addActionListener(new ActionListener(){
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				removePanel();
