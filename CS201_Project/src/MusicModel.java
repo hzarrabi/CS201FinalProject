@@ -1,3 +1,5 @@
+import javax.swing.JButton;
+
 
 public class MusicModel {
 	
@@ -9,6 +11,8 @@ public class MusicModel {
 	private int numberOfPlayCounts;
 	private String songPath;
 	private String albumPath;
+	private JButton playButtonThatLeadsToMusicPlayer;
+	
 	
 	//MUSIC ID
 	public int getMusicID(){
@@ -74,8 +78,17 @@ public class MusicModel {
 		albumPath = databseAlbumPath;
 	}
 	
-	//constrcutor
+	//JButton
+	public JButton getPlayButtonThatLeadsToMusicPlayer(){
+		return playButtonThatLeadsToMusicPlayer;
+	}
+	public void setPlayButtonThatLeadsToMusicPlayer(String buttonName){
+		playButtonThatLeadsToMusicPlayer.setText(buttonName);
+	}
+	
+	//constructor
 	public MusicModel(){
+		playButtonThatLeadsToMusicPlayer = new JButton("");
 	}
 	
 	
