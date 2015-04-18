@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -29,11 +30,14 @@ import javax.swing.SwingUtilities;
 
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.ResultSetMetaData;
+import com.sun.javafx.collections.MappingChange.Map;
 
 public class MusicLibrary extends JFrame {
 	public static final long serialVersionUID = 1;
 	
-	private Vector<MusicModel> musicModelVector;
+	//hold all the music objects
+	//private Vector<MusicModel> musicModelVector;
+	private HashMap<String, MusicModel> musicModelMap;
 	
 	//fix this cause its bad coding style
 	Connection connection;
@@ -66,7 +70,8 @@ public class MusicLibrary extends JFrame {
 		setLocation(500,0);
 		connect();
 		
-		musicModelVector = new Vector<MusicModel> ();
+		//musicModelVector = new Vector<MusicModel> ();
+		musicModelMap = new HashMap<String, MusicModel> ();
 		
 		try{
 			
@@ -79,7 +84,6 @@ public class MusicLibrary extends JFrame {
 			
 			while (rs.next()){
 
-				
 				//this is where we are creating our Music Objects
 				MusicModel MusicObject = new MusicModel();
 				
@@ -105,7 +109,8 @@ public class MusicLibrary extends JFrame {
 				System.out.println(MusicObject.getAlbumPath());
 
 				//adding to the vector
-				musicModelVector.add(MusicObject);
+				//musicModelVector.add(MusicObject);
+				musicModelMap.put(MusicObject.getSongName(),MusicObject);
 				
 				System.out.println("");
 			}
