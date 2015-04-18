@@ -50,7 +50,7 @@ public class FirstPageGUI extends JFrame{
 		initializeComponents();
 		createGUI();
 		makePretty();
-		System.out.println("YOOOOOOO");
+		//System.out.println("YOOOOOOO");
 		setEventHandlers();
 	}
 	
