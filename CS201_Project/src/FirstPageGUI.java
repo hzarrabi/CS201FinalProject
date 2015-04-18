@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -163,5 +164,11 @@ public class FirstPageGUI extends JFrame{
 	public static void main(String [] args)
 	{
 		new FirstPageGUI();
+		try {
+			new MusicLibrary();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
