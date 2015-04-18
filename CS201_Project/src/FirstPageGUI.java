@@ -17,6 +17,10 @@ import java.awt.event.FocusListener;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,6 +29,13 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.AbstractBorder;
+
+import com.mysql.jdbc.Statement;
+
+import sun.security.util.Password;
+
+
+
 
 
 public class FirstPageGUI extends JFrame{
@@ -47,6 +58,14 @@ public class FirstPageGUI extends JFrame{
 	final static Color darkGrey = new Color(0x696969);
 	final static Font font = new Font("Helvetica Neue", Font.PLAIN, 18);
 	final static Font fontTitle = new Font("Helvetica Neue", Font.PLAIN, 24);
+	
+	//for connecting database
+	Connection connection;
+	String dburl;
+	String UserName;
+	String passWord;
+	Connection conn;
+	
 	public FirstPageGUI()
 	{
 		super("Login Screen");
@@ -55,13 +74,30 @@ public class FirstPageGUI extends JFrame{
 		makePretty();
 		//System.out.println("YOOOOOOO");
 		setEventHandlers();
+		connect();
+	}
+	
+	private void connect(){
+		connection = null;
+		dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
+		UserName = "cs201";
+		passWord = "manishhostage";
+
+			 try {
+				 Class.forName("com.mysql.jdbc.Driver");
+				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+				 } catch (ClassNotFoundException e) {
+				 e.printStackTrace();
+				 } catch (SQLException e) {
+				 e.printStackTrace();
+				 }
 	}
 	
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		userName = new JTextField("UserName");
 		password = new JTextField("Password");
-		logo = new JLabel("CsMusic");
+		logo = new JLabel("201-Tunes");
 		newUser = new JLabel("Not Signed Up?");
 		createNewUser = new JButton("Create Account");
 		guest = new JButton("Login as Guest");
@@ -162,7 +198,23 @@ public class FirstPageGUI extends JFrame{
 		});
 		login.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				new LoggedInDriverGUI();
+				String theUserName=userName.getText();
+				String thePassword=PasswordHash.hash(password.getText());//returning the password hashed
+				try
+				{
+					Statement stat = (Statement) conn.createStatement();
+					String sql = "Select * from user_table Where username='" + theUserName + "' and password='"+thePassword+"'";
+					ResultSet rs = stat.executeQuery(sql);
+				} catch (SQLException e1)
+				{
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+				
+				
+				
+				//new LoggedInDriverGUI();//TODO make this open when the username and login are the 
 			}
 		});
 		
