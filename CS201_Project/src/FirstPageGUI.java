@@ -26,6 +26,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.AbstractBorder;
@@ -41,7 +42,7 @@ import sun.security.util.Password;
 public class FirstPageGUI extends JFrame{
 	private Dimension dim;
 	private JTextField userName;
-	private JTextField password;
+	private JPasswordField password;
 	private JLabel logo;
 	private JLabel newUser;
 	private JButton createNewUser;
@@ -96,7 +97,7 @@ public class FirstPageGUI extends JFrame{
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		userName = new JTextField("UserName");
-		password = new JTextField("Password");
+		password = new JPasswordField("Password");
 		logo = new JLabel("201-Tunes");
 		newUser = new JLabel("Not Signed Up?");
 		createNewUser = new JButton("Create Account");
@@ -136,6 +137,7 @@ public class FirstPageGUI extends JFrame{
 		main.add(userName);
 		//Box.createGlue();
 		main.add(password);
+		password.setEchoChar((char)0);
 		//Box.createGlue();
 		main.add(login);
 		//Box.createGlue();
@@ -208,6 +210,7 @@ public class FirstPageGUI extends JFrame{
 					if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
 		            {
 						new LoggedInDriverGUI();
+						dispose();
 		            }
 		            else
 		            {
@@ -250,14 +253,22 @@ public class FirstPageGUI extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e)
 			{
-				if(password.getText().equals("Password")) password.setText("");
+				if(password.getText().equals("Password"))
+				{
+					password.setEchoChar(('*'));
+					password.setText("");
+				}
 				password.setForeground(FirstPageGUI.darkGrey);
 			}
 
 			@Override
 			public void focusLost(FocusEvent e)
 			{
-				if(password.getText().equals("")) password.setText("Password");
+				if(password.getText().equals(""))
+				{
+					password.setText("Password");
+					password.setEchoChar((char)0);
+				}
 				password.setForeground(FirstPageGUI.lightGrey);
 			}
 		});
