@@ -95,7 +95,6 @@ public class CreateUserGUI extends JFrame{
 	private void createGUI(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0,0,dim.width/3, dim.height);
-		setVisible(true);
 		setResizable(false);
 		
 		bottomColor = new JPanel();
@@ -184,6 +183,9 @@ public class CreateUserGUI extends JFrame{
 		add(topColor, BorderLayout.NORTH);
 		add(main, BorderLayout.CENTER);
 		add(bottomColor, BorderLayout.SOUTH);
+		
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 	
 	private void setEventHandlers(){
@@ -386,12 +388,13 @@ public class CreateUserGUI extends JFrame{
 					}
 				}
 			});
+			cancel.addActionListener(new ActionListener()
+			{
+				public void actionPerformed(ActionEvent e)
+				{
+					new FirstPageGUI();
+					dispose();
+				}
+			});
 		}
-//		cancel.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent e)
-//			{
-//				dispose();
-//				new FirstPageGUI();
-//			}
-//		});
 }

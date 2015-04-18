@@ -75,7 +75,6 @@ public class FirstPageGUI extends JFrame{
 	private void createGUI(){
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0,0,dim.width/3, dim.height);
-		setVisible(true);
 		setResizable(false);
 		userName.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
 		password.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
@@ -110,6 +109,9 @@ public class FirstPageGUI extends JFrame{
 		add(topColor, BorderLayout.NORTH);
 		add(main, BorderLayout.CENTER);
 		add(bottomColor, BorderLayout.SOUTH);
+		
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 	
 	private void makePretty(){
@@ -147,6 +149,7 @@ public class FirstPageGUI extends JFrame{
 		createNewUser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				new CreateUserGUI();
+				dispose();
 			}
 		});
 		guest.addActionListener(new ActionListener(){
@@ -164,11 +167,11 @@ public class FirstPageGUI extends JFrame{
 	public static void main(String [] args)
 	{
 		new FirstPageGUI();
-		try {
-			new MusicLibrary();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			new MusicLibrary();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 }
