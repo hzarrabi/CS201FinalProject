@@ -78,15 +78,12 @@ public class MusicLibrary extends JFrame {
 			int columnsNumber = rsmd.getColumnCount();
 			
 			while (rs.next()){
-				//the specific columbs in the database to fill our object
-//				for (int i = 1; i <= columnsNumber; i++){
-//					String columnValue = rs.getString(i);
-//					System.out.println(columnValue + " " + rsmd.getColumnName(i));
-//				}
+
 				
 				//this is where we are creating our Music Objects
 				MusicModel MusicObject = new MusicModel();
 				
+				//adding all of the values from the database to the object
 				MusicObject.setMusicID(rs.getInt(1));
 				MusicObject.setSongName(rs.getString(2));
 				MusicObject.setArtistName(rs.getString(3));
@@ -96,6 +93,7 @@ public class MusicLibrary extends JFrame {
 				MusicObject.setSongPath(rs.getString(7));
 				MusicObject.setAlbumPath(rs.getString(8));
 				
+				//testing 
 				System.out.println(MusicObject.getMusicID());
 				System.out.println(MusicObject.getSongName());
 				System.out.println(MusicObject.getArtistName());
@@ -105,18 +103,14 @@ public class MusicLibrary extends JFrame {
 				System.out.println(MusicObject.getSongPath());
 				System.out.println(MusicObject.getAlbumPath());
 
-				
+				//adding to the vector
+				musicModelVector.add(MusicObject);
 				
 				System.out.println("");
 			}
-			//System.out.println(rs.absolute(1));
-
-			//System.out.println(ps.toString());
-			//ALO
 
 		}catch(Exception E){
-			E.printStackTrace();
-			
+			E.printStackTrace();	
 		}
 	
 
