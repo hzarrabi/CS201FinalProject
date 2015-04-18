@@ -12,6 +12,8 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -57,8 +59,8 @@ public class FirstPageGUI extends JFrame{
 	
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		userName = new JTextField("username");
-		password = new JTextField("password");
+		userName = new JTextField("UserName");
+		password = new JTextField("Password");
 		logo = new JLabel("CsMusic");
 		newUser = new JLabel("Not Signed Up?");
 		createNewUser = new JButton("Create Account");
@@ -94,6 +96,7 @@ public class FirstPageGUI extends JFrame{
 		main.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
 		//main.setBackground(Color.WHITE);
 		//Box.createGlue();
+		add(new JTextField());//we do this because we don't want focus on first jtexfield initially
 		main.add(userName);
 		//Box.createGlue();
 		main.add(password);
@@ -160,6 +163,42 @@ public class FirstPageGUI extends JFrame{
 		login.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				new LoggedInDriverGUI();
+			}
+		});
+		
+		userName.addFocusListener(new FocusListener()
+		{
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				if(userName.getText().equals("UserName"))
+				{
+					userName.setText("");
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(userName.getText().equals(""))
+				{
+					userName.setText("UserName");
+				}
+			}
+		});
+		
+		password.addFocusListener(new FocusListener()
+		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				if(password.getText().equals("Password")) password.setText("");
+			}
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(password.getText().equals("")) password.setText("Password");
 			}
 		});
 	}
