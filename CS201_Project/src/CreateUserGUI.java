@@ -220,7 +220,6 @@ public class CreateUserGUI extends JFrame{
 						ResultSet rs = ps.executeQuery();
 						if(rs.absolute(1))
 						{
-							
 							System.out.println("already exists!");
 						}
 						else
