@@ -290,6 +290,7 @@ public class CreateUserGUI extends JFrame{
 					{
 						passwordField2.setEchoChar((char)0);
 						passwordField2.setText("Retype Password");
+						passwordField2.setForeground(FirstPageGUI.lightGrey);
 					}
 				}
 				@Override
@@ -299,6 +300,7 @@ public class CreateUserGUI extends JFrame{
 					{
 						passwordField2.setText("");
 						passwordField2.setEchoChar('*');
+						passwordField2.setForeground(FirstPageGUI.darkGrey);
 					}
 				}
 			});
@@ -313,6 +315,7 @@ public class CreateUserGUI extends JFrame{
 					{
 						passwordField.setEchoChar((char)0);
 						passwordField.setText("Password");
+						passwordField.setForeground(FirstPageGUI.lightGrey);
 					}
 				}
 				@Override
@@ -321,6 +324,7 @@ public class CreateUserGUI extends JFrame{
 					if(Arrays.equals("Password".toCharArray(), passwordField.getPassword()))
 					{
 						passwordField.setText("");
+						passwordField.setForeground(FirstPageGUI.darkGrey);
 						passwordField.setEchoChar('*');
 					}
 				}
@@ -335,6 +339,7 @@ public class CreateUserGUI extends JFrame{
 					if(EmailField.getText().equals(""))
 					{
 						EmailField.setText("Email");
+						EmailField.setForeground(FirstPageGUI.lightGrey);
 					}
 				}
 				@Override
@@ -343,6 +348,7 @@ public class CreateUserGUI extends JFrame{
 					if(EmailField.getText().equals("Email"))
 					{
 						EmailField.setText("");
+						EmailField.setForeground(FirstPageGUI.darkGrey);
 					}
 				}
 			});
@@ -356,6 +362,7 @@ public class CreateUserGUI extends JFrame{
 					if(UserNameField.getText().equals(""))
 					{
 						UserNameField.setText("UserName");
+						UserNameField.setForeground(FirstPageGUI.lightGrey);
 					}
 				}
 				@Override
@@ -364,6 +371,7 @@ public class CreateUserGUI extends JFrame{
 					if(UserNameField.getText().equals("UserName"))
 					{
 						UserNameField.setText("");
+						UserNameField.setForeground(FirstPageGUI.darkGrey);
 					}
 				}
 			});
@@ -377,6 +385,7 @@ public class CreateUserGUI extends JFrame{
 					if(LastNameField.getText().equals(""))
 					{
 						LastNameField.setText("Last Name");
+						LastNameField.setForeground(FirstPageGUI.lightGrey);
 					}
 				}
 				@Override
@@ -385,6 +394,7 @@ public class CreateUserGUI extends JFrame{
 					if(LastNameField.getText().equals("Last Name"))
 					{
 						LastNameField.setText("");
+						LastNameField.setForeground(FirstPageGUI.darkGrey);
 					}
 				}
 			});
@@ -397,6 +407,7 @@ public class CreateUserGUI extends JFrame{
 					if(FirstNameField.getText().equals(""))
 					{
 						FirstNameField.setText("First Name");
+						FirstNameField.setForeground(FirstPageGUI.lightGrey);
 					}
 				}
 				@Override
@@ -405,6 +416,7 @@ public class CreateUserGUI extends JFrame{
 					if(FirstNameField.getText().equals("First Name"))
 					{
 						FirstNameField.setText("");
+						FirstNameField.setForeground(FirstPageGUI.darkGrey);
 					}
 				}
 			});
