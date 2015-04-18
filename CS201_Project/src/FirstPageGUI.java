@@ -229,7 +229,6 @@ public class FirstPageGUI extends JFrame{
 		            }
 				} catch (SQLException e1)
 				{
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}				
 			}
@@ -290,7 +289,6 @@ public class FirstPageGUI extends JFrame{
 		try {
 			new MusicLibrary();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
