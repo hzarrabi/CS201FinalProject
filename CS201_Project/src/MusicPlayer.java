@@ -15,7 +15,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.sun.prism.Image;
 
 
 public class MusicPlayer extends JFrame{
