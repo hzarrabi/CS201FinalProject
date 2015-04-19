@@ -124,6 +124,9 @@ public class ProfileGUI extends JPanel{
 		jpFollowers = new JPanel();
 		jpFollowing = new JPanel();
 		jpFavorites = new JPanel();
+		jpFollowing.setBackground(FirstPageGUI.white);
+		jpFollowers.setBackground(FirstPageGUI.white);
+		jpFavorites.setBackground(FirstPageGUI.white);
 		jpFollowers.setBackground(FirstPageGUI.white);
 		jpFollowing.setBackground(FirstPageGUI.white);
 		jpFavorites.setBackground(FirstPageGUI.white);
@@ -135,6 +138,7 @@ public class ProfileGUI extends JPanel{
 		jpFavorites.setLayout(new BoxLayout(jpFavorites, BoxLayout.Y_AXIS));
 		populate();
 		JPanel bottomPanel = new JPanel();
+		bottomPanel.setBackground(FirstPageGUI.white);
 		bottomPanel.setLayout(new GridLayout(1, 3));
 		JPanel buttonLabelsPanel = new JPanel();
 		buttonLabelsPanel.setPreferredSize(new Dimension(dim.width, dim.height/16));
@@ -225,6 +229,7 @@ public class ProfileGUI extends JPanel{
 		info.add(emailPanel);
 		info.add(buttonP);
 		picture = new JPanel();
+		picture.setBackground(FirstPageGUI.white);
 		picture.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
 		picture.add(picturePic);
 		topPanel.setLayout(new GridLayout(1, 2));
@@ -233,8 +238,10 @@ public class ProfileGUI extends JPanel{
 		topPanel.add(info);
 		add(topPanel, BorderLayout.NORTH);
 		add(middlePanel, BorderLayout.CENTER);
+		middlePanel.setBackground(FirstPageGUI.white);
 		setBackground(FirstPageGUI.white);
 		JPanel mid = new JPanel();
+		mid.setBackground(FirstPageGUI.white);
 		mid.setPreferredSize(new Dimension(dim.width, dim.height/2));
 		mid.add(buttonLabelsPanel, BorderLayout.NORTH);
 		mid.add(bottomPanel, BorderLayout.CENTER);
