@@ -1,7 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -9,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import com.sun.prism.Image;
 
 
 public class MusicPlayer extends JFrame{
@@ -44,7 +51,21 @@ public class MusicPlayer extends JFrame{
 	
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		album = new JLabel("Album Cover");
+		album = new JLabel("");
+		
+		try {
+            URL imageurl = new URL(musicObject.getAlbumPath());
+            BufferedImage img = ImageIO.read(imageurl);
+            ImageIcon icon = new ImageIcon(img);
+            //Image ResizedImage = icon.getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+            album.setIcon(icon);
+            album.setSize(475,475);
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
+		
+		
+		
 		artist = new JLabel(musicObject.getSongName());
 		rating = new JLabel("Rating and # of Listens");
 		backButton = new JButton("back");
