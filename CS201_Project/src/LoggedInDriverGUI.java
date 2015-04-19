@@ -195,6 +195,8 @@ public class LoggedInDriverGUI extends JFrame{
 				removePanel();
 				currentJpanel = 2;
 				mainPanel.add(testLabel);
+				mainPanel.revalidate();
+	            mainPanel.repaint();
 				
 			}
 			
