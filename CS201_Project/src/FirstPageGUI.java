@@ -14,6 +14,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
@@ -281,6 +283,45 @@ public class FirstPageGUI extends JFrame{
 					password.setEchoChar((char)0);
 				}
 				password.setForeground(FirstPageGUI.lightGrey);
+			}
+		});
+		
+		password.addKeyListener(new KeyListener()
+		{
+					
+			
+			public void keyPressed(KeyEvent e){}
+			public void keyReleased(KeyEvent e){}
+			
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				if(e.getKeyChar() == KeyEvent.VK_ENTER)
+				{
+					String theUserName=userName.getText();
+					String thePassword=PasswordHash.hash(password.getText());//returning the password hashed
+					try
+					{
+						Statement stat = (Statement) conn.createStatement();
+						String sql = "Select * from user_table Where username='" + theUserName + "' and password='"+thePassword+"'";
+						ResultSet rs = stat.executeQuery(sql);
+						if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
+			            {
+							new LoggedInDriverGUI(rs.getInt("iduser_table"));
+							stat.close();
+							conn.close();
+							dispose();
+			            }
+			            else
+			            {
+			            	System.out.println("incorrect username password combo");
+			            	incorrectInput.setText("incorrect username or password");
+			            }
+					} catch (SQLException e1)
+					{
+						e1.printStackTrace();
+					}				
+                }       
 			}
 		});
 	}
