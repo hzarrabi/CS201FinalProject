@@ -16,7 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 
-
 public class MusicPlayer extends JFrame{
 	private Dimension dim;
 	private int song;
@@ -33,6 +32,10 @@ public class MusicPlayer extends JFrame{
 	private String songName;
 	private MusicModel musicObject;
 	
+	JButton commentButton;
+	JButton favoriteButton;
+	JButton rateButton;
+	
 	public MusicPlayer(String songTitle, Boolean isGuest)
 	{
 		songName = songTitle;
@@ -45,6 +48,25 @@ public class MusicPlayer extends JFrame{
 		}
 		else
 		{
+			commentButton = new JButton();
+			favoriteButton = new JButton();
+			rateButton = new JButton();
+			rateButton.setIcon(new ImageIcon("data/star1.png"));
+			commentButton.setIcon(new ImageIcon("data/headphones1.png"));
+			favoriteButton.setIcon(new ImageIcon("data/profile.png"));
+			commentButton.setPreferredSize(new Dimension(dim.width/20, dim.height/16));
+			rateButton.setPreferredSize(new Dimension(dim.width/20, dim.height/16));
+			favoriteButton.setPreferredSize(new Dimension(dim.width/20, dim.height/16));
+			//tlgButton.setBackground(FirstPageGUI.green);
+			commentButton.setOpaque(false);
+			commentButton.setContentAreaFilled(false);
+			commentButton.setBorderPainted(false);
+			rateButton.setOpaque(false);
+			rateButton.setContentAreaFilled(false);
+			rateButton.setBorderPainted(false);
+			favoriteButton.setOpaque(false);
+			favoriteButton.setContentAreaFilled(false);
+			favoriteButton.setBorderPainted(false);
 			createUserGUI();
 		}
 		setEventHandlers();
@@ -83,8 +105,21 @@ public class MusicPlayer extends JFrame{
 	
 	private void createUserGUI()
 	{
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setPreferredSize(new Dimension(dim.width/6, dim.height/15));
+		buttonPanel.setBackground(FirstPageGUI.color);
+		buttonPanel.add(rateButton);
+		buttonPanel.add(commentButton);
+		buttonPanel.add(favoriteButton);
+		//buttonPanel.add(trgButton);
+		//buttonPanel.add(searchButton);
+		
+		
+		
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setPreferredSize(new Dimension(dim.width/3, dim.height/10));
+		bottomPanel.setBackground(FirstPageGUI.color);
 		bottomPanel.add(backButton);
 		bottomPanel.add(playButton);
 		bottomPanel.add(pauseButton);
