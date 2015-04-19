@@ -41,8 +41,7 @@ public class LoggedInDriverGUI extends JFrame{
 	private int currentJpanel;
 	private Color myColor;
 	
-	
-	JTextArea testLabel = new JTextArea();
+	private JTextArea testLabel;
 	JPanel bottomColor;
 	
 	int userID;
@@ -52,7 +51,7 @@ public class LoggedInDriverGUI extends JFrame{
 	public LoggedInDriverGUI(int userID)
 	{		
 		super("Home Screen");
-		
+		testLabel = new JTextArea();
 		this.userID=userID;
 		
 		try{
@@ -73,11 +72,11 @@ public class LoggedInDriverGUI extends JFrame{
 	private void initializeComponents()
 	{
 		currentJpanel = 0;
-		testLabel.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
-		testLabel.setEditable(false);
 		fg = new FeedGUI();
 		myColor = FirstPageGUI.color;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		testLabel.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
+		testLabel.setEditable(false);
 		mainPanel = new JPanel();
 		mainPanel.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
 		trgButton = new JButton();
