@@ -314,6 +314,34 @@ public class FirstPageGUI extends JFrame{
 		}				
 	}
 	
+	public void loginAction(ActionEvent e) {
+		String theUserName=userName.getText();
+		String thePassword=PasswordHash.hash(password.getText());//returning the password hashed
+		try
+		{
+			Statement stat = (Statement) conn.createStatement();
+			String sql = "Select * from user_table Where username='" + theUserName + "' and password='"+thePassword+"'";
+			ResultSet rs = stat.executeQuery(sql);
+			if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
+            {
+				new LoggedInDriverGUI(rs.getInt("iduser_table"));
+				stat.close();
+				conn.close();
+				dispose();
+            }
+            else
+            {
+            	System.out.println("incorrect username password combo");
+            	incorrectInput.setText("incorrect username or password");
+            }
+		} catch (SQLException e1)
+		{
+			e1.printStackTrace();
+		}				
+	}
+	
+	
+	
 	
 	
 	public static void main(String [] args)
