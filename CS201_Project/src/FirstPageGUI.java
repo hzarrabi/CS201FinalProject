@@ -212,7 +212,7 @@ public class FirstPageGUI extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e)
 			{
-				if(userName.getText().equals("UserName"))
+				if(userName.getText().equals("Username"))
 				{
 					userName.setText("");
 					userName.setForeground(FirstPageGUI.darkGrey);
@@ -223,7 +223,7 @@ public class FirstPageGUI extends JFrame{
 			{
 				if(userName.getText().equals(""))
 				{
-					userName.setText("UserName");
+					userName.setText("Username");
 					userName.setForeground(FirstPageGUI.lightGrey);
 				}
 			}
