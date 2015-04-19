@@ -30,17 +30,24 @@ public class MusicPlayer extends JFrame{
 	private JButton forwardButton;
 	private JButton pauseButton;
 	private JTextArea lyrics;
-	
+	private Boolean isGuest;
 	private String songName;
 	private MusicModel musicObject;
 	
-	public MusicPlayer(String songTitle)
+	public MusicPlayer(String songTitle, Boolean isGuest)
 	{
 		songName = songTitle;
 		musicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(songName);
-		
+		this.isGuest = isGuest;
 		initializeComponents();
-		createGUI();
+		if (isGuest)
+		{
+			createGUI();
+		}
+		else
+		{
+			createUserGUI();
+		}
 		setEventHandlers();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0,0,dim.width/3, dim.height);
@@ -75,6 +82,32 @@ public class MusicPlayer extends JFrame{
 
 	}
 	
+	private void createUserGUI()
+	{
+		JPanel bottomPanel = new JPanel();
+		bottomPanel.setPreferredSize(new Dimension(dim.width/3, dim.height/10));
+		bottomPanel.add(backButton);
+		bottomPanel.add(playButton);
+		bottomPanel.add(pauseButton);
+		bottomPanel.add(forwardButton);
+		add(bottomPanel, BorderLayout.SOUTH);
+		JPanel lyricsPanel = new JPanel();
+		lyrics = new JTextArea();
+		JScrollPane jsp = new JScrollPane(lyrics);
+		jsp.setPreferredSize(new Dimension(dim.width/6, 1*dim.height/3));
+		lyrics.setPreferredSize(new Dimension(dim.width/6, 1*dim.height/3));
+		lyrics.setEditable(false);
+		lyrics.setText("blah, blah, blah, blah \n blah, blah, blah, blah \n, blahblahblahblahblah \n, blahblahblahblahblah\n, blahblahblahblahblah \n, blahblahblahblahblah \n blahblahblahblahblah, \n");
+		lyricsPanel.add(jsp);
+		add(lyricsPanel, BorderLayout.CENTER);
+		JPanel mainPanel = new JPanel();
+		mainPanel.add(album);
+		JPanel topPanel = new JPanel();
+		album.setPreferredSize(new Dimension(dim.width/5, dim.height/5));
+		mainPanel.add(artist);
+		mainPanel.add(rating);
+		add(mainPanel, BorderLayout.CENTER);
+	}
 	private void createGUI()
 	{
 		JPanel bottomPanel = new JPanel();
@@ -87,13 +120,15 @@ public class MusicPlayer extends JFrame{
 		JPanel lyricsPanel = new JPanel();
 		lyrics = new JTextArea();
 		JScrollPane jsp = new JScrollPane(lyrics);
-		jsp.setPreferredSize(new Dimension(dim.width/8, 9*dim.height/10));
-		lyrics.setPreferredSize(new Dimension(dim.width/8, 9*dim.height/10));
+		jsp.setPreferredSize(new Dimension(dim.width/3, 1*dim.height/3));
+		lyrics.setPreferredSize(new Dimension(dim.width/3, 1*dim.height/3));
 		lyrics.setEditable(false);
 		lyrics.setText("blah, blah, blah, blah \n blah, blah, blah, blah \n, blahblahblahblahblah \n, blahblahblahblahblah\n, blahblahblahblahblah \n, blahblahblahblahblah \n blahblahblahblahblah, \n");
-		add(lyricsPanel, BorderLayout.WEST);
+		lyricsPanel.add(jsp);
+		add(lyricsPanel, BorderLayout.CENTER);
 		JPanel mainPanel = new JPanel();
-		mainPanel.add(album);
+		//mainPanel.add(album);
+		JPanel topPanel = new JPanel();
 		album.setPreferredSize(new Dimension(dim.width/5, dim.height/5));
 		mainPanel.add(artist);
 		mainPanel.add(rating);

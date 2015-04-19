@@ -5,6 +5,8 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
@@ -50,7 +52,8 @@ public class ProfileGUI extends JPanel{
 	private JPanel picture;
 	private JPanel namePanel;
 	private JPanel emailPanel;
-	private JTextField editName;
+	private JTextField editFirstName;
+	private JTextField editLastName;
 	private JTextField editEmail;
 	private JFileChooser jfl;
 	private JLabel picturePic;
@@ -93,7 +96,8 @@ public class ProfileGUI extends JPanel{
 		pictureButton.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
 		pictureButton.setBorder(new RoundedBorder());
 		pictureButton.setIcon(profilePic);
-		editName = new JTextField();
+		editFirstName = new JTextField();
+		editLastName = new JTextField();
 		editEmail = new JTextField();
 		jfl = new JFileChooser();
 		//jfl = new JFileChooser();
@@ -103,10 +107,11 @@ public class ProfileGUI extends JPanel{
 	     	jfl.setFileFilter(filter);
 	    
 	    editEmail.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
-	    editName.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
+	    editLastName.setPreferredSize(new Dimension(dim.width/5, dim.height/16));
+	    editFirstName.setPreferredSize(new Dimension(dim.width/5, dim.height/16));
 	    cancelButton.setPreferredSize(new Dimension(dim.width/5, dim.height/18));
-	    editEmail.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
-	    editEmail.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
+	   // editFirstName.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
+	   // edit.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
 	    email.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
 	    name.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
 	    follow.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
@@ -170,12 +175,25 @@ public class ProfileGUI extends JPanel{
 		saveButton.setForeground(FirstPageGUI.white);
 		cancelButton.setForeground(FirstPageGUI.white);
 		editEmail.setBorder(new RoundedBorder());
-		editName.setBorder(new RoundedBorder());
+		editFirstName.setBorder(new RoundedBorder());
+		editLastName.setBorder(new RoundedBorder());
+		editEmail.setBackground(FirstPageGUI.grey);
+		editEmail.setOpaque(true);
+		editFirstName.setBackground(FirstPageGUI.grey);
+		editFirstName.setOpaque(true);
+		editLastName.setBackground(FirstPageGUI.grey);
+		editLastName.setOpaque(true);
 		cancelButton.setOpaque(true);
 		saveButton.setOpaque(true);
 		edit.setOpaque(true);
 		unFollow.setOpaque(true);
 		follow.setOpaque(true);
+		editEmail.setText("email");
+		editFirstName.setText("first name");
+		editLastName.setText("last name");
+		editEmail.setForeground(FirstPageGUI.lightGrey);
+		editLastName.setForeground(FirstPageGUI.lightGrey);
+		editFirstName.setForeground(FirstPageGUI.lightGrey);
 		topPanel.setPreferredSize(new Dimension(dim.width, 3*dim.height/10));
 		JPanel info = new JPanel();
 		info.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
@@ -278,8 +296,10 @@ public class ProfileGUI extends JPanel{
 				cancelButton.setVisible(true);
 				emailPanel.add(editEmail);
 				editEmail.setVisible(true);
-				namePanel.add(editName);
-				editName.setVisible(true);
+				namePanel.add(editFirstName);
+				editFirstName.setVisible(true);
+				namePanel.add(editLastName);
+				editLastName.setVisible(true);
 				picture.remove(picturePic);
 				picture.add(pictureButton);
 				pictureButton.setVisible(true);
@@ -309,8 +329,10 @@ public class ProfileGUI extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				bio.setEditable(false);
-				namePanel.remove(editName);
-				editName.setVisible(false);
+				namePanel.remove(editFirstName);
+				editFirstName.setVisible(false);
+				namePanel.remove(editLastName);
+				editLastName.setVisible(false);
 				emailPanel.remove(editEmail);
 				editEmail.setVisible(false);
 				buttonP.remove(saveButton);
@@ -336,7 +358,8 @@ public class ProfileGUI extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String newName = editName.getText();
+				String newFirstName = editFirstName.getText();
+				String newLastName = editLastName.getText();
 				String newEmail = editEmail.getText();
 				if (pictureFile != null)
 				{
@@ -345,11 +368,13 @@ public class ProfileGUI extends JPanel{
 					picturePic.setIcon(new ImageIcon(img2));
 					profilePic = new ImageIcon(img2);
 				}
-				name.setText(newName);
+				name.setText(newFirstName + " "+newLastName);
 				email.setText(newEmail);
 				bio.setEditable(false);
-				namePanel.remove(editName);
-				editName.setVisible(false);
+				namePanel.remove(editFirstName);
+				editFirstName.setVisible(false);
+				namePanel.remove(editLastName);
+				editLastName.setVisible(false);
 				emailPanel.remove(editEmail);
 				editEmail.setVisible(false);
 				buttonP.remove(saveButton);
@@ -369,6 +394,82 @@ public class ProfileGUI extends JPanel{
 				
 			}
 			
+		});
+		
+		editFirstName.addFocusListener(new FocusListener()
+		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				if(editFirstName.getText().equals("first name"))
+				{
+					//editFirstName.setEchoChar(('*'));
+					editFirstName.setText("");
+				}
+				editFirstName.setForeground(FirstPageGUI.darkGrey);
+			}
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(editFirstName.getText().equals(""))
+				{
+					editFirstName.setText("first name");
+					//editFirstName.setEchoChar((char)0);
+				}
+				editFirstName.setForeground(FirstPageGUI.lightGrey);
+			}
+		});
+		editLastName.addFocusListener(new FocusListener()
+		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				if(editLastName.getText().equals("last name"))
+				{
+					//editFirstName.setEchoChar(('*'));
+					editLastName.setText("");
+				}
+				editLastName.setForeground(FirstPageGUI.darkGrey);
+			}
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(editLastName.getText().equals(""))
+				{
+					editLastName.setText("last name");
+					//editFirstName.setEchoChar((char)0);
+				}
+				editLastName.setForeground(FirstPageGUI.lightGrey);
+			}
+		});
+		editEmail.addFocusListener(new FocusListener()
+		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				if(editEmail.getText().equals("email"))
+				{
+					//editFirstName.setEchoChar(('*'));
+					editEmail.setText("");
+				}
+				editEmail.setForeground(FirstPageGUI.darkGrey);
+			}
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(editEmail.getText().equals(""))
+				{
+					editEmail.setText("email");
+					//editFirstName.setEchoChar((char)0);
+				}
+				editEmail.setForeground(FirstPageGUI.lightGrey);
+			}
 		});
 	}
 }
