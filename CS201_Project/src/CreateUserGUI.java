@@ -261,6 +261,10 @@ public class CreateUserGUI extends JFrame{
 								 conn.close();
 								 
 								 System.out.println("new user added!");
+								 
+								 
+								 
+								 dispose();
 							}
 							else
 							{ 
