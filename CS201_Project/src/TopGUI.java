@@ -39,7 +39,7 @@ public abstract class TopGUI extends JPanel{
 	{
 		public void actionPerformed(ActionEvent e)
 		{
-			new MusicPlayer();
+			//new MusicPlayer();
 		}
 	}
 }

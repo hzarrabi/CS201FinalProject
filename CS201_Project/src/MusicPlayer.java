@@ -23,8 +23,15 @@ public class MusicPlayer extends JFrame{
 	private JButton forwardButton;
 	private JButton pauseButton;
 	private JTextArea lyrics;
-	public MusicPlayer()
+	
+	private String songName;
+	private MusicModel musicObject;
+	
+	public MusicPlayer(String songTitle)
 	{
+		songName = songTitle;
+		musicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(songName);
+		
 		initializeComponents();
 		createGUI();
 		setEventHandlers();
@@ -38,7 +45,7 @@ public class MusicPlayer extends JFrame{
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		album = new JLabel("Album Cover");
-		artist = new JLabel("Song");//LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get("Headlines").getSongName());
+		artist = new JLabel(musicObject.getSongName());
 		rating = new JLabel("Rating and # of Listens");
 		backButton = new JButton("back");
 		playButton = new JButton("Play");
