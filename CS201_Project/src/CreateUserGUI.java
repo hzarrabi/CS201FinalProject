@@ -213,78 +213,7 @@ public class CreateUserGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Boolean FirstNameEmpty = true;
-				Boolean LastNameEmpty = true;
-				Boolean UserNameEmpty = true;
-				Boolean EmailEmpty = true;
-				Boolean Password = true;
-				Boolean Password2 = true;
-				
-				if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
-				if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
-				if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
-				if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
-				if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
-				if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
-			
-				if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
-				{
-					String userName=UserNameField.getText();
-					try
-					{
-						String queryCheck = "SELECT * from user_table WHERE username = ?";
-						PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-						ps.setString(1, userName);
-						ResultSet rs = ps.executeQuery();
-						if(rs.absolute(1))
-						{
-							System.out.println("already exists!");
-							incorrectInput.setText("username already exists");
-						}
-						else
-						{
-							if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
-							{
-								String password=new String(passwordField.getPassword());
-								System.out.println("password is "+password);
-								
-								
-								 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, email, username, password) values (?, ?, ?, ?, ?)");
-								 stmt.setString(1, FirstNameField.getText());
-								 stmt.setString(2, LastNameField.getText());
-								 stmt.setString(3, EmailField.getText());
-								 stmt.setString(4, UserNameField.getText());
-								 stmt.setString(5,PasswordHash.hash(password));
-								 stmt.execute();
-								 
-								 stmt.close();
-								 conn.close();
-								 
-								 System.out.println("new user added!");
-								 
-								 
-								 
-								 dispose();
-							}
-							else
-							{ 
-								System.out.println("passwords to not match");
-								incorrectInput.setText("passwords do not match");
-							}
-						}
-						
-					} catch (SQLException e1)
-					{
-						e1.printStackTrace();
-					}
-				}
-				
-				else
-				{
-					System.out.println("incorrect characters");
-					incorrectInput.setText("incorrect characters");
-				}
-			
+				newUserAction();
 			}
 		});
 		
@@ -321,76 +250,7 @@ public class CreateUserGUI extends JFrame{
 				@Override
 				public void keyPressed(KeyEvent e)
 				{
-					if(e.getKeyChar() == KeyEvent.VK_ENTER){
-						Boolean FirstNameEmpty = true;
-						Boolean LastNameEmpty = true;
-						Boolean UserNameEmpty = true;
-						Boolean EmailEmpty = true;
-						Boolean Password = true;
-						Boolean Password2 = true;
-						
-						if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
-						if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
-						if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
-						if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
-						if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
-						if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
-					
-						if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
-						{
-							String userName=UserNameField.getText();
-							try
-							{
-								String queryCheck = "SELECT * from user_table WHERE username = ?";
-								PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-								ps.setString(1, userName);
-								ResultSet rs = ps.executeQuery();
-								if(rs.absolute(1))
-								{
-									System.out.println("already exists!");
-									incorrectInput.setText("username already exists");
-								}
-								else
-								{
-									if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
-									{
-										String password=new String(passwordField.getPassword());
-										System.out.println("password is "+password);
-										
-										
-										 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, email, username, password) values (?, ?, ?, ?, ?)");
-										 stmt.setString(1, FirstNameField.getText());
-										 stmt.setString(2, LastNameField.getText());
-										 stmt.setString(3, EmailField.getText());
-										 stmt.setString(4, UserNameField.getText());
-										 stmt.setString(5,PasswordHash.hash(password));
-										 stmt.execute();
-										 
-										 stmt.close();
-										 conn.close();
-										 
-										 System.out.println("new user added!");
-									}
-									else
-									{ 
-										System.out.println("passwords to not match");
-										incorrectInput.setText("passwords do not match");
-									}
-								}
-								
-							} catch (SQLException e1)
-							{
-								e1.printStackTrace();
-							}
-						}
-						
-						else
-						{
-							System.out.println("incorrect characters");
-							incorrectInput.setText("incorrect characters");
-						}
-						
-					}
+					if(e.getKeyChar() == KeyEvent.VK_ENTER)newUserAction();
 				}
 			});
 			
@@ -427,76 +287,7 @@ public class CreateUserGUI extends JFrame{
 				@Override
 				public void keyPressed(KeyEvent e)
 				{
-					if(e.getKeyChar() == KeyEvent.VK_ENTER){
-						Boolean FirstNameEmpty = true;
-						Boolean LastNameEmpty = true;
-						Boolean UserNameEmpty = true;
-						Boolean EmailEmpty = true;
-						Boolean Password = true;
-						Boolean Password2 = true;
-						
-						if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
-						if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
-						if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
-						if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
-						if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
-						if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
-					
-						if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
-						{
-							String userName=UserNameField.getText();
-							try
-							{
-								String queryCheck = "SELECT * from user_table WHERE username = ?";
-								PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-								ps.setString(1, userName);
-								ResultSet rs = ps.executeQuery();
-								if(rs.absolute(1))
-								{
-									System.out.println("already exists!");
-									incorrectInput.setText("username already exists");
-								}
-								else
-								{
-									if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
-									{
-										String password=new String(passwordField.getPassword());
-										System.out.println("password is "+password);
-										
-										
-										 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, email, username, password) values (?, ?, ?, ?, ?)");
-										 stmt.setString(1, FirstNameField.getText());
-										 stmt.setString(2, LastNameField.getText());
-										 stmt.setString(3, EmailField.getText());
-										 stmt.setString(4, UserNameField.getText());
-										 stmt.setString(5,PasswordHash.hash(password));
-										 stmt.execute();
-										 
-										 stmt.close();
-										 conn.close();
-										 
-										 System.out.println("new user added!");
-									}
-									else
-									{ 
-										System.out.println("passwords to not match");
-										incorrectInput.setText("passwords do not match");
-									}
-								}
-								
-							} catch (SQLException e1)
-							{
-								e1.printStackTrace();
-							}
-						}
-						
-						else
-						{
-							System.out.println("incorrect characters");
-							incorrectInput.setText("incorrect characters");
-						}
-						
-					}
+					if(e.getKeyChar() == KeyEvent.VK_ENTER) newUserAction();
 				}
 			});
 			
@@ -531,76 +322,7 @@ public class CreateUserGUI extends JFrame{
 				@Override
 				public void keyPressed(KeyEvent e)
 				{
-					if(e.getKeyChar() == KeyEvent.VK_ENTER){
-						Boolean FirstNameEmpty = true;
-						Boolean LastNameEmpty = true;
-						Boolean UserNameEmpty = true;
-						Boolean EmailEmpty = true;
-						Boolean Password = true;
-						Boolean Password2 = true;
-						
-						if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
-						if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
-						if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
-						if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
-						if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
-						if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
-					
-						if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
-						{
-							String userName=UserNameField.getText();
-							try
-							{
-								String queryCheck = "SELECT * from user_table WHERE username = ?";
-								PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-								ps.setString(1, userName);
-								ResultSet rs = ps.executeQuery();
-								if(rs.absolute(1))
-								{
-									System.out.println("already exists!");
-									incorrectInput.setText("username already exists");
-								}
-								else
-								{
-									if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
-									{
-										String password=new String(passwordField.getPassword());
-										System.out.println("password is "+password);
-										
-										
-										 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, email, username, password) values (?, ?, ?, ?, ?)");
-										 stmt.setString(1, FirstNameField.getText());
-										 stmt.setString(2, LastNameField.getText());
-										 stmt.setString(3, EmailField.getText());
-										 stmt.setString(4, UserNameField.getText());
-										 stmt.setString(5,PasswordHash.hash(password));
-										 stmt.execute();
-										 
-										 stmt.close();
-										 conn.close();
-										 
-										 System.out.println("new user added!");
-									}
-									else
-									{ 
-										System.out.println("passwords to not match");
-										incorrectInput.setText("passwords do not match");
-									}
-								}
-								
-							} catch (SQLException e1)
-							{
-								e1.printStackTrace();
-							}
-						}
-						
-						else
-						{
-							System.out.println("incorrect characters");
-							incorrectInput.setText("incorrect characters");
-						}
-						
-					}
+					if(e.getKeyChar() == KeyEvent.VK_ENTER) newUserAction();
 				}
 			});
 			
@@ -635,76 +357,7 @@ public class CreateUserGUI extends JFrame{
 				@Override
 				public void keyPressed(KeyEvent e)
 				{
-					if(e.getKeyChar() == KeyEvent.VK_ENTER){
-						Boolean FirstNameEmpty = true;
-						Boolean LastNameEmpty = true;
-						Boolean UserNameEmpty = true;
-						Boolean EmailEmpty = true;
-						Boolean Password = true;
-						Boolean Password2 = true;
-						
-						if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
-						if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
-						if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
-						if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
-						if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
-						if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
-					
-						if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
-						{
-							String userName=UserNameField.getText();
-							try
-							{
-								String queryCheck = "SELECT * from user_table WHERE username = ?";
-								PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-								ps.setString(1, userName);
-								ResultSet rs = ps.executeQuery();
-								if(rs.absolute(1))
-								{
-									System.out.println("already exists!");
-									incorrectInput.setText("username already exists");
-								}
-								else
-								{
-									if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
-									{
-										String password=new String(passwordField.getPassword());
-										System.out.println("password is "+password);
-										
-										
-										 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, email, username, password) values (?, ?, ?, ?, ?)");
-										 stmt.setString(1, FirstNameField.getText());
-										 stmt.setString(2, LastNameField.getText());
-										 stmt.setString(3, EmailField.getText());
-										 stmt.setString(4, UserNameField.getText());
-										 stmt.setString(5,PasswordHash.hash(password));
-										 stmt.execute();
-										 
-										 stmt.close();
-										 conn.close();
-										 
-										 System.out.println("new user added!");
-									}
-									else
-									{ 
-										System.out.println("passwords to not match");
-										incorrectInput.setText("passwords do not match");
-									}
-								}
-								
-							} catch (SQLException e1)
-							{
-								e1.printStackTrace();
-							}
-						}
-						
-						else
-						{
-							System.out.println("incorrect characters");
-							incorrectInput.setText("incorrect characters");
-						}
-						
-					}
+					if(e.getKeyChar() == KeyEvent.VK_ENTER)newUserAction();
 				}
 			});
 			
@@ -739,76 +392,7 @@ public class CreateUserGUI extends JFrame{
 				@Override
 				public void keyPressed(KeyEvent e)
 				{
-					if(e.getKeyChar() == KeyEvent.VK_ENTER){
-						Boolean FirstNameEmpty = true;
-						Boolean LastNameEmpty = true;
-						Boolean UserNameEmpty = true;
-						Boolean EmailEmpty = true;
-						Boolean Password = true;
-						Boolean Password2 = true;
-						
-						if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
-						if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
-						if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
-						if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
-						if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
-						if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
-					
-						if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
-						{
-							String userName=UserNameField.getText();
-							try
-							{
-								String queryCheck = "SELECT * from user_table WHERE username = ?";
-								PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-								ps.setString(1, userName);
-								ResultSet rs = ps.executeQuery();
-								if(rs.absolute(1))
-								{
-									System.out.println("already exists!");
-									incorrectInput.setText("username already exists");
-								}
-								else
-								{
-									if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
-									{
-										String password=new String(passwordField.getPassword());
-										System.out.println("password is "+password);
-										
-										
-										 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, email, username, password) values (?, ?, ?, ?, ?)");
-										 stmt.setString(1, FirstNameField.getText());
-										 stmt.setString(2, LastNameField.getText());
-										 stmt.setString(3, EmailField.getText());
-										 stmt.setString(4, UserNameField.getText());
-										 stmt.setString(5,PasswordHash.hash(password));
-										 stmt.execute();
-										 
-										 stmt.close();
-										 conn.close();
-										 
-										 System.out.println("new user added!");
-									}
-									else
-									{ 
-										System.out.println("passwords to not match");
-										incorrectInput.setText("passwords do not match");
-									}
-								}
-								
-							} catch (SQLException e1)
-							{
-								e1.printStackTrace();
-							}
-						}
-						
-						else
-						{
-							System.out.println("incorrect characters");
-							incorrectInput.setText("incorrect characters");
-						}
-						
-					}
+					if(e.getKeyChar() == KeyEvent.VK_ENTER) newUserAction();
 				}
 			});
 			
@@ -844,76 +428,7 @@ public class CreateUserGUI extends JFrame{
 				@Override
 				public void keyPressed(KeyEvent e)
 				{
-					if(e.getKeyChar() == KeyEvent.VK_ENTER){
-						Boolean FirstNameEmpty = true;
-						Boolean LastNameEmpty = true;
-						Boolean UserNameEmpty = true;
-						Boolean EmailEmpty = true;
-						Boolean Password = true;
-						Boolean Password2 = true;
-						
-						if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
-						if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
-						if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
-						if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
-						if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
-						if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
-					
-						if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
-						{
-							String userName=UserNameField.getText();
-							try
-							{
-								String queryCheck = "SELECT * from user_table WHERE username = ?";
-								PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-								ps.setString(1, userName);
-								ResultSet rs = ps.executeQuery();
-								if(rs.absolute(1))
-								{
-									System.out.println("already exists!");
-									incorrectInput.setText("username already exists");
-								}
-								else
-								{
-									if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
-									{
-										String password=new String(passwordField.getPassword());
-										System.out.println("password is "+password);
-										
-										
-										 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, email, username, password) values (?, ?, ?, ?, ?)");
-										 stmt.setString(1, FirstNameField.getText());
-										 stmt.setString(2, LastNameField.getText());
-										 stmt.setString(3, EmailField.getText());
-										 stmt.setString(4, UserNameField.getText());
-										 stmt.setString(5,PasswordHash.hash(password));
-										 stmt.execute();
-										 
-										 stmt.close();
-										 conn.close();
-										 
-										 System.out.println("new user added!");
-									}
-									else
-									{ 
-										System.out.println("passwords to not match");
-										incorrectInput.setText("passwords do not match");
-									}
-								}
-								
-							} catch (SQLException e1)
-							{
-								e1.printStackTrace();
-							}
-						}
-						
-						else
-						{
-							System.out.println("incorrect characters");
-							incorrectInput.setText("incorrect characters");
-						}
-						
-					}
+					if(e.getKeyChar() == KeyEvent.VK_ENTER)newUserAction();
 				}
 			});
 			
@@ -927,75 +442,84 @@ public class CreateUserGUI extends JFrame{
 				@Override
 				public void keyPressed(KeyEvent e)
 				{
-					Boolean FirstNameEmpty = true;
-					Boolean LastNameEmpty = true;
-					Boolean UserNameEmpty = true;
-					Boolean EmailEmpty = true;
-					Boolean Password = true;
-					Boolean Password2 = true;
-					
-					if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
-					if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
-					if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
-					if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
-					if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
-					if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
-				
-					if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
-					{
-						String userName=UserNameField.getText();
-						try
-						{
-							String queryCheck = "SELECT * from user_table WHERE username = ?";
-							PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-							ps.setString(1, userName);
-							ResultSet rs = ps.executeQuery();
-							if(rs.absolute(1))
-							{
-								System.out.println("already exists!");
-								incorrectInput.setText("username already exists");
-							}
-							else
-							{
-								if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
-								{
-									String password=new String(passwordField.getPassword());
-									System.out.println("password is "+password);
-									
-									
-									 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, email, username, password) values (?, ?, ?, ?, ?)");
-									 stmt.setString(1, FirstNameField.getText());
-									 stmt.setString(2, LastNameField.getText());
-									 stmt.setString(3, EmailField.getText());
-									 stmt.setString(4, UserNameField.getText());
-									 stmt.setString(5,PasswordHash.hash(password));
-									 stmt.execute();
-									 
-									 stmt.close();
-									 conn.close();
-									 
-									 System.out.println("new user added!");
-								}
-								else
-								{ 
-									System.out.println("passwords to not match");
-									incorrectInput.setText("passwords do not match");
-								}
-							}
-							
-						} catch (SQLException e1)
-						{
-							e1.printStackTrace();
-						}
-					}
-					
-					else
-					{
-						System.out.println("incorrect characters");
-						incorrectInput.setText("incorrect characters");
-					}
-					
+					if(e.getKeyChar() == KeyEvent.VK_ENTER) newUserAction();	
 				}
 			});
 		}
+	
+	public void newUserAction() {
+		Boolean FirstNameEmpty = true;
+		Boolean LastNameEmpty = true;
+		Boolean UserNameEmpty = true;
+		Boolean EmailEmpty = true;
+		Boolean Password = true;
+		Boolean Password2 = true;
+		
+		if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
+		if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
+		if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
+		if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
+		if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
+		if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
+	
+		if(FirstNameEmpty && LastNameEmpty && UserNameEmpty && EmailEmpty && Password && Password2)
+		{
+			String userName=UserNameField.getText();
+			try
+			{
+				String queryCheck = "SELECT * from user_table WHERE username = ?";
+				PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
+				ps.setString(1, userName);
+				ResultSet rs = ps.executeQuery();
+				if(rs.absolute(1))
+				{
+					System.out.println("already exists!");
+					incorrectInput.setText("username already exists");
+				}
+				else
+				{
+					if(Arrays.equals(passwordField.getPassword(),passwordField2.getPassword()))
+					{
+						String password=new String(passwordField.getPassword());
+						System.out.println("password is "+password);
+						
+						
+						 PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("insert into user_table (first_name, last_name, email, username, password) values (?, ?, ?, ?, ?)");
+						 stmt.setString(1, FirstNameField.getText());
+						 stmt.setString(2, LastNameField.getText());
+						 stmt.setString(3, EmailField.getText());
+						 stmt.setString(4, UserNameField.getText());
+						 stmt.setString(5,PasswordHash.hash(password));
+						 stmt.execute();
+						 
+						 stmt.close();
+						 conn.close();
+						 
+						 System.out.println("new user added!");
+					}
+					else
+					{ 
+						System.out.println("passwords to not match");
+						incorrectInput.setText("passwords do not match");
+					}
+				}
+				
+			} catch (SQLException e1)
+			{
+				e1.printStackTrace();
+			}
+		}
+		
+		else
+		{
+			System.out.println("incorrect characters");
+			incorrectInput.setText("incorrect characters");
+		}			
+	}
+	
+	
+	
 }
+
+
+

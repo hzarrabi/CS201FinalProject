@@ -91,7 +91,7 @@ public class FirstPageGUI extends JFrame{
 	
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		userName = new JTextField("UserName");
+		userName = new JTextField("Username");
 		password = new JPasswordField("Password");
 		logo = new JLabel("201-Tunes");
 		newUser = new JLabel("Not Signed Up?");
@@ -213,7 +213,7 @@ public class FirstPageGUI extends JFrame{
 			@Override
 			public void focusGained(FocusEvent e)
 			{
-				if(userName.getText().equals("UserName"))
+				if(userName.getText().equals("Username"))
 				{
 					userName.setText("");
 					userName.setForeground(FirstPageGUI.darkGrey);
@@ -224,7 +224,7 @@ public class FirstPageGUI extends JFrame{
 			{
 				if(userName.getText().equals(""))
 				{
-					userName.setText("UserName");
+					userName.setText("Username");
 					userName.setForeground(FirstPageGUI.lightGrey);
 				}
 			}
@@ -314,6 +314,34 @@ public class FirstPageGUI extends JFrame{
 			e1.printStackTrace();
 		}				
 	}
+	
+	public void loginAction(ActionEvent e) {
+		String theUserName=userName.getText();
+		String thePassword=PasswordHash.hash(password.getText());//returning the password hashed
+		try
+		{
+			Statement stat = (Statement) conn.createStatement();
+			String sql = "Select * from user_table Where username='" + theUserName + "' and password='"+thePassword+"'";
+			ResultSet rs = stat.executeQuery(sql);
+			if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
+            {
+				new LoggedInDriverGUI(rs.getInt("iduser_table"));
+				stat.close();
+				conn.close();
+				dispose();
+            }
+            else
+            {
+            	System.out.println("incorrect username password combo");
+            	incorrectInput.setText("incorrect username or password");
+            }
+		} catch (SQLException e1)
+		{
+			e1.printStackTrace();
+		}				
+	}
+	
+	
 	
 	
 	

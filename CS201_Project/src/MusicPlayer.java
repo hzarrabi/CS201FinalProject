@@ -1,6 +1,8 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -75,6 +77,10 @@ public class MusicPlayer extends JFrame{
 		setVisible(true);
 		setResizable(false);
 		//dim = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		//starting a thread for the song
+		musicObject.new musicPlay().start();
+
 	}
 	
 	private void initializeComponents(){
@@ -171,6 +177,20 @@ public class MusicPlayer extends JFrame{
 	
 	private void setEventHandlers()
 	{
+		
+		playButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				musicObject.resumeSong();
+			}
+		});
+		
+		pauseButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				musicObject.pauseSong();
+			}
+		});
 		
 	}
 }
