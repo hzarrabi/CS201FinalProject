@@ -118,12 +118,22 @@ public class ProfileGUI extends JPanel{
 	    edit.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
 	    saveButton.setPreferredSize(new Dimension(dim.width/5, dim.height/18));
 	    unFollow.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
+	    email.setFont(FirstPageGUI.smallFont);
+	    name.setFont(FirstPageGUI.font);
+	    edit.setFont(FirstPageGUI.smallFont);
+	    email.setForeground(FirstPageGUI.darkGrey);
+	    name.setForeground(FirstPageGUI.darkGrey);
+	    name.setHorizontalAlignment(SwingConstants.CENTER);
+		email.setHorizontalAlignment(SwingConstants.CENTER);
 		followersButtons = new HashSet<JButton>();
 		followingButtons = new HashSet<JButton>();
 		favoritesButtons = new HashSet<JButton>();
 		jpFollowers = new JPanel();
 		jpFollowing = new JPanel();
 		jpFavorites = new JPanel();
+		jpFollowing.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
+		jpFollowers.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
+		jpFavorites.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
 		jpFollowing.setBackground(FirstPageGUI.white);
 		jpFollowers.setBackground(FirstPageGUI.white);
 		jpFavorites.setBackground(FirstPageGUI.white);
@@ -133,26 +143,33 @@ public class ProfileGUI extends JPanel{
 		jspFollowing = new JScrollPane(jpFollowing);
 		jspFollowers = new JScrollPane(jpFollowers);
 		jspFavorites = new JScrollPane(jpFavorites);
-		jpFollowers.setLayout(new BoxLayout(jpFollowers, BoxLayout.Y_AXIS));
-		jpFollowing.setLayout(new BoxLayout(jpFollowing, BoxLayout.Y_AXIS));
-		jpFavorites.setLayout(new BoxLayout(jpFavorites, BoxLayout.Y_AXIS));
+		//jpFollowers.setLayout()
+		//jpFollowing.setLayout(new BoxLayout(jpFollowing, BoxLayout.Y_AXIS));
+		//jpFavorites.setLayout(new BoxLayout(jpFavorites, BoxLayout.Y_AXIS));
 		populate();
 		JPanel bottomPanel = new JPanel();
-		bottomPanel.setBackground(FirstPageGUI.white);
+		bottomPanel.setBackground(FirstPageGUI.color);
 		bottomPanel.setLayout(new GridLayout(1, 3));
 		JPanel buttonLabelsPanel = new JPanel();
 		buttonLabelsPanel.setBackground(FirstPageGUI.white);
-		buttonLabelsPanel.setPreferredSize(new Dimension(dim.width, dim.height/16));
+		buttonLabelsPanel.setPreferredSize(new Dimension(dim.width, dim.height/14));
 		buttonLabelsPanel.setLayout(new GridLayout(1, 3));
 		JLabel followers = new JLabel("Followers");
 		JLabel following = new JLabel("Following");
 		JLabel favorites = new JLabel("Favorites");
+		followers.setFont(FirstPageGUI.fontTitle);
+		following.setFont(FirstPageGUI.fontTitle);
+		favorites.setFont(FirstPageGUI.fontTitle);
+		followers.setForeground(FirstPageGUI.darkGrey);
+		following.setForeground(FirstPageGUI.darkGrey);
+		favorites.setForeground(FirstPageGUI.darkGrey);
 		followers.setHorizontalAlignment(SwingConstants.CENTER);
 		following.setHorizontalAlignment(SwingConstants.CENTER);
 		favorites.setHorizontalAlignment(SwingConstants.CENTER);
 		buttonLabelsPanel.add(followers);
 		buttonLabelsPanel.add(following);
 		buttonLabelsPanel.add(favorites);
+		buttonLabelsPanel.setBackground(FirstPageGUI.white);
 		bottomPanel.setPreferredSize(new Dimension(dim.width, 7*dim.height/16));
 		bottomPanel.add(jspFollowers);
 		bottomPanel.add(jspFollowing);
@@ -194,8 +211,11 @@ public class ProfileGUI extends JPanel{
 		unFollow.setOpaque(true);
 		follow.setOpaque(true);
 		editEmail.setText("email");
+		editEmail.setFont(FirstPageGUI.smallFont);
 		editFirstName.setText("first name");
+		editFirstName.setFont(FirstPageGUI.smallFont);
 		editLastName.setText("last name");
+		editLastName.setFont(FirstPageGUI.smallFont);
 		editEmail.setForeground(FirstPageGUI.lightGrey);
 		editLastName.setForeground(FirstPageGUI.lightGrey);
 		editFirstName.setForeground(FirstPageGUI.lightGrey);
@@ -235,6 +255,7 @@ public class ProfileGUI extends JPanel{
 		info.add(emailPanel);
 		info.add(buttonP);
 		picture = new JPanel();
+		bio.setFont(FirstPageGUI.font);
 		picture.setBackground(FirstPageGUI.white);
 		picture.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
 		picture.add(picturePic);
@@ -254,6 +275,7 @@ public class ProfileGUI extends JPanel{
 		mid.add(bottomPanel, BorderLayout.CENTER);
 		add(mid, BorderLayout.SOUTH);//, BorderLayout.SOUTH);
 		//add(new JLabel("OHAI!!!!!"));
+		//setBackground(FirstPageGUI.color);
 		repaint();
 		setVisible(true);
 		
@@ -277,16 +299,34 @@ public class ProfileGUI extends JPanel{
 		while (it.hasNext())
 		{
 			JButton temp = it.next();
+			temp.setBackground(FirstPageGUI.green);
+			temp.setForeground(FirstPageGUI.white);
+			temp.setFont(FirstPageGUI.smallFont);
+			temp.setBorder(new RoundedBorder());
+			temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
+			temp.setOpaque(true);
 			jpFollowers.add(temp);
 		}
 		while (it2.hasNext())
 		{
 			JButton temp = it2.next();
+			temp.setBackground(FirstPageGUI.green);
+			temp.setForeground(FirstPageGUI.white);
+			temp.setFont(FirstPageGUI.smallFont);
+			temp.setBorder(new RoundedBorder());
+			temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
+			temp.setOpaque(true);
 			jpFollowing.add(temp);
 		}
 		while (it3.hasNext())
 		{
 			JButton temp = it3.next();
+			temp.setBackground(FirstPageGUI.green);
+			temp.setForeground(FirstPageGUI.white);
+			temp.setFont(FirstPageGUI.smallFont);
+			temp.setBorder(new RoundedBorder());
+			temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
+			temp.setOpaque(true);
 			jpFavorites.add(temp);
 		}
 		
@@ -375,6 +415,12 @@ public class ProfileGUI extends JPanel{
 				String newFirstName = editFirstName.getText();
 				String newLastName = editLastName.getText();
 				String newEmail = editEmail.getText();
+				editFirstName.setText("first name");
+				editLastName.setText("last name");
+				editEmail.setText("email");
+				editFirstName.setForeground(FirstPageGUI.lightGrey);
+				editLastName.setForeground(FirstPageGUI.lightGrey);
+				editEmail.setForeground(FirstPageGUI.lightGrey);
 				if (pictureFile != null)
 				{
 					ImageIcon newIcon2 = new ImageIcon(pictureFile.getPath());
@@ -431,8 +477,9 @@ public class ProfileGUI extends JPanel{
 				{
 					editFirstName.setText("first name");
 					//editFirstName.setEchoChar((char)0);
+					editFirstName.setForeground(FirstPageGUI.lightGrey);
 				}
-				editFirstName.setForeground(FirstPageGUI.lightGrey);
+				
 			}
 		});
 		editLastName.addFocusListener(new FocusListener()
@@ -456,8 +503,9 @@ public class ProfileGUI extends JPanel{
 				{
 					editLastName.setText("last name");
 					//editFirstName.setEchoChar((char)0);
+					editLastName.setForeground(FirstPageGUI.lightGrey);
 				}
-				editLastName.setForeground(FirstPageGUI.lightGrey);
+				
 			}
 		});
 		editEmail.addFocusListener(new FocusListener()
@@ -481,8 +529,9 @@ public class ProfileGUI extends JPanel{
 				{
 					editEmail.setText("email");
 					//editFirstName.setEchoChar((char)0);
+					editEmail.setForeground(FirstPageGUI.lightGrey);
 				}
-				editEmail.setForeground(FirstPageGUI.lightGrey);
+				
 			}
 		});
 	}

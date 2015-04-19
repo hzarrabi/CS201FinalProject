@@ -61,6 +61,7 @@ public class FirstPageGUI extends JFrame{
 	final static Color grey = new Color(0xE4E4E4);
 	final static Color darkGrey = new Color(0x696969);
 	final static Font font = new Font("Helvetica Neue", Font.PLAIN, 18);
+	final static Font smallFont = new Font("Helvetica Neue", Font.PLAIN, 14);
 	final static Font fontTitle = new Font("Helvetica Neue", Font.PLAIN, 24);
 	
 	//for connecting database
