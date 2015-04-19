@@ -79,7 +79,7 @@ public class MusicPlayer extends JFrame{
 		//dim = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		//starting a thread for the song
-		musicObject.new musicPlay().start();
+		//musicObject.new musicPlay().start();
 
 	}
 	

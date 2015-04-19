@@ -27,6 +27,7 @@ public class MusicModel {
 	private JButton playButtonThatLeadsToMusicPlayer;
 	private static final int BUFFER_SIZE = 2200;
 	private SourceDataLine audioLine;
+	private Thread musicPlayerThread;
 	
 	
 	//MUSIC ID
@@ -103,12 +104,20 @@ public class MusicModel {
 	
 	//pausing song function
 	public void pauseSong(){
-		audioLine.stop();
+		musicPlayerThread.suspend();
 	}
 	
 	//resume song
 	public void resumeSong(){
-		audioLine.start();
+		musicPlayerThread.resume();
+	}
+	
+	public void startThread() {
+		musicPlayerThread = new Thread(){
+			public void run(){
+				playSong();
+			}
+		};
 	}
 
 	
@@ -124,9 +133,7 @@ public class MusicModel {
 		});
 	}
 	
-	class musicPlay extends Thread{
-		//play song function
-		public void playSong(){
+	public void playSong(){
 			
 	        try {
 	        	//we have to change the songpath to a URL object
@@ -164,14 +171,6 @@ public class MusicModel {
 	            ex.printStackTrace();
 	        }      
 	    }
-	
-		
-		//for multi-threading
-		public void run(){
-			this.playSong();
-		}
-	}
 
-	
 	
 }
