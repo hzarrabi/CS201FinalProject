@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -20,13 +21,14 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 
 public class ProfileGUI extends JPanel{
 	private Dimension dim;
 	private File pictureFile;
-	private Image profilePic;
+	private ImageIcon profilePic;
 	private JButton saveButton;
 	private JButton cancelButton;
 	private JLabel name;
@@ -51,6 +53,7 @@ public class ProfileGUI extends JPanel{
 	private JTextField editName;
 	private JTextField editEmail;
 	private JFileChooser jfl;
+	private JLabel picturePic;
 	private JButton pictureButton;
 	
 	private String key;
@@ -58,6 +61,7 @@ public class ProfileGUI extends JPanel{
 	{
 		dim = d;
 		this.key = key;
+		profilePic = new ImageIcon("data/MomAndMoose.jpg");
 		this.setPreferredSize(dim);
 		initializeComponents();
 		setEventHandlers();
@@ -70,7 +74,8 @@ public class ProfileGUI extends JPanel{
 		name = new JLabel("Name");
 		email = new JLabel("Email");
 		bio = new JTextArea("My Bio");
-		
+		picturePic = new JLabel("");
+		picturePic.setIcon(profilePic);
 		//buttons depending on user
 		edit = new JButton("Edit Profile");
 		unFollow = new JButton("UnFollow");
@@ -104,6 +109,9 @@ public class ProfileGUI extends JPanel{
 		jpFollowers = new JPanel();
 		jpFollowing = new JPanel();
 		jpFavorites = new JPanel();
+		jpFollowers.setBackground(FirstPageGUI.white);
+		jpFollowing.setBackground(FirstPageGUI.white);
+		jpFavorites.setBackground(FirstPageGUI.white);
 		jspFollowing = new JScrollPane(jpFollowing);
 		jspFollowers = new JScrollPane(jpFollowers);
 		jspFavorites = new JScrollPane(jpFavorites);
@@ -113,7 +121,19 @@ public class ProfileGUI extends JPanel{
 		populate();
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setLayout(new GridLayout(1, 3));
-		bottomPanel.setPreferredSize(new Dimension(dim.width, dim.height/2));
+		JPanel buttonLabelsPanel = new JPanel();
+		buttonLabelsPanel.setPreferredSize(new Dimension(dim.width, dim.height/16));
+		buttonLabelsPanel.setLayout(new GridLayout(1, 3));
+		JLabel followers = new JLabel("Followers");
+		JLabel following = new JLabel("Following");
+		JLabel favorites = new JLabel("Favorites");
+		followers.setHorizontalAlignment(SwingConstants.CENTER);
+		following.setHorizontalAlignment(SwingConstants.CENTER);
+		favorites.setHorizontalAlignment(SwingConstants.CENTER);
+		buttonLabelsPanel.add(followers);
+		buttonLabelsPanel.add(following);
+		buttonLabelsPanel.add(favorites);
+		bottomPanel.setPreferredSize(new Dimension(dim.width, 7*dim.height/16));
 		bottomPanel.add(jspFollowers);
 		bottomPanel.add(jspFollowing);
 		bottomPanel.add(jspFavorites);
@@ -149,6 +169,7 @@ public class ProfileGUI extends JPanel{
 		topPanel.setPreferredSize(new Dimension(dim.width, 2*dim.height/5));
 		picture = new JPanel();
 		picture.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
+		picture.add(picturePic);
 		JPanel info = new JPanel();
 		info.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
 		buttonP = new JPanel();
@@ -178,11 +199,16 @@ public class ProfileGUI extends JPanel{
 		info.add(namePanel);
 		info.add(emailPanel);
 		info.add(buttonP);
-		topPanel.add(picture);
-		topPanel.add(info);
+		topPanel.add(picture, BorderLayout.WEST);
+		topPanel.add(info, BorderLayout.EAST);
 		add(info, BorderLayout.NORTH);
 		add(middlePanel, BorderLayout.CENTER);
-		add(bottomPanel, BorderLayout.SOUTH);//, BorderLayout.SOUTH);
+		setBackground(FirstPageGUI.white);
+		JPanel mid = new JPanel();
+		mid.setPreferredSize(new Dimension(dim.width, dim.height/2));
+		mid.add(buttonLabelsPanel, BorderLayout.NORTH);
+		mid.add(bottomPanel, BorderLayout.CENTER);
+		add(mid, BorderLayout.SOUTH);//, BorderLayout.SOUTH);
 		//add(new JLabel("OHAI!!!!!"));
 		repaint();
 		setVisible(true);
@@ -229,14 +255,22 @@ public class ProfileGUI extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				bio.setEditable(true);
 				namePanel.remove(name);
+				name.setVisible(false);
 				emailPanel.remove(email);
+				email.setVisible(false);
 				buttonP.remove(edit);
+				edit.setVisible(false);
 				buttonP.add(saveButton);
+				saveButton.setVisible(true);
 				buttonP.add(cancelButton);
+				cancelButton.setVisible(true);
 				emailPanel.add(editEmail);
+				editEmail.setVisible(true);
 				namePanel.add(editName);
+				editName.setVisible(true);
 			//	picture.remove();
 				picture.add(pictureButton);
+				pictureButton.setVisible(true);
 				
 			}
 			
@@ -261,14 +295,22 @@ public class ProfileGUI extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				bio.setEditable(false);
 				namePanel.remove(editName);
+				editName.setVisible(false);
 				emailPanel.remove(editEmail);
+				editEmail.setVisible(false);
 				buttonP.remove(saveButton);
+				saveButton.setVisible(false);
 				buttonP.remove(cancelButton);
+				cancelButton.setVisible(false);
 				buttonP.add(edit);
+				edit.setVisible(true);
 				emailPanel.add(email);
+				email.setVisible(true);
 				namePanel.add(name);
+				name.setVisible(true);
 			//	picture.remove();
 				picture.remove(pictureButton);
+				pictureButton.setVisible(false);
 			}
 
 		});
