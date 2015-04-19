@@ -33,7 +33,7 @@ public class MusicPlayer extends JFrame{
 	private Boolean isGuest;
 	private String songName;
 	private MusicModel musicObject;
-	
+	private Thread myThread;
 	JButton commentButton;
 	JButton favoriteButton;
 	JButton rateButton;
@@ -79,7 +79,7 @@ public class MusicPlayer extends JFrame{
 		//dim = Toolkit.getDefaultToolkit().getScreenSize();
 		
 		//starting a thread for the song
-		//musicObject.new musicPlay().start();
+		myThread = musicObject.playTheSong();
 
 	}
 	
@@ -175,20 +175,21 @@ public class MusicPlayer extends JFrame{
 		add(mainPanel, BorderLayout.CENTER);
 	}
 	
-	private void setEventHandlers()
-	{
+	private void setEventHandlers(){
 		
 		playButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				musicObject.resumeSong();
+				//musicObject.resumeSong();
+				myThread.resume();
 			}
 		});
 		
 		pauseButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				musicObject.pauseSong();
+				//musicObject.pauseSong();
+				myThread.suspend();
 			}
 		});
 		
