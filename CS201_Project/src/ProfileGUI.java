@@ -61,7 +61,10 @@ public class ProfileGUI extends JPanel{
 	{
 		dim = d;
 		this.key = key;
-		profilePic = new ImageIcon("data/MomAndMoose.jpg");
+		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
+		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
+		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+		profilePic = new ImageIcon(img2);
 		this.setPreferredSize(dim);
 		initializeComponents();
 		setEventHandlers();
@@ -75,14 +78,21 @@ public class ProfileGUI extends JPanel{
 		email = new JLabel("Email");
 		bio = new JTextArea("My Bio");
 		picturePic = new JLabel("");
+
+		//picturePic.setBorder(new RoundedBorder());
+		picturePic.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
+		picturePic.setBorder(new RoundedBorder());
 		picturePic.setIcon(profilePic);
 		//buttons depending on user
 		edit = new JButton("Edit Profile");
 		unFollow = new JButton("UnFollow");
 		follow = new JButton("Follow");
-		saveButton = new JButton("Save Changes");
+		saveButton = new JButton("Save");
 		cancelButton = new JButton("Cancel");
 		pictureButton = new JButton("");
+		pictureButton.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
+		pictureButton.setBorder(new RoundedBorder());
+		pictureButton.setIcon(profilePic);
 		editName = new JTextField();
 		editEmail = new JTextField();
 		jfl = new JFileChooser();
@@ -92,16 +102,16 @@ public class ProfileGUI extends JPanel{
 	            "jpg", "jpeg", "png");
 	     	jfl.setFileFilter(filter);
 	    
-	    editEmail.setPreferredSize(new Dimension(dim.width/3, dim.height/14));
-	    editName.setPreferredSize(new Dimension(dim.width/3, dim.height/14));
-	    cancelButton.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
 	    editEmail.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
-	    editEmail.setPreferredSize(new Dimension(dim.width/3, dim.height/14));
-	    email.setPreferredSize(new Dimension(dim.width/3, dim.height/14));
-	    name.setPreferredSize(new Dimension(dim.width/3, dim.height/14));
+	    editName.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
+	    cancelButton.setPreferredSize(new Dimension(dim.width/5, dim.height/18));
+	    editEmail.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
+	    editEmail.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
+	    email.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
+	    name.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
 	    follow.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
 	    edit.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
-	    saveButton.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
+	    saveButton.setPreferredSize(new Dimension(dim.width/5, dim.height/18));
 	    unFollow.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
 		followersButtons = new HashSet<JButton>();
 		followingButtons = new HashSet<JButton>();
@@ -166,10 +176,7 @@ public class ProfileGUI extends JPanel{
 		edit.setOpaque(true);
 		unFollow.setOpaque(true);
 		follow.setOpaque(true);
-		topPanel.setPreferredSize(new Dimension(dim.width, 2*dim.height/5));
-		picture = new JPanel();
-		picture.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
-		picture.add(picturePic);
+		topPanel.setPreferredSize(new Dimension(dim.width, 3*dim.height/10));
 		JPanel info = new JPanel();
 		info.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
 		buttonP = new JPanel();
@@ -199,9 +206,14 @@ public class ProfileGUI extends JPanel{
 		info.add(namePanel);
 		info.add(emailPanel);
 		info.add(buttonP);
-		topPanel.add(picture, BorderLayout.WEST);
-		topPanel.add(info, BorderLayout.EAST);
-		add(info, BorderLayout.NORTH);
+		picture = new JPanel();
+		picture.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
+		picture.add(picturePic);
+		topPanel.setLayout(new GridLayout(1, 2));
+		topPanel.add(picture);
+		//picture.setBorder(border);
+		topPanel.add(info);
+		add(topPanel, BorderLayout.NORTH);
 		add(middlePanel, BorderLayout.CENTER);
 		setBackground(FirstPageGUI.white);
 		JPanel mid = new JPanel();
@@ -268,10 +280,10 @@ public class ProfileGUI extends JPanel{
 				editEmail.setVisible(true);
 				namePanel.add(editName);
 				editName.setVisible(true);
-			//	picture.remove();
+				picture.remove(picturePic);
 				picture.add(pictureButton);
 				pictureButton.setVisible(true);
-				
+				repaint();
 			}
 			
 		});
@@ -283,7 +295,10 @@ public class ProfileGUI extends JPanel{
 				{
 					//get the file
 					pictureFile = jfl.getSelectedFile();
-					
+					ImageIcon newIcon2 = new ImageIcon(pictureFile.getPath());
+					Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+					pictureButton.setIcon(new ImageIcon(img2));
+					//profilePic = new ImageIcon(img2);
 				}
 			}
 			
@@ -308,11 +323,52 @@ public class ProfileGUI extends JPanel{
 				email.setVisible(true);
 				namePanel.add(name);
 				name.setVisible(true);
-			//	picture.remove();
+				pictureFile = null;
 				picture.remove(pictureButton);
+				picture.add(picturePic);
 				pictureButton.setVisible(false);
+				repaint();
 			}
 
+		});
+		
+		saveButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String newName = editName.getText();
+				String newEmail = editEmail.getText();
+				if (pictureFile != null)
+				{
+					ImageIcon newIcon2 = new ImageIcon(pictureFile.getPath());
+					Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+					picturePic.setIcon(new ImageIcon(img2));
+					profilePic = new ImageIcon(img2);
+				}
+				name.setText(newName);
+				email.setText(newEmail);
+				bio.setEditable(false);
+				namePanel.remove(editName);
+				editName.setVisible(false);
+				emailPanel.remove(editEmail);
+				editEmail.setVisible(false);
+				buttonP.remove(saveButton);
+				saveButton.setVisible(false);
+				buttonP.remove(cancelButton);
+				cancelButton.setVisible(false);
+				buttonP.add(edit);
+				edit.setVisible(true);
+				emailPanel.add(email);
+				email.setVisible(true);
+				namePanel.add(name);
+				name.setVisible(true);
+				picture.remove(pictureButton);
+				picture.add(picturePic);
+				pictureButton.setVisible(false);
+				repaint();
+				
+			}
+			
 		});
 	}
 }
