@@ -1,6 +1,16 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.SourceDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JButton;
 
 
@@ -15,6 +25,7 @@ public class MusicModel {
 	private String songPath;
 	private String albumPath;
 	private JButton playButtonThatLeadsToMusicPlayer;
+	private static final int BUFFER_SIZE = 2200;
 	
 	
 	//MUSIC ID
@@ -100,6 +111,56 @@ public class MusicModel {
 			}
 		});
 	}
+	
+	void play() {
+		URL url = null;
+		try {
+			url = new URL(
+			        "http://jbwebsitebuilder.com/Java_Music_File/Headlines.wav");
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        //File audioFile = new File(audioFilePath);
+        try {
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(url);
+ 
+            AudioFormat format = audioStream.getFormat();
+ 
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+ 
+            SourceDataLine audioLine = (SourceDataLine) AudioSystem.getLine(info);
+ 
+            audioLine.open(format);
+ 
+            audioLine.start();
+             
+            System.out.println("Playback started.");
+             
+            byte[] bytesBuffer = new byte[BUFFER_SIZE];
+            int bytesRead = -1;
+ 
+            while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
+                audioLine.write(bytesBuffer, 0, bytesRead);
+            }
+             
+            audioLine.drain();
+            audioLine.close();
+            audioStream.close();
+             
+            System.out.println("Playback completed.");
+             
+        } catch (UnsupportedAudioFileException ex) {
+            System.out.println("The specified audio file is not supported.");
+            ex.printStackTrace();
+        } catch (LineUnavailableException ex) {
+            System.out.println("Audio line for playing back is unavailable.");
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            System.out.println("Error playing the audio file.");
+            ex.printStackTrace();
+        }      
+    }
 	
 	
 }
