@@ -493,9 +493,20 @@ public class CreateUserGUI extends JFrame{
 						 stmt.execute();
 						 
 						 stmt.close();
-						 conn.close();
 						 
-						 System.out.println("new user added!");
+						Statement stat = (Statement) conn.createStatement();
+						String sql = "Select * from user_table Where username='" + UserNameField.getText() +"'";
+						System.out.println(UserNameField.getText());
+						ResultSet rs1 = stat.executeQuery(sql);
+						if (rs1.next())
+			            {
+							System.out.println("the id is "+rs1.getInt("iduser_table"));
+							new LoggedInDriverGUI(rs1.getInt("iduser_table"));
+							stat.close();
+							conn.close();
+							System.out.println("new user added!");
+							dispose();
+			            }						 
 					}
 					else
 					{ 
