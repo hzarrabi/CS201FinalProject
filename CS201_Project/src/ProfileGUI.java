@@ -141,6 +141,7 @@ public class ProfileGUI extends JPanel{
 		bottomPanel.setBackground(FirstPageGUI.white);
 		bottomPanel.setLayout(new GridLayout(1, 3));
 		JPanel buttonLabelsPanel = new JPanel();
+		buttonLabelsPanel.setBackground(FirstPageGUI.white);
 		buttonLabelsPanel.setPreferredSize(new Dimension(dim.width, dim.height/16));
 		buttonLabelsPanel.setLayout(new GridLayout(1, 3));
 		JLabel followers = new JLabel("Followers");
@@ -200,14 +201,19 @@ public class ProfileGUI extends JPanel{
 		editFirstName.setForeground(FirstPageGUI.lightGrey);
 		topPanel.setPreferredSize(new Dimension(dim.width, 3*dim.height/10));
 		JPanel info = new JPanel();
+		info.setBackground(FirstPageGUI.white);
 		info.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
 		buttonP = new JPanel();
+		buttonP.setBackground(FirstPageGUI.white);
 		buttonP.setPreferredSize(new Dimension(dim.width, dim.height/14));
 		emailPanel = new JPanel();
+		emailPanel.setBackground(FirstPageGUI.white);
 		emailPanel.setPreferredSize(new Dimension(dim.width, dim.height/14));
 		namePanel = new JPanel();
+		namePanel.setBackground(FirstPageGUI.white);
 		namePanel.setPreferredSize(new Dimension(dim.width, dim.height/14));
 		namePanel.add(name);
+		setBackground(FirstPageGUI.white);
 		emailPanel.add(email);
 		//JPanel allInfoP = new JPanel();
 		info.setPreferredSize(new Dimension(new Dimension(dim.width/2, dim.height/4)));
@@ -236,6 +242,7 @@ public class ProfileGUI extends JPanel{
 		topPanel.add(picture);
 		//picture.setBorder(border);
 		topPanel.add(info);
+		topPanel.setBackground(FirstPageGUI.white);
 		add(topPanel, BorderLayout.NORTH);
 		add(middlePanel, BorderLayout.CENTER);
 		middlePanel.setBackground(FirstPageGUI.white);
