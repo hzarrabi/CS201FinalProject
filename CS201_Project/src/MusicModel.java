@@ -26,6 +26,7 @@ public class MusicModel {
 	private String albumPath;
 	private JButton playButtonThatLeadsToMusicPlayer;
 	private static final int BUFFER_SIZE = 2200;
+	private SourceDataLine audioLine;
 	
 	
 	//MUSIC ID
@@ -100,6 +101,17 @@ public class MusicModel {
 		playButtonThatLeadsToMusicPlayer.setText(buttonName);
 	}
 	
+	//pausing song function
+	public void pauseSong(){
+		audioLine.stop();
+	}
+	
+	//resume song
+	public void resumeSong(){
+		audioLine.start();
+	}
+
+	
 	//constructor
 	public MusicModel(){
 		playButtonThatLeadsToMusicPlayer = new JButton("");
@@ -112,55 +124,54 @@ public class MusicModel {
 		});
 	}
 	
-	void play() {
-		URL url = null;
-		try {
-			url = new URL(
-			        "http://jbwebsitebuilder.com/Java_Music_File/Headlines.wav");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	class musicPlay extends Thread{
+		//play song function
+		public void playSong(){
+			
+	        try {
+	        	//we have to change the songpath to a URL object
+	        	URL url = new URL (songPath);
+	            AudioInputStream audioStream = AudioSystem.getAudioInputStream(url);
+	            AudioFormat format = audioStream.getFormat();
+	            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+	            audioLine = (SourceDataLine) AudioSystem.getLine(info);
+	            audioLine.open(format);
+	            audioLine.start();
+	             
+	            //song should begin
+	            System.out.println("Playback started.");
+	             
+	            byte[] bytesBuffer = new byte[BUFFER_SIZE];
+	            int bytesRead = -1;
+	            while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
+	                audioLine.write(bytesBuffer, 0, bytesRead);
+	            }
+	            audioLine.drain();
+	            audioLine.close();
+	            audioStream.close();
+	         
+	            //song should end
+	            System.out.println("Playback completed.");
+	             
+	        } catch (UnsupportedAudioFileException ex) {
+	            System.out.println("The specified audio file is not supported.");
+	            ex.printStackTrace();
+	        } catch (LineUnavailableException ex) {
+	            System.out.println("Audio line for playing back is unavailable.");
+	            ex.printStackTrace();
+	        } catch (IOException ex) {
+	            System.out.println("Error playing the audio file.");
+	            ex.printStackTrace();
+	        }      
+	    }
+	
+		
+		//for multi-threading
+		public void run(){
+			this.playSong();
 		}
-        //File audioFile = new File(audioFilePath);
-        try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(url);
- 
-            AudioFormat format = audioStream.getFormat();
- 
-            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
- 
-            SourceDataLine audioLine = (SourceDataLine) AudioSystem.getLine(info);
- 
-            audioLine.open(format);
- 
-            audioLine.start();
-             
-            System.out.println("Playback started.");
-             
-            byte[] bytesBuffer = new byte[BUFFER_SIZE];
-            int bytesRead = -1;
- 
-            while ((bytesRead = audioStream.read(bytesBuffer)) != -1) {
-                audioLine.write(bytesBuffer, 0, bytesRead);
-            }
-             
-            audioLine.drain();
-            audioLine.close();
-            audioStream.close();
-             
-            System.out.println("Playback completed.");
-             
-        } catch (UnsupportedAudioFileException ex) {
-            System.out.println("The specified audio file is not supported.");
-            ex.printStackTrace();
-        } catch (LineUnavailableException ex) {
-            System.out.println("Audio line for playing back is unavailable.");
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            System.out.println("Error playing the audio file.");
-            ex.printStackTrace();
-        }      
-    }
+	}
+
 	
 	
 }
