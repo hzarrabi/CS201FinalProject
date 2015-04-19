@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -40,6 +41,8 @@ public class LoggedInDriverGUI extends JFrame{
 	private int currentJpanel;
 	private Color myColor;
 	
+	
+	JTextArea testLabel = new JTextArea();
 	JPanel bottomColor;
 	
 	int userID;
@@ -70,6 +73,8 @@ public class LoggedInDriverGUI extends JFrame{
 	private void initializeComponents()
 	{
 		currentJpanel = 0;
+		testLabel.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
+		testLabel.setEditable(false);
 		fg = new FeedGUI();
 		myColor = FirstPageGUI.color;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -184,6 +189,17 @@ public class LoggedInDriverGUI extends JFrame{
 	            mainPanel.repaint();
 			}
 		});
+		searchButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removePanel();
+				currentJpanel = 2;
+				mainPanel.add(testLabel);
+				
+			}
+			
+		});
 		logout.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -202,7 +218,7 @@ public class LoggedInDriverGUI extends JFrame{
 			case 1:
 				mainPanel.remove(mpg);
 			case 2:
-				//mainPanel.remove();
+				mainPanel.remove(testLabel);
 			case 3:
 				mainPanel.remove(trgScroll);
 			case 4:

@@ -256,6 +256,8 @@ public class ProfileGUI extends JPanel{
 		info.add(buttonP);
 		picture = new JPanel();
 		bio.setFont(FirstPageGUI.font);
+		bio.setWrapStyleWord(true);
+		bio.setLineWrap(true);
 		picture.setBackground(FirstPageGUI.white);
 		picture.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
 		picture.add(picturePic);
