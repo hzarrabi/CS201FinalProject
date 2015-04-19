@@ -64,10 +64,6 @@ public class FirstPageGUI extends JFrame{
 	final static Font fontTitle = new Font("Helvetica Neue", Font.PLAIN, 24);
 	
 	//for connecting database
-	Connection connection;
-	String dburl;
-	String UserName;
-	String passWord;
 	Connection conn;
 	
 	public FirstPageGUI()
