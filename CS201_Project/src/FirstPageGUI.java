@@ -82,11 +82,6 @@ public class FirstPageGUI extends JFrame{
 	}
 	
 	private void connect(){
-		connection = null;
-		dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
-		UserName = "cs201";
-		passWord = "manishhostage";
-
 			 try {
 				 Class.forName("com.mysql.jdbc.Driver");
 				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
