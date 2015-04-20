@@ -6,6 +6,12 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Arrays;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +23,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import com.mysql.jdbc.PreparedStatement;
 
 
 public class LoggedInDriverGUI extends JFrame{
@@ -41,7 +49,9 @@ public class LoggedInDriverGUI extends JFrame{
 	private int currentJpanel;
 	private Color myColor;
 	
-	private JTextArea testLabel;
+	private JTextField testField;
+	private JButton testButton;
+	private String searchText;
 	JPanel bottomColor;
 	
 	int userID;
@@ -51,7 +61,8 @@ public class LoggedInDriverGUI extends JFrame{
 	public LoggedInDriverGUI(int userID)
 	{		
 		super("Home Screen");
-		testLabel = new JTextArea();
+		testField = new JTextField();
+		testButton = new JButton("Search");
 		this.userID=userID;
 		
 		try{
@@ -75,8 +86,8 @@ public class LoggedInDriverGUI extends JFrame{
 		fg = new FeedGUI();
 		myColor = FirstPageGUI.color;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		testLabel.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
-		testLabel.setEditable(false);
+		testField.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
+		testField.setEditable(true);
 		mainPanel = new JPanel();
 		mainPanel.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
 		trgButton = new JButton();
@@ -194,12 +205,71 @@ public class LoggedInDriverGUI extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				removePanel();
 				currentJpanel = 2;
-				mainPanel.add(testLabel);
+				mainPanel.add(testField);
+				mainPanel.add(testButton);
 				mainPanel.revalidate();
 	            mainPanel.repaint();
 				
 			}
 			
+		});
+		testButton.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e) {
+				searchText = testField.getText();
+				Connection conn; 
+				String dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
+				String userName = "cs201";
+				String passWord = "manishhostage";
+				try {
+					Class.forName("com.mysql.jdbc.Driver");
+					conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+					Statement st = conn.createStatement();
+					String queryCheck = "SELECT * from user_table WHERE username = ?";
+					PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
+					ps.setString(1, searchText);
+					ResultSet rs = ps.executeQuery();
+					if(rs.absolute(1))
+					{
+						
+						System.out.println("Search Username: " + searchText);
+					}
+					else
+					{
+						queryCheck = "SELECT * from music_table WHERE song_name = ?";
+						ps = (PreparedStatement) conn.prepareStatement(queryCheck);
+						ps.setString(1, searchText);
+						rs = ps.executeQuery();
+						if(rs.absolute(1))
+						{
+							
+							System.out.println("Search Song Name: " + searchText);
+						}
+						else 
+						{
+							queryCheck = "SELECT * from music_table WHERE artist_name = ?";
+							ps = (PreparedStatement) conn.prepareStatement(queryCheck);
+							ps.setString(1, searchText);
+							rs = ps.executeQuery();
+							if(rs.absolute(1))
+							{
+								
+								System.out.println("Search Artist Name: " + searchText);
+							}
+							else
+							{
+								System.out.println("Not found");
+							}
+						}
+						
+					}
+				} catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}			}
+
 		});
 		logout.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -219,7 +289,8 @@ public class LoggedInDriverGUI extends JFrame{
 			case 1:
 				mainPanel.remove(mpg);
 			case 2:
-				mainPanel.remove(testLabel);
+				mainPanel.remove(testField);
+				mainPanel.remove(testButton);
 			case 3:
 				mainPanel.remove(trgScroll);
 			case 4:
