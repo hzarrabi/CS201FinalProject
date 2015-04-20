@@ -60,10 +60,12 @@ public class ProfileGUI extends JPanel{
 	private JButton pictureButton;
 	
 	private String key;
-	public ProfileGUI(Dimension d, String key)
+	private Integer userId;
+	public ProfileGUI(Dimension d, String key, int userID)
 	{
 		dim = d;
 		this.key = key;
+		this.userId=userId;
 		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
 		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
 		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
@@ -411,9 +413,18 @@ public class ProfileGUI extends JPanel{
 		});
 		
 		saveButton.addActionListener(new ActionListener(){
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				boolean fn=true;
+				boolean ln=true;
+				boolean em=true;
+				
+				if(editFirstName.getText().length()>11 || editFirstName.getText().length()<5) fn=false;
+				if(editLastName.getText().length()>11 || editLastName.getText().length()<5) ln=false;
+				if(editLastName.getText().length()>11 || editLastName.getText().length()<5) ln=false;
+				
+				
+				
 				String newFirstName = editFirstName.getText();
 				String newLastName = editLastName.getText();
 				String newEmail = editEmail.getText();
