@@ -171,6 +171,13 @@ public class MusicModel {
 			this.playSong();
 		}
 	}
+	
+	public Thread playTheSong()
+	{
+		musicPlay mp = new musicPlay();
+		mp.start();
+		return mp;
+	}
 
 	
 	
