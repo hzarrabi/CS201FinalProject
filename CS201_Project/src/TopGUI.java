@@ -12,10 +12,14 @@ import javax.swing.JScrollPane;
 
 public abstract class TopGUI extends JPanel{
 	protected ArrayList<JButton> buttons;
+	protected ArrayList<MusicModel> songs;
+	protected MusicPlayer myPlayer;
+	protected int currentSong;
 	public TopGUI()
 	{
 		setVisible(true);
 		buttons = new ArrayList<JButton>();
+		currentSong = 0;
 		createGUI();
 		//add(new JButton("SONG"));
 		//add(new JLabel("SONG"));
@@ -26,6 +30,7 @@ public abstract class TopGUI extends JPanel{
 		//JScrollPane jsp = new JScrollPane(this);
 	}
 	public abstract void fillButtons();
+	public abstract MusicPlayer initPlayer();
 	
 	protected void addEventHandlers()
 	{

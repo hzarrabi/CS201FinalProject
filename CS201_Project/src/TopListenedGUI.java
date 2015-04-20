@@ -18,16 +18,27 @@ public class TopListenedGUI extends TopGUI{
 	}
 	
 	public void fillButtons() {
-
 		for (Entry<String, MusicModel> entry : LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().entrySet()){
 			String key = entry.getKey();
 			buttons.add(LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(key).getPlayButtonThatLeadsToMusicPlayer());	
+			songs.add(LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(key));
 		}
 		for (int i = 0; i<((LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().size())); i++){
 			this.add(buttons.get(i));	
 			System.out.println(i);
 		}
 	}
+	
+	public MusicPlayer initPlayer()
+	{
+		myPlayer = new MusicPlayer(buttons, songs, currentSong);
+		return myPlayer;
+	}
 
+	public void nextSong()
+	{
+		myPlayer.changeSong(songs.get(currentSong+1));
+		currentSong++;
+	}
 }
 

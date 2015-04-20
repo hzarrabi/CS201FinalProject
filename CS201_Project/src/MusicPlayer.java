@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -30,7 +31,7 @@ public class MusicPlayer extends JFrame{
 	private JButton forwardButton;
 	private JButton pauseButton;
 	private JTextArea lyrics;
-	private Boolean isGuest;
+	//private Boolean isGuest;
 	private String songName;
 	private MusicModel musicObject;
 	
@@ -38,16 +39,21 @@ public class MusicPlayer extends JFrame{
 	JButton favoriteButton;
 	JButton rateButton;
 	
-	public MusicPlayer(String songTitle, Boolean isGuest)
+	private ArrayList<JButton> allButtons;
+	private ArrayList<MusicModel> allSongs;
+	private int currentSong;
+	
+	public MusicPlayer(String songTitle)
 	{
 		songName = songTitle;
 		musicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(songName);
-		this.isGuest = isGuest;
+		//this.isGuest = isGuest;
 		initializeComponents();
-		if (isGuest)
-		{
+		//if (isGuest)
+		//{
 			createGUI();
-		}
+		//}
+			/*
 		else
 		{
 			commentButton = new JButton();
@@ -71,9 +77,10 @@ public class MusicPlayer extends JFrame{
 			favoriteButton.setBorderPainted(false);
 			createUserGUI();
 		}
+		*/
 		setEventHandlers();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0,0,dim.width/3, dim.height);
+		setBounds(0,0,dim.width/4, dim.height);
 		setVisible(true);
 		setResizable(false);
 		//dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -83,6 +90,23 @@ public class MusicPlayer extends JFrame{
 
 	}
 	
+	public MusicPlayer(ArrayList<JButton> buttons, ArrayList<MusicModel> songs, int currentSong)
+	{
+		this.currentSong = currentSong;
+		this.allButtons = buttons;
+		this.allSongs = songs;
+		musicObject = allSongs.get(currentSong);
+		songName = musicObject.getSongName();
+		initializeComponents();
+		createGUI();
+		setEventHandlers();
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(0,0,dim.width/4, dim.height);
+		setVisible(true);
+		setResizable(false);
+		musicObject.new musicPlay().start();
+
+	}
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		album = new JLabel("");
@@ -191,6 +215,11 @@ public class MusicPlayer extends JFrame{
 				musicObject.pauseSong();
 			}
 		});
+		
+	}
+	
+	public void changeSong(MusicModel nextSong)
+	{
 		
 	}
 }

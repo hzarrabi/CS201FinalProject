@@ -47,6 +47,8 @@ public class LoggedInDriverGUI extends JFrame{
 	int userID;
 	
 	static MusicLibrary sharedMusicLibrary;
+	private MusicPlayer musicPlayerTopRated;
+	private MusicPlayer musicPlayerTopListened;
 	
 	public LoggedInDriverGUI(int userID)
 	{		
@@ -120,20 +122,24 @@ public class LoggedInDriverGUI extends JFrame{
 		buttonPanel.add(tlgButton);
 		buttonPanel.add(trgButton);
 		buttonPanel.add(searchButton);
-		trg = new TopRatedGUI(new Dimension(dim.width/3, 15*dim.height/20));
-		tlg = new TopListenedGUI(new Dimension(dim.width/3, 15*dim.height/20));
+		trg = new TopRatedGUI(new Dimension(dim.width/13, 15*dim.height/20));
+		tlg = new TopListenedGUI(new Dimension(dim.width/13, 15*dim.height/20));
 		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user");
+		musicPlayerTopRated = trg.initPlayer();
+		musicPlayerTopListened = tlg.initPlayer();
 		trgScroll = new JScrollPane(trg);
 		tlgScroll = new JScrollPane(tlg);
 		fgScroll = new JScrollPane(fg);
 		notifications = new JLabel("notifications");
-		trgScroll.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
-		tlgScroll.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
-		fgScroll.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
+		trgScroll.setPreferredSize(new Dimension(dim.width/15, 15*dim.height/20));
+		tlgScroll.setPreferredSize(new Dimension(dim.width/15, 15*dim.height/20));
+		fgScroll.setPreferredSize(new Dimension(dim.width/15, 15*dim.height/20));
 		mainPanel.add(fgScroll, BorderLayout.CENTER);
 		bottomColor = new JPanel();
 		bottomColor.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
 		bottomColor.setBackground(myColor);
+		bottomColor.add(logout);
+		bottomColor.add(notifications);
 	}
 	
 	private void createGUI()
@@ -162,7 +168,9 @@ public class LoggedInDriverGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				removePanel();
-				mainPanel.add(tlgScroll, BorderLayout.CENTER);
+				mainPanel.add(tlgScroll, BorderLayout.WEST);
+				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
+				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
 				currentJpanel = 4;
 	            mainPanel.revalidate();
 	            mainPanel.repaint();
