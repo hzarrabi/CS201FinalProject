@@ -54,6 +54,10 @@ public class LoggedInDriverGUI extends JFrame{
 	private String searchText;
 	JPanel bottomColor;
 	
+	String [] sql_queries = {"SELECT * from user_table WHERE username = ?", 
+			"SELECT * from music_table WHERE song_name = ?",
+			"SELECT * from music_table WHERE artist_name = ?"};
+	
 	int userID;
 	
 	static MusicLibrary sharedMusicLibrary;
@@ -225,44 +229,26 @@ public class LoggedInDriverGUI extends JFrame{
 					Class.forName("com.mysql.jdbc.Driver");
 					conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
 					Statement st = conn.createStatement();
-					String queryCheck = "SELECT * from user_table WHERE username = ?";
-					PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-					ps.setString(1, searchText);
-					ResultSet rs = ps.executeQuery();
-					if(rs.absolute(1))
+					String queryCheck = "";
+					boolean check_found = false;
+					for (int i = 0; i < sql_queries.length; i++)
 					{
-						
-						System.out.println("Search Username: " + searchText);
-					}
-					else
-					{
-						queryCheck = "SELECT * from music_table WHERE song_name = ?";
-						ps = (PreparedStatement) conn.prepareStatement(queryCheck);
+						queryCheck = sql_queries[i];
+						PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
 						ps.setString(1, searchText);
-						rs = ps.executeQuery();
+						ResultSet rs = ps.executeQuery();
 						if(rs.absolute(1))
 						{
 							
-							System.out.println("Search Song Name: " + searchText);
+							System.out.println("Search: " + searchText);
+							check_found = true;
 						}
-						else 
-						{
-							queryCheck = "SELECT * from music_table WHERE artist_name = ?";
-							ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-							ps.setString(1, searchText);
-							rs = ps.executeQuery();
-							if(rs.absolute(1))
-							{
-								
-								System.out.println("Search Artist Name: " + searchText);
-							}
-							else
-							{
-								System.out.println("Not found");
-							}
-						}
-						
 					}
+					if (!check_found)
+					{
+						System.out.println("Not found");
+					}
+				
 				} catch (SQLException e1)
 				{
 					e1.printStackTrace();
@@ -271,6 +257,7 @@ public class LoggedInDriverGUI extends JFrame{
 				}			}
 
 		});
+		
 		logout.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				dispose();
