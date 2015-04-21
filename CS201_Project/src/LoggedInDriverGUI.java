@@ -175,8 +175,8 @@ public class LoggedInDriverGUI extends JFrame{
 		buttonPanel.add(searchButton);
 
 
-		trg = new TopRatedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
-		tlg = new TopListenedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
+		trg = new TopRatedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(5*dim.width/24, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
+		tlg = new TopListenedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(5*dim.width/24, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
 		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,FirstPageGUI.conn);
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
@@ -200,7 +200,7 @@ public class LoggedInDriverGUI extends JFrame{
 	public void changeListenedFrame(IndpMusicPlayer player)
 	{
 		currentPlayer = player;
-		tlg.stopSong();
+		//tlg.stopSong();
 		mainPanel.remove(tlgScroll);
 		mainPanel.remove(musicPlayerTopListened);
 		mainPanel.add(player);
@@ -211,7 +211,7 @@ public class LoggedInDriverGUI extends JFrame{
 	public void changeRatedFrame(IndpMusicPlayer player)
 	{
 		currentPlayer = player;
-		trg.stopSong();
+		//trg.stopSong();
 		mainPanel.remove(trgScroll);
 		mainPanel.remove(musicPlayerTopRated);
 		mainPanel.add(player);
@@ -255,7 +255,7 @@ public class LoggedInDriverGUI extends JFrame{
 				removePanel();
 				mainPanel.add(trgScroll, BorderLayout.WEST);
 				mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
-				trg.startSong();
+				//trg.startSong();
 				currentJpanel = 3;
 	            mainPanel.revalidate();
 	            mainPanel.repaint();
@@ -268,7 +268,7 @@ public class LoggedInDriverGUI extends JFrame{
 				removePanel();
 				mainPanel.add(tlgScroll, BorderLayout.WEST);
 				mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
-				tlg.startSong();
+				//tlg.startSong();
 				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
 				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
 				currentJpanel = 4;

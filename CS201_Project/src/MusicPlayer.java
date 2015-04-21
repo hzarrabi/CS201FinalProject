@@ -57,18 +57,19 @@ public class MusicPlayer extends JPanel{
 
 	}
 	
-	public void startThread()
-	{
-		if (myThread == null)
-			myThread = musicObject.playTheSong();
-		else
-			myThread.resume();
-	}
-	
+//	public void startThread()
+//	{
+//		if (myThread == null)
+//			myThread = musicObject.playTheSong();
+//		else
+//			myThread.resume();
+//	}
+//	
 	public void stopThread()
 	{
 		myThread.suspend();
 	}
+	
 	private void initializeComponents(){
 		album = new JLabel("");
 		album.setPreferredSize(new Dimension(dim.width-10, dim.width-10));
@@ -101,7 +102,7 @@ public class MusicPlayer extends JPanel{
 	{
 		setBackground(FirstPageGUI.white);
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(dim.width, dim.height/15));
+		buttonPanel.setPreferredSize(new Dimension(dim.width/2, dim.height/20));
 		buttonPanel.setBackground(FirstPageGUI.color);
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setPreferredSize(new Dimension(dim.width, dim.height/10));
@@ -164,7 +165,8 @@ public class MusicPlayer extends JPanel{
 		pauseButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				myThread.suspend();
+				if (myThread != null)
+					myThread.suspend();
 			}
 		});
 		
