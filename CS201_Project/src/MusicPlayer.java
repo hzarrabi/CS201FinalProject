@@ -67,8 +67,9 @@ public class MusicPlayer extends JPanel{
 //	
 	public void stopThread()
 	{
-		myThread.suspend();
-	}
+		if (myThread != null)
+			myThread.suspend();
+	}	
 	
 	private void initializeComponents(){
 		album = new JLabel("");
