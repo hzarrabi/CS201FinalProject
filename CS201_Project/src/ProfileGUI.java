@@ -224,7 +224,6 @@ public class ProfileGUI extends JPanel{
 		follow.setOpaque(true);
 		editEmail.setText("email");
 		
-		//TODO set first last and email
 		try
 		{
 			Statement stat = (Statement) conn.createStatement();
