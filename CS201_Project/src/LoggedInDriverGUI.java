@@ -224,7 +224,7 @@ public class LoggedInDriverGUI extends JFrame{
 				removePanel();
 				mainPanel.add(trgScroll, BorderLayout.WEST);
 				mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
-				//trg.startSong();
+				trg.startSong();
 				currentJpanel = 3;
 	            mainPanel.revalidate();
 	            mainPanel.repaint();
@@ -237,7 +237,7 @@ public class LoggedInDriverGUI extends JFrame{
 				removePanel();
 				mainPanel.add(tlgScroll, BorderLayout.WEST);
 				mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
-				//tlg.startSong();
+				tlg.startSong();
 				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
 				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
 				currentJpanel = 4;

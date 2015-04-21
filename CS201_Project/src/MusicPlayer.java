@@ -89,11 +89,11 @@ public class MusicPlayer extends JPanel{
 		artist = new JLabel(musicObject.getSongName() + " "+musicObject.getArtistName());
 		artist.setPreferredSize(new Dimension(dim.width-10, dim.height/15));
 		rating = new JLabel("Rating and # of Listens");
-		backButton = new JButton("back");
+		backButton = new JButton();
 		
-		playButton = new JButton("Play");
-		forwardButton = new JButton("forward");
-		pauseButton = new JButton("Pause");
+		playButton = new JButton();
+		forwardButton = new JButton();
+		pauseButton = new JButton();
 
 	}
 	
@@ -114,18 +114,22 @@ public class MusicPlayer extends JPanel{
 		backButton.setOpaque(false);
 		backButton.setContentAreaFilled(false);
 		backButton.setBorderPainted(false);
+		backButton.setIcon(new ImageIcon("data/ReverseButton.png"));
 		
 		playButton.setOpaque(false);
 		playButton.setContentAreaFilled(false);
 		playButton.setBorderPainted(false);
+		playButton.setIcon(new ImageIcon("data/playButton.png"));
 		
 		pauseButton.setOpaque(false);
 		pauseButton.setContentAreaFilled(false);
 		pauseButton.setBorderPainted(false);
+		pauseButton.setIcon(new ImageIcon("data/pauseButton.png"));
 		
 		forwardButton.setOpaque(false);
 		forwardButton.setContentAreaFilled(false);
 		forwardButton.setBorderPainted(false);
+		forwardButton.setIcon(new ImageIcon("data/forwardButton.png"));
 		
 		add(bottomPanel, BorderLayout.SOUTH);
 		JPanel mainPanel = new JPanel();
