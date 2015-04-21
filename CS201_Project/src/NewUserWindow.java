@@ -206,7 +206,6 @@ public class NewUserWindow extends JFrame
 					String userName=UserNameField.getText();
 					try
 					{
-						Statement st = conn.createStatement();
 						String queryCheck = "SELECT * from user_table WHERE username = ?";
 						PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
 						ps.setString(1, userName);

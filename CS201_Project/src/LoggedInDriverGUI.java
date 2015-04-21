@@ -58,7 +58,8 @@ public class LoggedInDriverGUI extends JFrame{
 			"SELECT * from music_table WHERE song_name = ?",
 			"SELECT * from music_table WHERE artist_name = ?"};
 	
-	int userID;
+	private int userID;//unique user ID of the user that logged in
+	private Connection conn;//for database connection
 	
 	static MusicLibrary sharedMusicLibrary;
 	private MusicPlayer musicPlayerTopRated;
@@ -77,6 +78,7 @@ public class LoggedInDriverGUI extends JFrame{
 			
 		}
 
+		connect();
 		initializeComponents();
 		createGUI();
 		setEventHandlers();
@@ -85,6 +87,19 @@ public class LoggedInDriverGUI extends JFrame{
 		setVisible(true);
 		setResizable(false);
 	}
+	
+	private void connect(){
+		 try {
+			 Class.forName("com.mysql.jdbc.Driver");
+			 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+			 } catch (ClassNotFoundException e) {
+			 e.printStackTrace();
+			 } catch (SQLException e) {
+			 e.printStackTrace();
+			 }
+}
+	
+	
 	
 	private void initializeComponents()
 	{
@@ -140,7 +155,7 @@ public class LoggedInDriverGUI extends JFrame{
 
 		trg = new TopRatedGUI(new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20));
 		tlg = new TopListenedGUI(new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20));
-		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", 0);
+		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,conn);
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
 
