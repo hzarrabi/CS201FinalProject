@@ -98,7 +98,7 @@ public class CreateUserGUI extends JFrame{
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		incorrectInput = new JLabel("");
-		UserNameField = new JTextField("UserName");
+		UserNameField = new JTextField("Username");
 		passwordField = new JPasswordField("Password");
 		passwordField.setEchoChar((char)0);
 		passwordField2 = new JPasswordField("Retype Password");
@@ -347,14 +347,14 @@ public class CreateUserGUI extends JFrame{
 				{
 					if(UserNameField.getText().equals(""))
 					{
-						UserNameField.setText("UserName");
+						UserNameField.setText("Username");
 						UserNameField.setForeground(FirstPageGUI.lightGrey);
 					}
 				}
 				@Override
 				public void focusGained(FocusEvent e)
 				{
-					if(UserNameField.getText().equals("UserName"))
+					if(UserNameField.getText().equals("Username"))
 					{
 						UserNameField.setText("");
 						UserNameField.setForeground(FirstPageGUI.darkGrey);

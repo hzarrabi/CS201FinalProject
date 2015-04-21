@@ -93,7 +93,7 @@ public class FirstPageGUI extends JFrame{
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		userName = new JTextField("Username");
 		password = new JPasswordField("Password");
-		logo = new JLabel("201-Tunes");
+		logo = new JLabel("201Tunes");
 		newUser = new JLabel("Not Signed Up?");
 		createNewUser = new JButton("Create Account");
 		guest = new JButton("Login as Guest");
