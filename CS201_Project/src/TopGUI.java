@@ -17,6 +17,8 @@ public abstract class TopGUI extends JPanel{
 	protected MusicPlayer myPlayer;
 	protected int currentSong;
 	protected Dimension dimPlayer;
+	protected Dimension playerBigDim;
+	protected LoggedInDriverGUI mainPage;
 	public TopGUI()
 	{
 		setVisible(true);
@@ -34,14 +36,9 @@ public abstract class TopGUI extends JPanel{
 	}
 	public abstract void fillButtons();
 	public abstract MusicPlayer initPlayer();
+	public abstract void addEventHandlers();
 	
-	protected void addEventHandlers()
-	{
-		for (int i = 0; i<buttons.size(); i++)
-		{
-			buttons.get(i).addActionListener(new ButtonActionListener());
-		}
-	}
+	public abstract void removePlayer();
 	
 	private class ButtonActionListener implements ActionListener
 	{
