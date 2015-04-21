@@ -8,10 +8,12 @@ import javax.swing.JTabbedPane;
 
 
 public class TopListenedGUI extends TopGUI{
-	public TopListenedGUI(Dimension d)
+	public TopListenedGUI(Dimension d, Dimension dimPlayer)
 	{
 		super();
 		this.setPreferredSize(d);
+		this.dimPlayer = dimPlayer;
+		this.setBackground(FirstPageGUI.white);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtons();
 		addEventHandlers();
@@ -20,7 +22,13 @@ public class TopListenedGUI extends TopGUI{
 	public void fillButtons() {
 		for (Entry<String, MusicModel> entry : LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().entrySet()){
 			String key = entry.getKey();
-			buttons.add(LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(key).getPlayButtonThatLeadsToMusicPlayer());	
+			JButton newButton = new JButton(LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(key).getSongName());
+			newButton.setFont(FirstPageGUI.smallFont);
+			newButton.setBorder(new RoundedBorder());
+			newButton.setBackground(FirstPageGUI.darkGrey);
+			newButton.setForeground(FirstPageGUI.white);
+			newButton.setOpaque(true);
+			buttons.add(newButton);	
 			songs.add(LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(key));
 		}
 		for (int i = 0; i<((LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().size())); i++){
@@ -31,14 +39,8 @@ public class TopListenedGUI extends TopGUI{
 	
 	public MusicPlayer initPlayer()
 	{
-		myPlayer = new MusicPlayer(buttons, songs, currentSong);
+		myPlayer = new MusicPlayer(dimPlayer, buttons, songs, currentSong);
 		return myPlayer;
-	}
-
-	public void nextSong()
-	{
-		myPlayer.changeSong(songs.get(currentSong+1));
-		currentSong++;
 	}
 }
 

@@ -138,8 +138,8 @@ public class LoggedInDriverGUI extends JFrame{
 		buttonPanel.add(trgButton);
 		buttonPanel.add(searchButton);
 
-		trg = new TopRatedGUI(new Dimension(dim.width/13, 15*dim.height/20));
-		tlg = new TopListenedGUI(new Dimension(dim.width/13, 15*dim.height/20));
+		trg = new TopRatedGUI(new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20));
+		tlg = new TopListenedGUI(new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20));
 		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", 0);
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
@@ -148,8 +148,8 @@ public class LoggedInDriverGUI extends JFrame{
 		tlgScroll = new JScrollPane(tlg);
 		fgScroll = new JScrollPane(fg);
 		notifications = new JLabel("notifications");
-		trgScroll.setPreferredSize(new Dimension(dim.width/15, 15*dim.height/20));
-		tlgScroll.setPreferredSize(new Dimension(dim.width/15, 15*dim.height/20));
+		trgScroll.setPreferredSize(new Dimension(dim.width/12, 15*dim.height/20));
+		tlgScroll.setPreferredSize(new Dimension(dim.width/12, 15*dim.height/20));
 		fgScroll.setPreferredSize(new Dimension(dim.width/15, 15*dim.height/20));
 		mainPanel.add(fgScroll, BorderLayout.CENTER);
 		bottomColor = new JPanel();
@@ -157,6 +157,7 @@ public class LoggedInDriverGUI extends JFrame{
 		bottomColor.setBackground(myColor);
 		bottomColor.add(logout);
 		bottomColor.add(notifications);
+		mainPanel.setBackground(FirstPageGUI.white);
 	}
 	
 	private void createGUI()
@@ -174,7 +175,9 @@ public class LoggedInDriverGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				removePanel();
-				mainPanel.add(trgScroll, BorderLayout.CENTER);
+				mainPanel.add(trgScroll, BorderLayout.WEST);
+				mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
+				trg.startSong();
 				currentJpanel = 3;
 	            mainPanel.revalidate();
 	            mainPanel.repaint();
@@ -186,6 +189,8 @@ public class LoggedInDriverGUI extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				removePanel();
 				mainPanel.add(tlgScroll, BorderLayout.WEST);
+				mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
+				tlg.startSong();
 				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
 				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
 				currentJpanel = 4;
@@ -221,6 +226,7 @@ public class LoggedInDriverGUI extends JFrame{
 				currentJpanel = 2;
 				mainPanel.add(testField);
 				mainPanel.add(testButton);
+				//mainPanel.add(musicPlayerTopListened);
 				mainPanel.revalidate();
 	            mainPanel.repaint();
 				
@@ -278,22 +284,30 @@ public class LoggedInDriverGUI extends JFrame{
 	
 	private void removePanel()
 	{
-		switch(currentJpanel)
-		{
-			case 0: 
+			if (currentJpanel == 0) 
+			{
 				mainPanel.remove(fgScroll);
-				break;
-			case 1:
+			}
+			else if (currentJpanel == 1)
 				mainPanel.remove(mpg);
-			case 2:
+			else if (currentJpanel == 2)
+			{
 				mainPanel.remove(testField);
 				mainPanel.remove(testButton);
-			case 3:
+			}
+			else if (currentJpanel ==3)
+			{
 				mainPanel.remove(trgScroll);
-			case 4:
+				mainPanel.remove(musicPlayerTopRated);
+				trg.stopSong();
+			}
+			else if (currentJpanel == 4)
+			{
 				mainPanel.remove(tlgScroll);
-		}
-			
+				mainPanel.remove(musicPlayerTopListened);
+				tlg.stopSong();
+			}
 	}
-
+			
 }
+

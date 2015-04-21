@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -15,10 +16,12 @@ public abstract class TopGUI extends JPanel{
 	protected ArrayList<MusicModel> songs;
 	protected MusicPlayer myPlayer;
 	protected int currentSong;
+	protected Dimension dimPlayer;
 	public TopGUI()
 	{
 		setVisible(true);
 		buttons = new ArrayList<JButton>();
+		songs = new ArrayList<MusicModel>();
 		currentSong = 0;
 		createGUI();
 		//add(new JButton("SONG"));
@@ -46,5 +49,15 @@ public abstract class TopGUI extends JPanel{
 		{
 			//new MusicPlayer();
 		}
+	}
+	
+	public void stopSong()
+	{
+		myPlayer.stopThread();
+	}
+	
+	public void startSong()
+	{
+		myPlayer.startThread();
 	}
 }

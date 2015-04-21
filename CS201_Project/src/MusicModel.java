@@ -119,7 +119,7 @@ public class MusicModel {
 		playButtonThatLeadsToMusicPlayer.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new MusicPlayer(songName);
+				//new MusicPlayer(songName);
 			}
 		});
 	}
@@ -178,6 +178,7 @@ public class MusicModel {
 		mp.start();
 		return mp;
 	}
+	
 
 	
 	

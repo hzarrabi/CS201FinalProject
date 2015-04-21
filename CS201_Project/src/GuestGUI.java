@@ -42,8 +42,8 @@ public class GuestGUI extends JFrame{
 		jtp = new JTabbedPane();
 		jtp.setBackground(FirstPageGUI.color);
 		jtp.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-		trg = new TopRatedGUI(new Dimension(dim.width, 15*dim.height/20));
-		tlg = new TopListenedGUI(new Dimension(dim.width, 15*dim.height/20));
+		trg = new TopRatedGUI(new Dimension(dim.width, 15*dim.height/20), new Dimension(dim.width/13, 15*dim.height/20));
+		tlg = new TopListenedGUI(new Dimension(dim.width, 15*dim.height/20), new Dimension(dim.width/13, 15*dim.height/20));
 		title = new JLabel("Top Tunes");
 		//title.setPreferredSize(new Dimension(dim.width, dim.height/11));
 		titlePanel = new JPanel();
