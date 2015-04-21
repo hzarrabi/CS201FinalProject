@@ -10,6 +10,7 @@ public class ConnectionClass {
 	public ConnectionClass()
 	{
 		connect();
+		new FirstPageGUI();
 	}
 	
 	private void connect(){
@@ -26,7 +27,6 @@ public class ConnectionClass {
 	public static void main(String [] args)
 	{
 		new ConnectionClass();
-		new FirstPageGUI();
 //		try {
 //			new MusicLibrary();
 //		} catch (Exception e) {
