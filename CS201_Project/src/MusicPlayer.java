@@ -133,7 +133,10 @@ public class MusicPlayer extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//musicObject.resumeSong();
-				myThread.resume();
+				if (myThread == null)
+					myThread = musicObject.playTheSong();
+				else
+					myThread.resume();
 			}
 		});
 		

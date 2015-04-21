@@ -64,6 +64,8 @@ public class LoggedInDriverGUI extends JFrame{
 	private MusicPlayer musicPlayerTopRated;
 	private MusicPlayer musicPlayerTopListened;
 	
+	private IndpMusicPlayer currentPlayer;
+	
 	public LoggedInDriverGUI(int userID)
 	{		
 		super("Home Screen");
@@ -138,8 +140,8 @@ public class LoggedInDriverGUI extends JFrame{
 		buttonPanel.add(trgButton);
 		buttonPanel.add(searchButton);
 
-		trg = new TopRatedGUI(new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20));
-		tlg = new TopListenedGUI(new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20));
+		trg = new TopRatedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
+		tlg = new TopListenedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
 		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", 0);
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
@@ -160,6 +162,47 @@ public class LoggedInDriverGUI extends JFrame{
 		mainPanel.setBackground(FirstPageGUI.white);
 	}
 	
+	public void changeListenedFrame(IndpMusicPlayer player)
+	{
+		currentPlayer = player;
+		tlg.stopSong();
+		mainPanel.remove(tlgScroll);
+		mainPanel.remove(musicPlayerTopListened);
+		mainPanel.add(player);
+		 mainPanel.revalidate();
+	        mainPanel.repaint();
+	}
+	
+	public void changeRatedFrame(IndpMusicPlayer player)
+	{
+		currentPlayer = player;
+		trg.stopSong();
+		mainPanel.remove(trgScroll);
+		mainPanel.remove(musicPlayerTopRated);
+		mainPanel.add(player);
+		 mainPanel.revalidate();
+	        mainPanel.repaint();
+	}
+	
+	public void changeBackListenedFrame()
+	{
+		mainPanel.remove(currentPlayer);
+		mainPanel.add(tlgScroll, BorderLayout.WEST);
+		mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
+        mainPanel.revalidate();
+        mainPanel.repaint();
+	}
+	
+	public void changeBackRatedFrame()
+	{
+		mainPanel.remove(currentPlayer);
+		mainPanel.add(trgScroll, BorderLayout.WEST);
+		mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
+		//trg.startSong();
+        mainPanel.revalidate();
+        mainPanel.repaint();
+	}
+	
 	private void createGUI()
 	{
 		setLayout(new FlowLayout());
@@ -177,7 +220,7 @@ public class LoggedInDriverGUI extends JFrame{
 				removePanel();
 				mainPanel.add(trgScroll, BorderLayout.WEST);
 				mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
-				trg.startSong();
+				//trg.startSong();
 				currentJpanel = 3;
 	            mainPanel.revalidate();
 	            mainPanel.repaint();
@@ -190,7 +233,7 @@ public class LoggedInDriverGUI extends JFrame{
 				removePanel();
 				mainPanel.add(tlgScroll, BorderLayout.WEST);
 				mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
-				tlg.startSong();
+				//tlg.startSong();
 				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
 				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
 				currentJpanel = 4;

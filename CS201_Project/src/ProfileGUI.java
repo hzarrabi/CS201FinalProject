@@ -58,6 +58,7 @@ public class ProfileGUI extends JPanel{
 	private JFileChooser jfl;
 	private JLabel picturePic;
 	private JButton pictureButton;
+	private JButton backButton;
 	
 	private String key;
 	private Integer userId;
