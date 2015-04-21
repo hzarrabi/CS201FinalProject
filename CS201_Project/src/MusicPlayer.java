@@ -90,6 +90,7 @@ public class MusicPlayer extends JPanel{
 		artist.setPreferredSize(new Dimension(dim.width-10, dim.height/15));
 		rating = new JLabel("Rating and # of Listens");
 		backButton = new JButton("back");
+		
 		playButton = new JButton("Play");
 		forwardButton = new JButton("forward");
 		pauseButton = new JButton("Pause");
@@ -110,6 +111,22 @@ public class MusicPlayer extends JPanel{
 		bottomPanel.add(pauseButton);
 		bottomPanel.add(forwardButton);
 	
+		backButton.setOpaque(false);
+		backButton.setContentAreaFilled(false);
+		backButton.setBorderPainted(false);
+		
+		playButton.setOpaque(false);
+		playButton.setContentAreaFilled(false);
+		playButton.setBorderPainted(false);
+		
+		pauseButton.setOpaque(false);
+		pauseButton.setContentAreaFilled(false);
+		pauseButton.setBorderPainted(false);
+		
+		forwardButton.setOpaque(false);
+		forwardButton.setContentAreaFilled(false);
+		forwardButton.setBorderPainted(false);
+		
 		add(bottomPanel, BorderLayout.SOUTH);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(FirstPageGUI.white);

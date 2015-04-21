@@ -36,13 +36,13 @@ public class IndpMusicPlayer extends JPanel{
 	private String songName;
 	private MusicModel musicObject;
 	private Thread myThread;
-	JButton commentButton;
-	JButton favoriteButton;
-	JButton rateButton;
+	private JButton commentButton;
+	private JButton favoriteButton;
+	private JButton rateButton;
 	
 	TopGUI top;
 	
-	JButton backPageButton;
+	private JButton backPageButton;
 	
 	private ArrayList<JButton> allButtons;
 	private ArrayList<MusicModel> allSongs;
@@ -52,9 +52,9 @@ public class IndpMusicPlayer extends JPanel{
 	{
 		songName = songTitle;
 		musicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(songName);
+		backPageButton = new JButton("back a  page");
 		initializeComponents();
 		createGUI();
-		backPageButton = new JButton("back a  page");
 		setEventHandlers();
 		setBounds(0,0,dim.width/4, dim.height);
 		setVisible(true);
@@ -100,12 +100,11 @@ public class IndpMusicPlayer extends JPanel{
 		commentButton = new JButton();
 		favoriteButton = new JButton();
 		rateButton = new JButton();
-		rateButton.setIcon(new ImageIcon("data/star1.png"));
-		commentButton.setIcon(new ImageIcon("data/headphones1.png"));
-		favoriteButton.setIcon(new ImageIcon("data/profile.png"));
 		commentButton.setPreferredSize(new Dimension(dim.width/20, dim.height/16));
 		rateButton.setPreferredSize(new Dimension(dim.width/20, dim.height/16));
 		favoriteButton.setPreferredSize(new Dimension(dim.width/20, dim.height/16));
+		
+		
 		//tlgButton.setBackground(FirstPageGUI.green);
 		commentButton.setOpaque(false);
 		commentButton.setContentAreaFilled(false);
@@ -116,6 +115,9 @@ public class IndpMusicPlayer extends JPanel{
 		favoriteButton.setOpaque(false);
 		favoriteButton.setContentAreaFilled(false);
 		favoriteButton.setBorderPainted(false);
+		rateButton.setIcon(new ImageIcon("data/star1.png"));
+		commentButton.setIcon(new ImageIcon("data/headphones1.png"));
+		favoriteButton.setIcon(new ImageIcon("data/profile.png"));
 		album = new JLabel("");
 		album.setPreferredSize(new Dimension(dim.width-10, dim.width-10));
 		setPreferredSize(new Dimension(dim.width, dim.height));
@@ -134,9 +136,21 @@ public class IndpMusicPlayer extends JPanel{
 		artist.setPreferredSize(new Dimension(dim.width-10, dim.height/15));
 		rating = new JLabel("Rating and # of Listens");
 		backButton = new JButton("back");
+		backButton.setOpaque(false);
+		backButton.setContentAreaFilled(false);
+		backButton.setBorderPainted(false);
 		playButton = new JButton("Play");
+		playButton.setOpaque(false);
+		playButton.setContentAreaFilled(false);
+		playButton.setBorderPainted(false);
 		forwardButton = new JButton("forward");
+		forwardButton.setOpaque(false);
+		forwardButton.setContentAreaFilled(false);
+		forwardButton.setBorderPainted(false);
 		pauseButton = new JButton("Pause");
+		pauseButton.setOpaque(false);
+		pauseButton.setContentAreaFilled(false);
+		pauseButton.setBorderPainted(false);
 
 	}
 	
@@ -167,6 +181,10 @@ public class IndpMusicPlayer extends JPanel{
 		mainPanel.add(artist);
 		mainPanel.add(rating);
 		mainPanel.add(backPageButton);
+		backPageButton.setOpaque(false);
+		backPageButton.setContentAreaFilled(false);
+		backPageButton.setBorderPainted(false);
+		backPageButton.setIcon(new ImageIcon("data/BackPage.png"));
 		add(mainPanel, BorderLayout.CENTER);
 	}
 	
@@ -196,6 +214,11 @@ public class IndpMusicPlayer extends JPanel{
 		mainPanel.add(artist);
 		mainPanel.add(rating);
 		mainPanel.add(backPageButton);
+		
+		backPageButton.setOpaque(false);
+		backPageButton.setContentAreaFilled(false);
+		backPageButton.setBorderPainted(false);
+		backPageButton.setIcon(new ImageIcon("data/BackPage.png"));
 		add(mainPanel, BorderLayout.CENTER);
 	}
 	
