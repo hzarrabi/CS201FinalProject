@@ -429,7 +429,7 @@ public class ProfileGUI extends JPanel{
 				
 				if(editFirstName.getText().length()>11 || editFirstName.getText().length()<5) fn=false;
 				if(editLastName.getText().length()>11 || editLastName.getText().length()<5) ln=false;
-				if(editEmail.getText().length()>11 || editEmail.getText().length()<5) em=false;
+				if(editEmail.getText().length()>30 || editEmail.getText().length()<5) em=false;
 				
 				if(fn && ln && em)
 				{
@@ -450,7 +450,7 @@ public class ProfileGUI extends JPanel{
 						ps.setString(3, newEmail);
 						ps.setInt(4, userId);
 						ps.execute();
-					
+						System.out.println("changed the stuff");
 					} catch (SQLException e1)
 					{
 						e1.printStackTrace();

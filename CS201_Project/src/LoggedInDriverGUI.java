@@ -159,15 +159,10 @@ public class LoggedInDriverGUI extends JFrame{
 		buttonPanel.add(trgButton);
 		buttonPanel.add(searchButton);
 
-<<<<<<< HEAD
-		trg = new TopRatedGUI(new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20));
-		tlg = new TopListenedGUI(new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20));
-		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,conn);
-=======
+
 		trg = new TopRatedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
 		tlg = new TopListenedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
-		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", 0);
->>>>>>> 9d89551b4626360a9208f53e0d6f37e88860ccde
+		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,conn);
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
 
