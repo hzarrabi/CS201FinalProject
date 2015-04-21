@@ -165,7 +165,6 @@ public class MusicModel {
 	        }      
 	    }
 	
-		
 		//for multi-threading
 		public void run(){
 			this.playSong();
@@ -178,8 +177,4 @@ public class MusicModel {
 		mp.start();
 		return mp;
 	}
-	
-
-	
-	
 }

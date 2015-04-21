@@ -204,7 +204,6 @@ public class MusicPlayer extends JPanel{
 				artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
 				myThread = musicObject.playTheSong();
 			}
-		});
-		
+		});	
 	}
 }
