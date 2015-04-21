@@ -102,35 +102,40 @@ public class MusicPlayer extends JPanel{
 	{
 		setBackground(FirstPageGUI.white);
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(dim.width/2, dim.height/20));
-		buttonPanel.setBackground(FirstPageGUI.color);
+		buttonPanel.setPreferredSize(new Dimension(dim.width, dim.height/20));
+		buttonPanel.setBackground(FirstPageGUI.green);
 		JPanel bottomPanel = new JPanel();
-		bottomPanel.setPreferredSize(new Dimension(dim.width, dim.height/10));
+		bottomPanel.setPreferredSize(new Dimension(dim.width, dim.height/13));
 		bottomPanel.setBackground(FirstPageGUI.color);
-		bottomPanel.add(backButton);
-		bottomPanel.add(playButton);
-		bottomPanel.add(pauseButton);
-		bottomPanel.add(forwardButton);
 	
 		backButton.setOpaque(false);
 		backButton.setContentAreaFilled(false);
 		backButton.setBorderPainted(false);
 		backButton.setIcon(new ImageIcon("data/ReverseButton.png"));
+		backButton.setPreferredSize(new Dimension(dim.width/5, dim.height/17));
 		
 		playButton.setOpaque(false);
 		playButton.setContentAreaFilled(false);
 		playButton.setBorderPainted(false);
 		playButton.setIcon(new ImageIcon("data/playButton.png"));
+		playButton.setPreferredSize(new Dimension(dim.width/5, dim.height/15));
 		
 		pauseButton.setOpaque(false);
 		pauseButton.setContentAreaFilled(false);
 		pauseButton.setBorderPainted(false);
 		pauseButton.setIcon(new ImageIcon("data/pauseButton.png"));
+		pauseButton.setPreferredSize(new Dimension(dim.width/5, dim.height/17));
 		
 		forwardButton.setOpaque(false);
 		forwardButton.setContentAreaFilled(false);
 		forwardButton.setBorderPainted(false);
 		forwardButton.setIcon(new ImageIcon("data/forwardButton.png"));
+		forwardButton.setPreferredSize(new Dimension(dim.width/5, dim.height/17));
+		
+		bottomPanel.add(backButton);
+		bottomPanel.add(playButton);
+		bottomPanel.add(pauseButton);
+		bottomPanel.add(forwardButton);
 		
 		add(bottomPanel, BorderLayout.SOUTH);
 		JPanel mainPanel = new JPanel();

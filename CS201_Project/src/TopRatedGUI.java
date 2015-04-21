@@ -14,7 +14,7 @@ public class TopRatedGUI extends TopGUI{
 		super();
 		this.setPreferredSize(d);
 		this.playerBigDim = playerBigDim;
-		this.setBackground(FirstPageGUI.white);
+		this.setBackground(FirstPageGUI.darkGrey);
 		dimPlayer = playerDim;
 		this.mainPage = main;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -27,7 +27,7 @@ public class TopRatedGUI extends TopGUI{
 	{
 		super();
 		this.setPreferredSize(d);
-		this.setBackground(FirstPageGUI.white);
+		this.setBackground(FirstPageGUI.darkGrey);
 		dimPlayer = playerDim;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtons();

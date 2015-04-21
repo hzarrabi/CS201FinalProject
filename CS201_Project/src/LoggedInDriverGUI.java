@@ -175,8 +175,8 @@ public class LoggedInDriverGUI extends JFrame{
 		buttonPanel.add(searchButton);
 
 
-		trg = new TopRatedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(5*dim.width/24, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
-		tlg = new TopListenedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(5*dim.width/24, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
+		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
+		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
 		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,FirstPageGUI.conn);
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
@@ -188,6 +188,8 @@ public class LoggedInDriverGUI extends JFrame{
 		trgScroll.setPreferredSize(new Dimension(dim.width/12, 15*dim.height/20));
 		tlgScroll.setPreferredSize(new Dimension(dim.width/12, 15*dim.height/20));
 		fgScroll.setPreferredSize(new Dimension(dim.width/15, 15*dim.height/20));
+		trgScroll.setBorder(null);
+		tlgScroll.setBorder(null);
 		mainPanel.add(fgScroll, BorderLayout.CENTER);
 		bottomColor = new JPanel();
 		bottomColor.setPreferredSize(new Dimension(dim.width/3, dim.height/20));

@@ -24,7 +24,7 @@ public class TopListenedGUI extends TopGUI{
 		this.setPreferredSize(d);
 		this.mainPage = main;
 		this.dimPlayer = dimPlayer;
-		this.setBackground(FirstPageGUI.white);
+		this.setBackground(FirstPageGUI.darkGrey);
 		this.playerBigDim = dimBigPlayer;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtons();
@@ -36,7 +36,7 @@ public class TopListenedGUI extends TopGUI{
 		super();
 		this.setPreferredSize(d);
 		this.dimPlayer = dimPlayer;
-		this.setBackground(FirstPageGUI.white);
+		this.setBackground(FirstPageGUI.darkGrey);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtons();
 		addEventHandlers();
