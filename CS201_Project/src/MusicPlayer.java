@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 
 public class MusicPlayer extends JPanel{
@@ -108,8 +109,10 @@ public class MusicPlayer extends JPanel{
 		bottomPanel.add(playButton);
 		bottomPanel.add(pauseButton);
 		bottomPanel.add(forwardButton);
+	
 		add(bottomPanel, BorderLayout.SOUTH);
 		JPanel mainPanel = new JPanel();
+		mainPanel.setBackground(FirstPageGUI.white);
 		mainPanel.setPreferredSize(new Dimension(dim.width, dim.height));
 		mainPanel.add(album);
 		mainPanel.add(artist);
@@ -117,6 +120,10 @@ public class MusicPlayer extends JPanel{
 		rating.setBackground(FirstPageGUI.white);
 		artist.setForeground(FirstPageGUI.darkGrey);
 		rating.setForeground(FirstPageGUI.darkGrey);
+		artist.setFont(FirstPageGUI.font);
+		rating.setFont(FirstPageGUI.font);
+		rating.setHorizontalAlignment(SwingConstants.CENTER);
+		artist.setHorizontalAlignment(SwingConstants.CENTER);
 		mainPanel.add(rating);
 		add(mainPanel, BorderLayout.CENTER);
 	}
