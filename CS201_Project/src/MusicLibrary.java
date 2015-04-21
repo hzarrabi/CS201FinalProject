@@ -66,7 +66,6 @@ public class MusicLibrary extends JFrame {
 	}
 
 	
-	
 	public MusicLibrary() throws Exception{
 		super("MUSIC");
 		setSize(500,600);
