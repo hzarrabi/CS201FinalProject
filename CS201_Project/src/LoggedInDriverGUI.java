@@ -247,19 +247,38 @@ public class LoggedInDriverGUI extends JFrame{
 					Statement st = conn.createStatement();
 					String queryCheck = "";
 					boolean check_found = false;
-					for (int i = 0; i < sql_queries.length; i++)
-					{
-						queryCheck = sql_queries[i];
-						PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-						ps.setString(1, searchText);
-						ResultSet rs = ps.executeQuery();
-						if(rs.absolute(1))
-						{
-							
-							System.out.println("Search: " + searchText);
-							check_found = true;
-						}
+
+					//check for users
+					queryCheck = sql_queries[0];
+					PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
+					ps.setString(1, searchText);
+					ResultSet rs = ps.executeQuery();
+					if(rs.absolute(1))
+					{	
+						System.out.println("Username " + searchText +" exists!");
+						check_found = true;
 					}
+					//check for songs
+					queryCheck = sql_queries[1];
+					ps= (PreparedStatement) conn.prepareStatement(queryCheck);
+					ps.setString(1, searchText);
+					rs = ps.executeQuery();
+					if(rs.absolute(1))
+					{	
+						System.out.println("Song " + searchText + " exists!");
+						check_found = true;
+					}
+					//check for artists
+					queryCheck = sql_queries[2];
+					ps= (PreparedStatement) conn.prepareStatement(queryCheck);
+					ps.setString(1, searchText);
+					rs = ps.executeQuery();
+					if(rs.absolute(1))
+					{	
+						System.out.println("Artist " + searchText + " exists!");
+						check_found = true;
+					}
+				
 					if (!check_found)
 					{
 						System.out.println("Not found");
