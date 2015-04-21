@@ -179,7 +179,8 @@ public class MusicPlayer extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				myThread.suspend();
+				if (myThread != null)
+					myThread.suspend();
 				if (currentSong == allSongs.size()-1)
 				{
 					musicObject = allSongs.get(0);
@@ -210,7 +211,8 @@ public class MusicPlayer extends JPanel{
 		backButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				myThread.suspend();
+				if (myThread != null)
+					myThread.suspend();
 				if (currentSong == 0)
 				{
 					musicObject = allSongs.get(allSongs.size()-1);
