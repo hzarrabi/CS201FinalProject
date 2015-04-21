@@ -9,6 +9,9 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -25,6 +28,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
 
 
 public class ProfileGUI extends JPanel{
@@ -62,11 +68,14 @@ public class ProfileGUI extends JPanel{
 	
 	private String key;
 	private Integer userId;
-	public ProfileGUI(Dimension d, String key, int userID)
+	private Connection conn;
+	
+	public ProfileGUI(Dimension d, String key, int userID, Connection conn)
 	{
 		dim = d;
 		this.key = key;
-		this.userId=userId;
+		this.userId=userID;
+		this.conn=conn;
 		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
 		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
 		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
@@ -214,6 +223,29 @@ public class ProfileGUI extends JPanel{
 		unFollow.setOpaque(true);
 		follow.setOpaque(true);
 		editEmail.setText("email");
+		
+		try
+		{
+			Statement stat = (Statement) conn.createStatement();
+			String sql = "Select * from user_table Where iduser_table='" + userId+"'";
+			ResultSet rs = stat.executeQuery(sql);
+			if (rs.next())
+            {
+				name.setText(rs.getString("first_name")+" "+rs.getString("last_name"));
+				email.setText(rs.getString("email"));
+				rs.close();
+				stat.close();
+            }
+            else
+            {
+            	System.out.println("something wrong");
+            }
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		editEmail.setFont(FirstPageGUI.smallFont);
 		editFirstName.setText("first name");
 		editFirstName.setFont(FirstPageGUI.smallFont);
@@ -422,49 +454,71 @@ public class ProfileGUI extends JPanel{
 				
 				if(editFirstName.getText().length()>11 || editFirstName.getText().length()<5) fn=false;
 				if(editLastName.getText().length()>11 || editLastName.getText().length()<5) ln=false;
-				if(editLastName.getText().length()>11 || editLastName.getText().length()<5) ln=false;
+				if(editEmail.getText().length()>30 || editEmail.getText().length()<5) em=false;
 				
-				
-				
-				String newFirstName = editFirstName.getText();
-				String newLastName = editLastName.getText();
-				String newEmail = editEmail.getText();
-				editFirstName.setText("first name");
-				editLastName.setText("last name");
-				editEmail.setText("email");
-				editFirstName.setForeground(FirstPageGUI.lightGrey);
-				editLastName.setForeground(FirstPageGUI.lightGrey);
-				editEmail.setForeground(FirstPageGUI.lightGrey);
-				if (pictureFile != null)
+				if(fn && ln && em)
 				{
-					ImageIcon newIcon2 = new ImageIcon(pictureFile.getPath());
-					Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
-					picturePic.setIcon(new ImageIcon(img2));
-					profilePic = new ImageIcon(img2);
+					String newFirstName = editFirstName.getText();
+					String newLastName = editLastName.getText();
+					String newEmail = editEmail.getText();
+					
+					System.out.println("the id is"+userId);
+					System.out.println("the first name is"+newFirstName);
+					System.out.println("the last name is"+newLastName);
+					System.out.println("the email is"+newEmail);
+					
+					try
+					{
+						PreparedStatement ps = (PreparedStatement) conn.prepareStatement("UPDATE user_table SET first_name= ?, last_name=?, email=?" + "WHERE iduser_table = ?");
+						ps.setString(1, newFirstName);
+						ps.setString(2, newLastName);
+						ps.setString(3, newEmail);
+						ps.setInt(4, userId);
+						ps.execute();
+						ps.close();
+					} catch (SQLException e1)
+					{
+						e1.printStackTrace();
+					}
+					
+					editFirstName.setText("first name");
+					editLastName.setText("last name");
+					editEmail.setText("email");
+					editFirstName.setForeground(FirstPageGUI.lightGrey);
+					editLastName.setForeground(FirstPageGUI.lightGrey);
+					editEmail.setForeground(FirstPageGUI.lightGrey);
+					if (pictureFile != null)
+					{
+						ImageIcon newIcon2 = new ImageIcon(pictureFile.getPath());
+						Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+						picturePic.setIcon(new ImageIcon(img2));
+						profilePic = new ImageIcon(img2);
+					}
+					name.setText(newFirstName + " "+newLastName);
+					email.setText(newEmail);
+					bio.setEditable(false);
+					namePanel.remove(editFirstName);
+					editFirstName.setVisible(false);
+					namePanel.remove(editLastName);
+					editLastName.setVisible(false);
+					emailPanel.remove(editEmail);
+					editEmail.setVisible(false);
+					buttonP.remove(saveButton);
+					saveButton.setVisible(false);
+					buttonP.remove(cancelButton);
+					cancelButton.setVisible(false);
+					buttonP.add(edit);
+					edit.setVisible(true);
+					emailPanel.add(email);
+					email.setVisible(true);
+					namePanel.add(name);
+					name.setVisible(true);
+					picture.remove(pictureButton);
+					picture.add(picturePic);
+					pictureButton.setVisible(false);
+					repaint();
 				}
-				name.setText(newFirstName + " "+newLastName);
-				email.setText(newEmail);
-				bio.setEditable(false);
-				namePanel.remove(editFirstName);
-				editFirstName.setVisible(false);
-				namePanel.remove(editLastName);
-				editLastName.setVisible(false);
-				emailPanel.remove(editEmail);
-				editEmail.setVisible(false);
-				buttonP.remove(saveButton);
-				saveButton.setVisible(false);
-				buttonP.remove(cancelButton);
-				cancelButton.setVisible(false);
-				buttonP.add(edit);
-				edit.setVisible(true);
-				emailPanel.add(email);
-				email.setVisible(true);
-				namePanel.add(name);
-				name.setVisible(true);
-				picture.remove(pictureButton);
-				picture.add(picturePic);
-				pictureButton.setVisible(false);
-				repaint();
+				else System.out.println("incorrect number of characters!");
 				
 			}
 			
