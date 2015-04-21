@@ -194,7 +194,7 @@ public class FirstPageGUI extends JFrame{
 		createNewUser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				new CreateUserGUI();
-				//dispose();
+				dispose();
 			}
 		});
 		guest.addActionListener(new ActionListener(){
