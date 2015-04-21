@@ -65,7 +65,7 @@ public class FirstPageGUI extends JFrame{
 	final static Font fontTitle = new Font("Helvetica Neue", Font.PLAIN, 24);
 	
 	//for connecting database
-	static Connection conn;
+	//static Connection conn;
 	
 	public FirstPageGUI()
 	{
@@ -75,19 +75,19 @@ public class FirstPageGUI extends JFrame{
 		makePretty();
 		//System.out.println("YOOOOOOO");
 		setEventHandlers();
-		connect();
+		//connect();
 	}
 	
-	private void connect(){
-			 try {
-				 Class.forName("com.mysql.jdbc.Driver");
-				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-				 } catch (ClassNotFoundException e) {
-				 e.printStackTrace();
-				 } catch (SQLException e) {
-				 e.printStackTrace();
-				 }
-	}
+//	private void connect(){
+//			 try {
+//				 Class.forName("com.mysql.jdbc.Driver");
+//				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+//				 } catch (ClassNotFoundException e) {
+//				 e.printStackTrace();
+//				 } catch (SQLException e) {
+//				 e.printStackTrace();
+//				 }
+//	}
 	
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -193,7 +193,7 @@ public class FirstPageGUI extends JFrame{
 	private void setEventHandlers(){
 		createNewUser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				new CreateUserGUI(FirstPageGUI.this);
+				new CreateUserGUI();
 				//dispose();
 			}
 		});
@@ -293,17 +293,17 @@ public class FirstPageGUI extends JFrame{
 		String thePassword=PasswordHash.hash(password.getText());//returning the password hashed
 		try
 		{
-			Statement stat = (Statement) conn.createStatement();
+			Statement stat = (Statement) ConnectionClass.conn.createStatement();
 			String sql = "Select * from user_table Where username='" + theUserName + "' and password='"+thePassword+"'";
 			ResultSet rs = stat.executeQuery(sql);
 			if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
             {
-				new LoggedInDriverGUI(rs.getInt("iduser_table"), this);
+				new LoggedInDriverGUI(rs.getInt("iduser_table"));
 				System.out.println(rs.getInt("iduser_table"));
 				stat.close();
 				//conn.close();
-				setVisible(false);
-				//dispose();
+				//setVisible(false);
+				dispose();
             }
             else
             {
@@ -321,16 +321,16 @@ public class FirstPageGUI extends JFrame{
 		String thePassword=PasswordHash.hash(password.getText());//returning the password hashed
 		try
 		{
-			Statement stat = (Statement) conn.createStatement();
+			Statement stat = (Statement) ConnectionClass.conn.createStatement();
 			String sql = "Select * from user_table Where username='" + theUserName + "' and password='"+thePassword+"'";
 			ResultSet rs = stat.executeQuery(sql);
 			if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
             {
-				new LoggedInDriverGUI(rs.getInt("iduser_table"), this);
+				new LoggedInDriverGUI(rs.getInt("iduser_table"));
 				stat.close();
 				//conn.close();
-				setVisible(false);
-				//dispose();
+				//setVisible(false);
+				dispose();
             }
             else
             {
@@ -341,19 +341,5 @@ public class FirstPageGUI extends JFrame{
 		{
 			e1.printStackTrace();
 		}				
-	}
-	
-	
-	
-	
-	
-	public static void main(String [] args)
-	{
-		new FirstPageGUI();
-//		try {
-//			new MusicLibrary();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
 	}
 }

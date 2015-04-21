@@ -69,20 +69,22 @@ public class LoggedInDriverGUI extends JFrame{
 	private MusicPlayer musicPlayerTopListened;
 	
 	private IndpMusicPlayer currentPlayer;
-	private FirstPageGUI firstPage;
+	//private FirstPageGUI firstPage;
 	
-	public LoggedInDriverGUI(int userID, FirstPageGUI firstPage)
+	public LoggedInDriverGUI(int userID)
 	{		
 		super("Home Screen");
 		testField = new JTextField();
-		this.firstPage = firstPage;
+		//this.firstPage = firstPage;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				firstPage.setVisible(true);
-				LoggedInDriverGUI.this.setVisible(false);		
+				//firstPage.setVisible(true);
+				new FirstPageGUI();
+				
+				LoggedInDriverGUI.this.dispose();	
 			}
 
 		});
@@ -177,7 +179,7 @@ public class LoggedInDriverGUI extends JFrame{
 
 		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
 		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
-		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,FirstPageGUI.conn);
+		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,ConnectionClass.conn);
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
 

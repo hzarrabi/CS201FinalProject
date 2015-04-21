@@ -57,19 +57,20 @@ public class CreateUserGUI extends JFrame{
 	String userName;
 	String passWord;
 	Connection conn;
-	FirstPageGUI firstPage;
+	//FirstPageGUI firstPage;
 	
-	public CreateUserGUI(FirstPageGUI firstPage){
+	public CreateUserGUI(){
 		super("Create your Account!");
 		//connect();
-		this.firstPage = firstPage;
+		//this.firstPage = firstPage;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
 
 			@Override
 			public void windowClosing(WindowEvent e) {
-				firstPage.setVisible(true);
-				CreateUserGUI.this.setVisible(false);		
+				//firstPage.setVisible(true);
+				new FirstPageGUI();
+				CreateUserGUI.this.dispose();		
 			}
 
 		});
@@ -514,7 +515,7 @@ public class CreateUserGUI extends JFrame{
 						if (rs1.next())
 			            {
 							System.out.println("the id is "+rs1.getInt("iduser_table"));
-							new LoggedInDriverGUI(rs1.getInt("iduser_table"), firstPage);
+							new LoggedInDriverGUI(rs1.getInt("iduser_table"));
 							stat.close();
 							conn.close();
 							System.out.println("new user added!");

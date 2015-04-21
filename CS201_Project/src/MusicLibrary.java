@@ -88,9 +88,9 @@ public class MusicLibrary extends JFrame {
 		
 		try{
 			
-			Statement st = FirstPageGUI.conn.createStatement();
+			Statement st = ConnectionClass.conn.createStatement();
 			String queryCheck = "SELECT * from music_table"; //WHERE song_name";
-			PreparedStatement ps = (PreparedStatement) FirstPageGUI.conn.prepareStatement(queryCheck);
+			PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement(queryCheck);
 			ResultSet rs = ps.executeQuery();
 			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
@@ -134,9 +134,9 @@ public class MusicLibrary extends JFrame {
 		topListenedSongs = new ArrayList<MusicModel>();
 		try{
 			
-			Statement st = FirstPageGUI.conn.createStatement();
+			Statement st = ConnectionClass.conn.createStatement();
 			String queryCheck = "SELECT * from music_table ORDER BY numb_playe_count DESC"; //WHERE song_name";
-			PreparedStatement ps = (PreparedStatement) FirstPageGUI.conn.prepareStatement(queryCheck);
+			PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement(queryCheck);
 			ResultSet rs = ps.executeQuery();
 			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
@@ -165,9 +165,9 @@ public class MusicLibrary extends JFrame {
 		topRatedSongs = new ArrayList<MusicModel>();
 		try{
 			
-			Statement st = FirstPageGUI.conn.createStatement();
+			Statement st = ConnectionClass.conn.createStatement();
 			String queryCheck = "SELECT * from music_table ORDER BY CAST(rating_sum AS DECIMAL)/numb_of_ratings DESC"; //WHERE song_name";
-			PreparedStatement ps = (PreparedStatement) FirstPageGUI.conn.prepareStatement(queryCheck);
+			PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement(queryCheck);
 			ResultSet rs = ps.executeQuery();
 			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
