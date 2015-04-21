@@ -52,27 +52,27 @@ public class NewUserWindow extends JFrame
 
 	public NewUserWindow()
 	{
-		connect();
+		//connect();
 		initialize();
 		addActionListener();
 	}
 
-	private void connect()
-	{
-		connection = null;
-		dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
-		userName = "cs201";
-		passWord = "manishhostage";
-
-			 try {
-				 Class.forName("com.mysql.jdbc.Driver");
-				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-				 } catch (ClassNotFoundException e) {
-				 e.printStackTrace();
-				 } catch (SQLException e) {
-				 e.printStackTrace();
-				 }
-	}
+//	private void connect()
+//	{
+//		connection = null;
+//		dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
+//		userName = "cs201";
+//		passWord = "manishhostage";
+//
+//			 try {
+//				 Class.forName("com.mysql.jdbc.Driver");
+//				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+//				 } catch (ClassNotFoundException e) {
+//				 e.printStackTrace();
+//				 } catch (SQLException e) {
+//				 e.printStackTrace();
+//				 }
+//	}
 	
 	
 	

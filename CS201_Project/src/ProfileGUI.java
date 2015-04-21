@@ -469,7 +469,7 @@ public class ProfileGUI extends JPanel{
 					
 					try
 					{
-						PreparedStatement ps = (PreparedStatement) conn.prepareStatement("UPDATE user_table SET first_name= ?, last_name=?, email=?" + "WHERE iduser_table = ?");
+						PreparedStatement ps = (PreparedStatement) FirstPageGUI.conn.prepareStatement("UPDATE user_table SET first_name= ?, last_name=?, email=?" + "WHERE iduser_table = ?");
 						ps.setString(1, newFirstName);
 						ps.setString(2, newLastName);
 						ps.setString(3, newEmail);

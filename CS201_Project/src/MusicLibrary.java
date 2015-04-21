@@ -11,6 +11,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -37,49 +38,59 @@ public class MusicLibrary extends JFrame {
 	//hold all the music objects
 	//private Vector<MusicModel> musicModelVector;
 	private HashMap<String, MusicModel> musicModelMap;
+	private ArrayList <MusicModel> topListenedSongs;
+	private ArrayList<MusicModel> topRatedSongs;
 	
-	//fix this cause its bad coding style
-	Connection connection;
-	String dburl;
-	String userName;
-	String passWord;
-	Connection conn;
+//	//fix this cause its bad coding style
+//	//Connection connection;
+//	//String dburl;
+//	//String userName;
+//	//String passWord;
+//	
+//	//Connection conn;
 
-	private void connect(){
-		connection = null;
-		dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
-		userName = "cs201";
-		passWord = "manishhostage";
-
-			 try {
-				 Class.forName("com.mysql.jdbc.Driver");
-				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-				 } catch (ClassNotFoundException e) {
-				 e.printStackTrace();
-				 } catch (SQLException e) {
-				 e.printStackTrace();
-				 }
-	}
-	
+//	private void connect(){
+//		connection = null;
+//		dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
+//		userName = "cs201";
+//		passWord = "manishhostage";
+//
+//			 try {
+//				 Class.forName("com.mysql.jdbc.Driver");
+//				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+//				 } catch (ClassNotFoundException e) {
+//				 e.printStackTrace();
+//				 } catch (SQLException e) {
+//				 e.printStackTrace();
+//				 }
+//	}
+//	
 	public HashMap<String,MusicModel> getMusicModelMap(){
 		return musicModelMap;
 	}
-
+	
+	public ArrayList<MusicModel> getTopListenedSongs(){
+		return topListenedSongs;
+	}
+	
+	public ArrayList<MusicModel> getTopRatedSongs(){
+		return topRatedSongs;
+	}
 	
 	public MusicLibrary() throws Exception{
 		super("MUSIC");
 		setSize(500,600);
 		setLocation(500,0);
-		connect();
+		//connect();
 		
 		//musicModelVector = new Vector<MusicModel> ();
 		musicModelMap = new HashMap<String, MusicModel> ();
 		
 		try{
 			
-			Statement st = conn.createStatement();
+			Statement st = FirstPageGUI.conn.createStatement();
 			String queryCheck = "SELECT * from music_table"; //WHERE song_name";
-			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
+			PreparedStatement ps = (PreparedStatement) FirstPageGUI.conn.prepareStatement(queryCheck);
 			ResultSet rs = ps.executeQuery();
 			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
 			int columnsNumber = rsmd.getColumnCount();
@@ -120,8 +131,67 @@ public class MusicLibrary extends JFrame {
 		}catch(Exception E){
 			E.printStackTrace();	
 		}
-	
+		topListenedSongs = new ArrayList<MusicModel>();
+		try{
+			
+			Statement st = FirstPageGUI.conn.createStatement();
+			String queryCheck = "SELECT * from music_table ORDER BY numb_playe_count DESC"; //WHERE song_name";
+			PreparedStatement ps = (PreparedStatement) FirstPageGUI.conn.prepareStatement(queryCheck);
+			ResultSet rs = ps.executeQuery();
+			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			
+			while (rs.next()){
 
+				//this is where we are creating our Music Objects
+				MusicModel MusicObject = new MusicModel();
+				
+				//adding all of the values from the database to the object
+				MusicObject.setMusicID(rs.getInt(1));
+				MusicObject.setSongName(rs.getString(2));
+				MusicObject.setArtistName(rs.getString(3));
+				MusicObject.setRatingSum(rs.getInt(4));
+				MusicObject.setNumberOfRatings(rs.getInt(5));
+				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
+				MusicObject.setSongPath(rs.getString(7));
+				MusicObject.setAlbumPath(rs.getString(8));
+				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
+				topListenedSongs.add(MusicObject);
+			} 
+		}catch (Exception e)
+		{
+				
+		}
+		topRatedSongs = new ArrayList<MusicModel>();
+		try{
+			
+			Statement st = FirstPageGUI.conn.createStatement();
+			String queryCheck = "SELECT * from music_table ORDER BY CAST(rating_sum AS DECIMAL)/numb_of_ratings DESC"; //WHERE song_name";
+			PreparedStatement ps = (PreparedStatement) FirstPageGUI.conn.prepareStatement(queryCheck);
+			ResultSet rs = ps.executeQuery();
+			java.sql.ResultSetMetaData rsmd = rs.getMetaData();
+			int columnsNumber = rsmd.getColumnCount();
+			
+			while (rs.next()){
 
+				//this is where we are creating our Music Objects
+				MusicModel MusicObject = new MusicModel();
+				
+				//adding all of the values from the database to the object
+				MusicObject.setMusicID(rs.getInt(1));
+				MusicObject.setSongName(rs.getString(2));
+				MusicObject.setArtistName(rs.getString(3));
+				MusicObject.setRatingSum(rs.getInt(4));
+				MusicObject.setNumberOfRatings(rs.getInt(5));
+				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
+				MusicObject.setSongPath(rs.getString(7));
+				MusicObject.setAlbumPath(rs.getString(8));
+				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
+				topRatedSongs.add(MusicObject);
+			} 
+		}catch (Exception e)
+		{
+				
+		}
 	}
 }

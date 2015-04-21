@@ -1,6 +1,7 @@
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
@@ -36,23 +37,24 @@ public class TopRatedGUI extends TopGUI{
 	
 	public void fillButtons() {
 
-			//int j = 0;
-			for (Entry<String, MusicModel> entry : LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().entrySet()){
-				String key = entry.getKey();
-				JButton newButton = new JButton(LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(key).getSongName());
-				newButton.setFont(FirstPageGUI.smallFont);
-				newButton.setBorder(new RoundedBorder());
-				newButton.setBackground(FirstPageGUI.darkGrey);
-				newButton.setForeground(FirstPageGUI.white);
-				newButton.setOpaque(true);
-				buttons.add(newButton);	
-				songs.add(LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(key));
-			}
-			for (int i = 0; i<((LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().size())); i++){
-				this.add(buttons.get(i));	
-				System.out.println(i);
-			}
+		ArrayList<MusicModel> topSongs = LoggedInDriverGUI.sharedMusicLibrary.getTopRatedSongs();
+		
+		for (int j = 0; j< topSongs.size(); j++){
+			MusicModel entry = topSongs.get(j);
+			JButton newButton = new JButton(entry.getSongName());
+			newButton.setFont(FirstPageGUI.smallFont);
+			newButton.setBorder(new RoundedBorder());
+			newButton.setBackground(FirstPageGUI.darkGrey);
+			newButton.setForeground(FirstPageGUI.white);
+			newButton.setOpaque(true);
+			buttons.add(newButton);	
+			songs.add(entry);
 		}
+		for (int i = 0; i<topSongs.size(); i++){
+			this.add(buttons.get(i));	
+			System.out.println(i);
+		}
+	}
 	@Override
 	public MusicPlayer initPlayer() {
 		// TODO Auto-generated method stub

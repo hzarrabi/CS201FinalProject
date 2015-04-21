@@ -1,12 +1,20 @@
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
+
+import com.mysql.jdbc.PreparedStatement;
 
 
 public class TopListenedGUI extends TopGUI{
@@ -35,18 +43,21 @@ public class TopListenedGUI extends TopGUI{
 	}
 	
 	public void fillButtons() {
-		for (Entry<String, MusicModel> entry : LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().entrySet()){
-			String key = entry.getKey();
-			JButton newButton = new JButton(LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(key).getSongName());
+		
+		ArrayList<MusicModel> topSongs = LoggedInDriverGUI.sharedMusicLibrary.getTopListenedSongs();
+		
+		for (int j = 0; j< topSongs.size(); j++){
+			MusicModel entry = topSongs.get(j);
+			JButton newButton = new JButton(entry.getSongName());
 			newButton.setFont(FirstPageGUI.smallFont);
 			newButton.setBorder(new RoundedBorder());
 			newButton.setBackground(FirstPageGUI.darkGrey);
 			newButton.setForeground(FirstPageGUI.white);
 			newButton.setOpaque(true);
 			buttons.add(newButton);	
-			songs.add(LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(key));
+			songs.add(entry);
 		}
-		for (int i = 0; i<((LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().size())); i++){
+		for (int i = 0; i<topSongs.size(); i++){
 			this.add(buttons.get(i));	
 			System.out.println(i);
 		}

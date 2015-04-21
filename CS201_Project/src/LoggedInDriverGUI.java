@@ -6,6 +6,9 @@ import java.awt.Graphics;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -59,18 +62,30 @@ public class LoggedInDriverGUI extends JFrame{
 			"SELECT * from music_table WHERE artist_name = ?"};
 	
 	private int userID;//unique user ID of the user that logged in
-	private Connection conn;//for database connection
+	//private Connection conn;//for database connection
 	
 	static MusicLibrary sharedMusicLibrary;
 	private MusicPlayer musicPlayerTopRated;
 	private MusicPlayer musicPlayerTopListened;
 	
 	private IndpMusicPlayer currentPlayer;
+	private FirstPageGUI firstPage;
 	
-	public LoggedInDriverGUI(int userID)
+	public LoggedInDriverGUI(int userID, FirstPageGUI firstPage)
 	{		
 		super("Home Screen");
 		testField = new JTextField();
+		this.firstPage = firstPage;
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter(){
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				firstPage.setVisible(true);
+				LoggedInDriverGUI.this.setVisible(false);		
+			}
+
+		});
 		testButton = new JButton("Search");
 		this.userID=userID;
 		
@@ -80,27 +95,27 @@ public class LoggedInDriverGUI extends JFrame{
 			
 		}
 
-		connect();
+		//connect();
 		initializeComponents();
 		createGUI();
 		setEventHandlers();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0,0,dim.width/3, dim.height);
 		setVisible(true);
 		setResizable(false);
 	}
-	
-	private void connect(){
-		 try {
-			 Class.forName("com.mysql.jdbc.Driver");
-			 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-			 } catch (ClassNotFoundException e) {
-			 e.printStackTrace();
-			 } catch (SQLException e) {
-			 e.printStackTrace();
-			 }
-}
-	
+//	
+//	private void connect(){
+//		 try {
+//			 Class.forName("com.mysql.jdbc.Driver");
+//			 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+//			 } catch (ClassNotFoundException e) {
+//			 e.printStackTrace();
+//			 } catch (SQLException e) {
+//			 e.printStackTrace();
+//			 }
+//}
+//	
 	
 	
 	private void initializeComponents()
@@ -162,7 +177,7 @@ public class LoggedInDriverGUI extends JFrame{
 
 		trg = new TopRatedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
 		tlg = new TopListenedGUI(this, new Dimension(dim.width/12, 15*dim.height/20), new Dimension(2*dim.width/12, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
-		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,conn);
+		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,FirstPageGUI.conn);
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
 

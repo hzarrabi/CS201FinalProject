@@ -65,7 +65,7 @@ public class FirstPageGUI extends JFrame{
 	final static Font fontTitle = new Font("Helvetica Neue", Font.PLAIN, 24);
 	
 	//for connecting database
-	Connection conn;
+	static Connection conn;
 	
 	public FirstPageGUI()
 	{
@@ -193,8 +193,8 @@ public class FirstPageGUI extends JFrame{
 	private void setEventHandlers(){
 		createNewUser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				new CreateUserGUI();
-				dispose();
+				new CreateUserGUI(FirstPageGUI.this);
+				//dispose();
 			}
 		});
 		guest.addActionListener(new ActionListener(){
@@ -298,11 +298,12 @@ public class FirstPageGUI extends JFrame{
 			ResultSet rs = stat.executeQuery(sql);
 			if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
             {
-				new LoggedInDriverGUI(rs.getInt("iduser_table"));
+				new LoggedInDriverGUI(rs.getInt("iduser_table"), this);
 				System.out.println(rs.getInt("iduser_table"));
 				stat.close();
-				conn.close();
-				dispose();
+				//conn.close();
+				setVisible(false);
+				//dispose();
             }
             else
             {
@@ -325,10 +326,11 @@ public class FirstPageGUI extends JFrame{
 			ResultSet rs = stat.executeQuery(sql);
 			if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
             {
-				new LoggedInDriverGUI(rs.getInt("iduser_table"));
+				new LoggedInDriverGUI(rs.getInt("iduser_table"), this);
 				stat.close();
-				conn.close();
-				dispose();
+				//conn.close();
+				setVisible(false);
+				//dispose();
             }
             else
             {

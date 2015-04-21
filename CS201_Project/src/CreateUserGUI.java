@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -55,31 +57,42 @@ public class CreateUserGUI extends JFrame{
 	String userName;
 	String passWord;
 	Connection conn;
-
+	FirstPageGUI firstPage;
 	
-	public CreateUserGUI(){
+	public CreateUserGUI(FirstPageGUI firstPage){
 		super("Create your Account!");
-		connect();
+		//connect();
+		this.firstPage = firstPage;
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter(){
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+				firstPage.setVisible(true);
+				CreateUserGUI.this.setVisible(false);		
+			}
+
+		});
 		initializeComponents();
 		createGUI();
 		setEventHandlers();
 	}
 	
-	private void connect(){
-		connection = null;
-		dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
-		userName = "cs201";
-		passWord = "manishhostage";
-
-			 try {
-				 Class.forName("com.mysql.jdbc.Driver");
-				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-				 } catch (ClassNotFoundException e) {
-				 e.printStackTrace();
-				 } catch (SQLException e) {
-				 e.printStackTrace();
-				 }
-	}
+//	private void connect(){
+//		connection = null;
+//		dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
+//		userName = "cs201";
+//		passWord = "manishhostage";
+//
+//			 try {
+//				 Class.forName("com.mysql.jdbc.Driver");
+//				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+//				 } catch (ClassNotFoundException e) {
+//				 e.printStackTrace();
+//				 } catch (SQLException e) {
+//				 e.printStackTrace();
+//				 }
+//	}
 	
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -99,7 +112,7 @@ public class CreateUserGUI extends JFrame{
 	}
 	
 	private void createGUI(){
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0,0,dim.width/3, dim.height-80);
 		setResizable(false);
 		
@@ -501,7 +514,7 @@ public class CreateUserGUI extends JFrame{
 						if (rs1.next())
 			            {
 							System.out.println("the id is "+rs1.getInt("iduser_table"));
-							new LoggedInDriverGUI(rs1.getInt("iduser_table"));
+							new LoggedInDriverGUI(rs1.getInt("iduser_table"), firstPage);
 							stat.close();
 							conn.close();
 							System.out.println("new user added!");

@@ -57,6 +57,7 @@ public class IndpMusicPlayer extends JPanel{
 		createGUI();
 		setEventHandlers();
 		setBounds(0,0,dim.width/4, dim.height);
+		
 		setVisible(true);
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		
