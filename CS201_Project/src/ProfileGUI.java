@@ -10,6 +10,7 @@ import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,6 +30,7 @@ import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
 
 
 public class ProfileGUI extends JPanel{
@@ -221,6 +223,29 @@ public class ProfileGUI extends JPanel{
 		unFollow.setOpaque(true);
 		follow.setOpaque(true);
 		editEmail.setText("email");
+		
+		//TODO set first last and email
+		try
+		{
+			Statement stat = (Statement) conn.createStatement();
+			String sql = "Select * from user_table Where iduser_table='" + userId+"'";
+			ResultSet rs = stat.executeQuery(sql);
+			if (rs.next())
+            {
+				name.setText(rs.getString("first_name")+" "+rs.getString("last_name"));
+				rs.close();
+				stat.close();
+            }
+            else
+            {
+            	System.out.println("something wrong");
+            }
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		editEmail.setFont(FirstPageGUI.smallFont);
 		editFirstName.setText("first name");
 		editFirstName.setFont(FirstPageGUI.smallFont);
@@ -450,7 +475,7 @@ public class ProfileGUI extends JPanel{
 						ps.setString(3, newEmail);
 						ps.setInt(4, userId);
 						ps.execute();
-						System.out.println("changed the stuff");
+						ps.close();
 					} catch (SQLException e1)
 					{
 						e1.printStackTrace();
