@@ -52,9 +52,9 @@ public abstract class TopGUI extends JPanel{
 	{
 		myPlayer.stopThread();
 	}
-	
-	public void startSong()
-	{
-		myPlayer.startThread();
-	}
+//	
+//	public void startSong()
+//	{
+//		myPlayer.startThread();
+//	}
 }

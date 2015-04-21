@@ -38,7 +38,7 @@ public class TopRatedGUI extends TopGUI{
 	public void fillButtons() {
 
 		ArrayList<MusicModel> topSongs = LoggedInDriverGUI.sharedMusicLibrary.getTopRatedSongs();
-		
+		songs = topSongs;
 		for (int j = 0; j< topSongs.size(); j++){
 			MusicModel entry = topSongs.get(j);
 			JButton newButton = new JButton(entry.getSongName());
@@ -48,7 +48,7 @@ public class TopRatedGUI extends TopGUI{
 			newButton.setForeground(FirstPageGUI.white);
 			newButton.setOpaque(true);
 			buttons.add(newButton);	
-			songs.add(entry);
+			//songs.add(entry);
 		}
 		for (int i = 0; i<topSongs.size(); i++){
 			this.add(buttons.get(i));	
@@ -72,6 +72,7 @@ public class TopRatedGUI extends TopGUI{
 		public void actionPerformed(ActionEvent e) {
 			IndpMusicPlayer thisMusicPlayer = new IndpMusicPlayer(TopRatedGUI.this, playerBigDim, buttons, songs, current_song);
 			mainPage.changeRatedFrame(thisMusicPlayer);
+			myPlayer.stopThread();
 		}
 		
 	}
