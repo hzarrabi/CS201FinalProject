@@ -71,7 +71,7 @@ public class LoggedInDriverGUI extends JFrame{
 	private IndpMusicPlayer currentPlayer;
 	private FirstPageGUI firstPage;
 	
-	public LoggedInDriverGUI(int userID, FirstPageGUI firstPage)
+	public LoggedInDriverGUI(int userID, final FirstPageGUI firstPage)
 	{		
 		super("Home Screen");
 		testField = new JTextField();
