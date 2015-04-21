@@ -30,9 +30,30 @@ public class TopRatedGUI extends TopGUI{
 		this.setBackground(FirstPageGUI.darkGrey);
 		dimPlayer = playerDim;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		fillButtons();
-		addEventHandlers();
+		fillButtonsGuest();
+		//addEventHandlers();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+	}
+	
+	public void fillButtonsGuest()
+	{
+		ArrayList<MusicModel> topSongs = GuestGUI.sharedMusicLibrary.getTopRatedSongs();
+		songs = topSongs;
+		for (int j = 0; j< topSongs.size(); j++){
+			MusicModel entry = topSongs.get(j);
+			JButton newButton = new JButton(entry.getSongName());
+			newButton.setFont(FirstPageGUI.smallFont);
+			newButton.setBorder(new RoundedBorder());
+			newButton.setBackground(FirstPageGUI.darkGrey);
+			newButton.setForeground(FirstPageGUI.white);
+			newButton.setOpaque(true);
+			buttons.add(newButton);	
+			//songs.add(entry);
+		}
+		for (int i = 0; i<topSongs.size(); i++){
+			this.add(buttons.get(i));	
+			System.out.println(i);
+		}
 	}
 	
 	public void fillButtons() {
@@ -47,6 +68,7 @@ public class TopRatedGUI extends TopGUI{
 			newButton.setBackground(FirstPageGUI.darkGrey);
 			newButton.setForeground(FirstPageGUI.white);
 			newButton.setOpaque(true);
+			newButton.setEnabled(false);
 			buttons.add(newButton);	
 			//songs.add(entry);
 		}

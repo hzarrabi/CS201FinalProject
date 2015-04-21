@@ -31,15 +31,37 @@ public class TopListenedGUI extends TopGUI{
 		addEventHandlers();
 	}
 	
-	public TopListenedGUI(Dimension d, Dimension dimPlayer)
+	public TopListenedGUI( Dimension d, Dimension playerDim)
 	{
 		super();
 		this.setPreferredSize(d);
-		this.dimPlayer = dimPlayer;
 		this.setBackground(FirstPageGUI.darkGrey);
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		fillButtons();
-		addEventHandlers();
+		dimPlayer = playerDim;
+		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		fillButtonsGuest();
+		//addEventHandlers();
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+	}
+	
+	public void fillButtonsGuest()
+	{
+		ArrayList<MusicModel> topSongs = GuestGUI.sharedMusicLibrary.getTopListenedSongs();
+		songs = topSongs;
+		for (int j = 0; j< topSongs.size(); j++){
+			MusicModel entry = topSongs.get(j);
+			JButton newButton = new JButton(entry.getSongName());
+			newButton.setFont(FirstPageGUI.smallFont);
+			newButton.setBorder(new RoundedBorder());
+			newButton.setBackground(FirstPageGUI.darkGrey);
+			newButton.setForeground(FirstPageGUI.white);
+			newButton.setOpaque(true);
+			buttons.add(newButton);	
+			//songs.add(entry);
+		}
+		for (int i = 0; i<topSongs.size(); i++){
+			this.add(buttons.get(i));	
+			System.out.println(i);
+		}
 	}
 	
 	public void fillButtons() {
