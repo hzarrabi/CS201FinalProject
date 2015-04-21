@@ -233,6 +233,7 @@ public class ProfileGUI extends JPanel{
 			if (rs.next())
             {
 				name.setText(rs.getString("first_name")+" "+rs.getString("last_name"));
+				email.setText(rs.getString("email"));
 				rs.close();
 				stat.close();
             }
