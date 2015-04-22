@@ -62,7 +62,7 @@ public class LoggedInDriverGUI extends JFrame{
 			"SELECT * from music_table WHERE song_name = ?",
 			"SELECT * from music_table WHERE artist_name = ?"};
 	
-	private int userID;//unique user ID of the user that logged in
+	static int userID;//unique user ID of the user that logged in
 	//private Connection conn;//for database connection
 	
 	static MusicLibrary sharedMusicLibrary;

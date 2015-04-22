@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -22,6 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+
+import com.mysql.jdbc.PreparedStatement;
 
 
 public class MusicPlayer extends JPanel{
@@ -337,6 +340,17 @@ public class MusicPlayer extends JPanel{
 				if (favoriteLabel.getIcon() == emptyHeart)
 				{
 					favoriteLabel.setIcon(fullHeart);
+					try
+					{
+						PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO favorite_songs (user_id, song_id)" + "VALUES (?, ?)");
+						ps.setInt(1, LoggedInDriverGUI.userID);
+						ps.setInt(2, musicObject.getMusicID());
+						ps.executeUpdate();
+						ps.close();
+					} catch (SQLException e1)
+					{
+						e1.printStackTrace();
+					}
 				}
 				else
 				{
