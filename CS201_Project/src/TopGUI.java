@@ -36,7 +36,7 @@ public abstract class TopGUI extends JPanel{
 	}
 	public abstract void fillButtons();
 	public abstract MusicPlayer initPlayer();
-	public abstract void addEventHandlers();
+	//public abstract void addEventHandlers();
 	
 	public abstract void removePlayer();
 	

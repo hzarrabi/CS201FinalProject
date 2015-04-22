@@ -19,7 +19,7 @@ public class TopRatedGUI extends TopGUI{
 		this.mainPage = main;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtons();
-		addEventHandlers();
+		//addEventHandlers();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
 	
@@ -69,6 +69,7 @@ public class TopRatedGUI extends TopGUI{
 			newButton.setForeground(FirstPageGUI.white);
 			newButton.setOpaque(true);
 			newButton.setEnabled(false);
+			newButton.addActionListener(new ActionListenerButtons( entry, j));
 			buttons.add(newButton);	
 			//songs.add(entry);
 		}
@@ -87,27 +88,28 @@ public class TopRatedGUI extends TopGUI{
 	class ActionListenerButtons implements ActionListener{
 
 		private int current_song;
-		public ActionListenerButtons(int i)
+		private MusicModel song;
+		public ActionListenerButtons(MusicModel j, int i)
 		{
+			song = j;
 			current_song = i;
 		}
 		public void actionPerformed(ActionEvent e) {
-			IndpMusicPlayer thisMusicPlayer = new IndpMusicPlayer(TopRatedGUI.this, playerBigDim, buttons, songs, current_song);
-			mainPage.changeRatedFrame(thisMusicPlayer);
-			myPlayer.stopThread();
+			//IndpMusicPlayer thisMusicPlayer = new IndpMusicPlayer(TopRatedGUI.this, playerBigDim, buttons, songs, current_song);
+			////mainPage.changeRatedFrame(thisMusicPlayer);
+			myPlayer.changeSong(song, current_song);
 		}
 		
 	}
 	
-	@Override
-	public void addEventHandlers() {
-		for (int j = 0; j < buttons.size(); j++)
-		{
-			JButton temp = buttons.get(j);
-			temp.addActionListener(new ActionListenerButtons(j));
-		}
-		
-	}
+//	@Override
+//	public void addEventHandlers() {
+//		for (int j = 0; j < buttons.size(); j++)
+//		{
+//			JButton temp = buttons.get(j);
+//		}
+//		
+//	}
 
 	@Override
 	public void removePlayer() {

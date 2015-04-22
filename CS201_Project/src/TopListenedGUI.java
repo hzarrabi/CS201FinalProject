@@ -28,7 +28,7 @@ public class TopListenedGUI extends TopGUI{
 		this.playerBigDim = dimBigPlayer;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtons();
-		addEventHandlers();
+		//addEventHandlers();
 	}
 	
 	public TopListenedGUI( Dimension d, Dimension playerDim)
@@ -76,6 +76,7 @@ public class TopListenedGUI extends TopGUI{
 			newButton.setBackground(FirstPageGUI.darkGrey);
 			newButton.setForeground(FirstPageGUI.white);
 			newButton.setOpaque(true);
+			newButton.addActionListener(new ActionListenerButtons(j, entry));
 			buttons.add(newButton);	
 			//songs.add(entry);
 		}
@@ -88,14 +89,14 @@ public class TopListenedGUI extends TopGUI{
 	class ActionListenerButtons implements ActionListener{
 
 		private int current_song;
-		public ActionListenerButtons(int i)
+		private MusicModel song;
+		public ActionListenerButtons(int i, MusicModel j)
 		{
+			song = j;
 			current_song = i;
 		}
 		public void actionPerformed(ActionEvent e) {
-			IndpMusicPlayer thisMusicPlayer = new IndpMusicPlayer(TopListenedGUI.this, playerBigDim, buttons, songs, current_song);
-			mainPage.changeListenedFrame(thisMusicPlayer);
-			myPlayer.stopThread();
+			myPlayer.changeSong(song, current_song);
 		}
 		
 	}
@@ -106,15 +107,15 @@ public class TopListenedGUI extends TopGUI{
 		return myPlayer;
 	}
 
-	@Override
-	public void addEventHandlers() {
-		for (int j = 0; j < buttons.size(); j++)
-		{
-			JButton temp = buttons.get(j);
-			temp.addActionListener(new ActionListenerButtons(j));
-		}
-		
-	}
+//	@Override
+//	public void addEventHandlers() {
+//		for (int j = 0; j < buttons.size(); j++)
+//		{
+//			JButton temp = buttons.get(j);
+//			temp.addActionListener(new ActionListenerButtons(j));
+//		}
+//		
+//	}
 
 	@Override
 	public void removePlayer() {

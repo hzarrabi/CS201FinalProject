@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -11,6 +12,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 
@@ -36,10 +39,37 @@ public class MusicPlayer extends JPanel{
 	private String songName;
 	private MusicModel musicObject;
 	private Thread myThread;
+	private JButton rateButton;
+	private JButton commentButton;
+	private JButton favoriteButton;
 	
+	private JPanel tabPanelMain;
 	private ArrayList<JButton> allButtons;
 	private ArrayList<MusicModel> allSongs;
 	private int currentSong;
+
+	private JPanel favoritePanel;
+	private JPanel commentPanel;
+	private JPanel comments;
+	private JTextField comment;
+	private JButton enter;
+	private JScrollPane jspComments;
+	private JPanel ratePanel;
+	
+	private int myRating;
+	JButton oneStar;
+	JButton twoStar;
+	JButton threeStar;
+	JButton fourStar;
+	JButton fiveStar;
+	
+	ArrayList<JButton> ratingButtons;
+	private ImageIcon emptyStar;
+	private ImageIcon fullStar;
+	private int currentPanel;
+	private JButton favoriteLabel;
+	private Icon emptyHeart;
+	private ImageIcon fullHeart;
 	
 	public MusicPlayer(Dimension d, ArrayList<JButton> buttons, ArrayList<MusicModel> songs, int currentSong)
 	{
@@ -47,6 +77,8 @@ public class MusicPlayer extends JPanel{
 		this.allButtons = buttons;
 		dim = d;
 		this.allSongs = songs;
+		emptyStar = new ImageIcon("data/starOutline.png");
+		fullStar = new ImageIcon("data/starFullBlack.png");
 		musicObject = allSongs.get(currentSong);
 		songName = musicObject.getSongName();
 		initializeComponents();
@@ -72,15 +104,25 @@ public class MusicPlayer extends JPanel{
 	}	
 	
 	private void initializeComponents(){
+		currentPanel = 0;
 		album = new JLabel("");
-		album.setPreferredSize(new Dimension(dim.width-10, dim.width-10));
+		album.setPreferredSize(new Dimension(3*dim.width/4, 3*dim.width/4));
+		favoritePanel = new JPanel();
+		commentPanel = new JPanel();
+		
+		ratePanel = new JPanel();
+		comments = new JPanel();
+		comment = new JTextField("comment");
+		enter = new JButton("Enter");
+		jspComments = new JScrollPane(comment);
+		ratingButtons = new ArrayList<JButton>();
 		setPreferredSize(new Dimension(dim.width, dim.height));
 		
 		try {
             URL imageurl = new URL(musicObject.getAlbumPath());
             BufferedImage img = ImageIO.read(imageurl);
             ImageIcon icon = new ImageIcon(img);
-            Image ResizedImage = icon.getImage().getScaledInstance(dim.width-10, dim.width-10, Image.SCALE_SMOOTH);
+            Image ResizedImage = icon.getImage().getScaledInstance(3*dim.width/4, 3*dim.width/4, Image.SCALE_SMOOTH);
             album.setIcon(new ImageIcon(ResizedImage));
          } catch (IOException e) {
             e.printStackTrace();
@@ -91,23 +133,52 @@ public class MusicPlayer extends JPanel{
 		artist = new JLabel(musicObject.getSongName() + " "+musicObject.getArtistName());
 		artist.setPreferredSize(new Dimension(dim.width-10, dim.height/15));
 		rating = new JLabel("Rating and # of Listens");
+		resetStuff();
 		backButton = new JButton();
 		
 		playButton = new JButton();
 		forwardButton = new JButton();
 		pauseButton = new JButton();
 
+		rateButton = new JButton();
+		commentButton = new JButton();
+		favoriteButton = new JButton();
 	}
 	
 	private void createUserGUI()
 	{
 		setBackground(FirstPageGUI.white);
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(dim.width, dim.height/20));
+		//buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width/50, dim.height));
+		buttonPanel.setPreferredSize(new Dimension(dim.width, dim.height/12));
 		buttonPanel.setBackground(FirstPageGUI.green);
+		
+		commentButton.setOpaque(false);
+		commentButton.setContentAreaFilled(false);
+		commentButton.setBorderPainted(false);
+		commentButton.setIcon(new ImageIcon("data/comments1.png"));
+		commentButton.setPreferredSize(new Dimension(dim.width/5, dim.height/14));
+		
+		rateButton.setOpaque(false);
+		rateButton.setContentAreaFilled(false);
+		rateButton.setBorderPainted(false);
+		rateButton.setIcon(new ImageIcon("data/rating1.png"));
+		rateButton.setPreferredSize(new Dimension(dim.width/5, dim.height/15));
+		
+		favoriteButton.setOpaque(false);
+		favoriteButton.setContentAreaFilled(false);
+		favoriteButton.setBorderPainted(false);
+		favoriteButton.setIcon(new ImageIcon("data/favorite_empty1.png"));
+		favoriteButton.setPreferredSize(new Dimension(dim.width/5, dim.height/15));
+		
+		buttonPanel.add(commentButton);
+		buttonPanel.add(favoriteButton);
+		buttonPanel.add(rateButton);
+		
 		JPanel bottomPanel = new JPanel();
+		//bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width/50, dim.height));
 		bottomPanel.setPreferredSize(new Dimension(dim.width, dim.height/13));
-		bottomPanel.setBackground(FirstPageGUI.color);
+		bottomPanel.setBackground(FirstPageGUI.green);
 	
 		backButton.setOpaque(false);
 		backButton.setContentAreaFilled(false);
@@ -138,10 +209,9 @@ public class MusicPlayer extends JPanel{
 		bottomPanel.add(pauseButton);
 		bottomPanel.add(forwardButton);
 		
-		add(bottomPanel, BorderLayout.SOUTH);
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(FirstPageGUI.white);
-		mainPanel.setPreferredSize(new Dimension(dim.width, dim.height));
+		mainPanel.setPreferredSize(new Dimension(dim.width, 14*dim.height/24));
 		mainPanel.add(album);
 		mainPanel.add(artist);
 		artist.setBackground(FirstPageGUI.white);
@@ -153,9 +223,240 @@ public class MusicPlayer extends JPanel{
 		rating.setHorizontalAlignment(SwingConstants.CENTER);
 		artist.setHorizontalAlignment(SwingConstants.CENTER);
 		mainPanel.add(rating);
+		mainPanel.add(bottomPanel);
+		
+		favoriteLabel = new JButton();
+		favoritePanel = new JPanel();
+		favoritePanel.setPreferredSize(new Dimension(dim.width, 7*dim.height/24));
+		favoriteLabel.setPreferredSize(new Dimension(dim.width, 7*dim.height/24));
+		favoritePanel.add(favoriteLabel);
+		
+		emptyHeart = new ImageIcon("data/heartOutline.png");
+		fullHeart = new ImageIcon("data/fullHeartBlack.png");
+		favoriteLabel.setOpaque(false);
+		favoriteLabel.setContentAreaFilled(false);
+		favoriteLabel.setBorderPainted(false);
+		favoriteLabel.setIcon(emptyHeart);
+		
+		//fiveStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		commentPanel = new JPanel();
+		commentPanel.setPreferredSize(new Dimension(dim.width, 8*dim.height/24));
+		ratePanel.setPreferredSize(new Dimension(dim.width, 2*dim.height/17));
+		comments.setPreferredSize(new Dimension(dim.width, 5*dim.height/24));
+		comment.setPreferredSize(new Dimension(3*dim.width/5, dim.height/24));
+		jspComments.setPreferredSize(new Dimension(dim.width, 5*dim.height/24));
+		favoritePanel.setBackground(FirstPageGUI.white);
+		commentPanel.setBackground(FirstPageGUI.white);
+		comments.setBackground(FirstPageGUI.white);
+		ratePanel.setBackground(FirstPageGUI.white);
+		enter.setPreferredSize(new Dimension(dim.width/5, dim.height/24));
+		
+		enter.setBorder(new RoundedBorder());
+		enter.setBackground(FirstPageGUI.darkGrey);
+		enter.setForeground(FirstPageGUI.white);
+		enter.setFont(FirstPageGUI.smallFont);
+		enter.setOpaque(true);
+		comment.setBorder(new RoundedBorder());
+		comment.setBackground(FirstPageGUI.white);
+		comment.setForeground(FirstPageGUI.darkGrey);
+		comment.setFont(FirstPageGUI.smallFont);
+		oneStar = new JButton();
+		twoStar = new JButton();
+		threeStar = new JButton();
+		fourStar = new JButton();
+		fiveStar = new JButton();
+		
+		oneStar.setOpaque(false);
+		oneStar.setContentAreaFilled(false);
+		oneStar.setBorderPainted(false);
+		oneStar.setIcon(emptyStar);
+		oneStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		fiveStar.setOpaque(false);
+		fiveStar.setContentAreaFilled(false);
+		fiveStar.setBorderPainted(false);
+		fiveStar.setIcon(emptyStar);
+		fiveStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		twoStar.setOpaque(false);
+		twoStar.setContentAreaFilled(false);
+		twoStar.setBorderPainted(false);
+		twoStar.setIcon(emptyStar);
+		twoStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		threeStar.setOpaque(false);
+		threeStar.setContentAreaFilled(false);
+		threeStar.setBorderPainted(false);
+		threeStar.setIcon(emptyStar);
+		threeStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		fourStar.setOpaque(false);
+		fourStar.setContentAreaFilled(false);
+		fourStar.setBorderPainted(false);
+		fourStar.setIcon(emptyStar);
+		fourStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		ratingButtons.add(oneStar);
+		ratingButtons.add(twoStar);
+		ratingButtons.add(threeStar);
+		ratingButtons.add(fourStar);
+		ratingButtons.add(fiveStar);
+		
+		for (int i = 0; i <5; i++)
+		{
+			ratePanel.add(ratingButtons.get(i));
+		}
+		
+		JPanel other = new JPanel();
+		other.setPreferredSize(new Dimension(dim.width, dim.height/17));
+		other.add(enter, BorderLayout.WEST);
+		other.add(comment, BorderLayout.EAST);
+		commentPanel.add(jspComments, BorderLayout.CENTER);
+		commentPanel.add(other, BorderLayout.SOUTH);
+
+		JPanel tabPanel = new JPanel();
+		
+		
+		tabPanel.setPreferredSize(new Dimension(dim.width, 11*dim.height/24));
+		tabPanel.setBackground(FirstPageGUI.white);
+		tabPanelMain = new JPanel();
+		tabPanelMain.setPreferredSize(new Dimension(dim.width, 7*dim.height/24));
+		tabPanelMain.add(commentPanel, BorderLayout.CENTER);
+		tabPanelMain.setBackground(FirstPageGUI.white);
+		tabPanel.add(tabPanelMain, BorderLayout.CENTER);
+		tabPanel.add(buttonPanel, BorderLayout.SOUTH);
 		add(mainPanel, BorderLayout.CENTER);
+		//add(bottomPanel, BorderLayout.CENTER);
+		add(tabPanel, BorderLayout.SOUTH);
 	}
 	private void setEventHandlers(){
+		favoriteLabel.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (favoriteLabel.getIcon() == emptyHeart)
+				{
+					favoriteLabel.setIcon(fullHeart);
+				}
+				else
+				{
+					favoriteLabel.setIcon(emptyHeart);
+				}
+				
+			}
+			
+		});
+		favoriteButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removePanel();
+				currentPanel = 2;
+				tabPanelMain.add(favoritePanel);
+				//mainPanel.add(musicPlayerTopListened);
+				tabPanelMain.revalidate();
+	            tabPanelMain.repaint();
+				
+			}
+		});
+		
+		rateButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removePanel();
+				currentPanel = 1;
+				tabPanelMain.add(ratePanel, BorderLayout.CENTER);
+				//mainPanel.add(musicPlayerTopListened);
+				tabPanelMain.revalidate();
+	            tabPanelMain.repaint();
+				
+			}
+		});
+		
+		commentButton.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				removePanel();
+				currentPanel = 0;
+				tabPanelMain.add(commentPanel);
+				//mainPanel.add(musicPlayerTopListened);
+				tabPanelMain.revalidate();
+	            tabPanelMain.repaint();
+				
+			}
+		});
+		
+		oneStar.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				oneStar.setIcon(fullStar);
+				twoStar.setIcon(emptyStar);
+				threeStar.setIcon(emptyStar);
+				fourStar.setIcon(emptyStar);
+				fiveStar.setIcon(emptyStar);
+				myRating = 1;
+			}
+			
+		});
+		
+		twoStar.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				oneStar.setIcon(fullStar);
+				twoStar.setIcon(fullStar);
+				threeStar.setIcon(emptyStar);
+				fourStar.setIcon(emptyStar);
+				fiveStar.setIcon(emptyStar);
+				myRating = 2;
+			}
+			
+		});
+		
+		threeStar.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				oneStar.setIcon(fullStar);
+				twoStar.setIcon(fullStar);
+				threeStar.setIcon(fullStar);
+				fourStar.setIcon(emptyStar);
+				fiveStar.setIcon(emptyStar);
+				myRating = 3;
+			}
+			
+		});
+		
+		fourStar.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				oneStar.setIcon(fullStar);
+				twoStar.setIcon(fullStar);
+				threeStar.setIcon(fullStar);
+				fourStar.setIcon(fullStar);
+				fiveStar.setIcon(emptyStar);
+				myRating = 4;
+			}
+			
+		});
+		
+		fiveStar.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				oneStar.setIcon(fullStar);
+				twoStar.setIcon(fullStar);
+				threeStar.setIcon(fullStar);
+				fourStar.setIcon(fullStar);
+				fiveStar.setIcon(fullStar);
+				myRating = 5;
+			}
+			
+		});
 		
 		playButton.addActionListener(new ActionListener(){
 			@Override
@@ -192,18 +493,8 @@ public class MusicPlayer extends JPanel{
 					musicObject = allSongs.get(currentSong+1);
 					currentSong++;
 				}
-				try
-				{
-					URL imageurl = new URL(musicObject.getAlbumPath());
-					BufferedImage img = ImageIO.read(imageurl);
-					ImageIcon icon = new ImageIcon(img);
-					Image ResizedImage = icon.getImage().getScaledInstance(dim.width-10, dim.width-10, Image.SCALE_SMOOTH);
-					album.setIcon(new ImageIcon(ResizedImage));
-				} catch (IOException e1)
-				{
-					
-				}
-				artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
+				resetStuff();
+				//artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
 				myThread = musicObject.playTheSong();
 			}
 			
@@ -224,20 +515,55 @@ public class MusicPlayer extends JPanel{
 					musicObject = allSongs.get(currentSong-1);
 					currentSong--;
 				}
-				try
-				{
-					URL imageurl = new URL(musicObject.getAlbumPath());
-					BufferedImage img = ImageIO.read(imageurl);
-					ImageIcon icon = new ImageIcon(img);
-					Image ResizedImage = icon.getImage().getScaledInstance(dim.width-10, dim.width-10, Image.SCALE_SMOOTH);
-					album.setIcon(new ImageIcon(ResizedImage));
-				} catch (IOException e1)
-				{
-					
-				}
-				artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
+				resetStuff();
+				//artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
 				myThread = musicObject.playTheSong();
 			}
 		});	
+	}
+	
+	public void changeSong(MusicModel m, int currentSg)
+	{
+		if (myThread != null)
+			myThread.suspend();
+		musicObject = m;
+		currentSong = currentSg;
+		resetStuff();
+		myThread = m.playTheSong();
+	}
+	
+	private void resetStuff()
+	{
+		artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
+		try
+		{
+			URL imageurl = new URL(musicObject.getAlbumPath());
+			BufferedImage img = ImageIO.read(imageurl);
+			ImageIcon icon = new ImageIcon(img);
+			Image ResizedImage = icon.getImage().getScaledInstance(3*dim.width/4, 3*dim.width/4, Image.SCALE_SMOOTH);
+			album.setIcon(new ImageIcon(ResizedImage));
+		} catch (IOException e1)
+		{
+			
+		}
+		int rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+		int listens = musicObject.getnumberOfPlayCounts();
+		rating.setText("Rating: "+rate+" # of Listens: "+listens);
+	}
+	
+	private void removePanel()
+	{
+			if (currentPanel == 0) 
+			{
+				tabPanelMain.remove(commentPanel);
+			}
+			else if (currentPanel == 1)
+			{
+				tabPanelMain.remove(ratePanel);
+			}
+			else if (currentPanel == 2)
+			{
+				tabPanelMain.remove(favoritePanel);
+			}
 	}
 }
