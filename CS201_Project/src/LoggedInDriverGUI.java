@@ -36,6 +36,7 @@ public class LoggedInDriverGUI extends JFrame{
 	private TopListenedGUI tlg;
 	private FeedGUI fg;
 	private ProfileGUI mpg;
+	private SearchGUI searchGUI;
 	private JButton logout;
 	private JLabel notifications;
 	private JScrollPane trgScroll;
@@ -181,6 +182,7 @@ public class LoggedInDriverGUI extends JFrame{
 		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
 		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
 		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,ConnectionClass.conn);
+		searchGUI = new SearchGUI(new Dimension(dim.width/3, 15*dim.height/20), userID, ConnectionClass.conn);
 
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
@@ -306,13 +308,10 @@ public class LoggedInDriverGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				removePanel();
-				currentJpanel = 2;
-				mainPanel.add(testField);
-				mainPanel.add(testButton);
-				//mainPanel.add(musicPlayerTopListened);
+				mainPanel.add(searchGUI, BorderLayout.CENTER);
 				mainPanel.revalidate();
 	            mainPanel.repaint();
-				
+	            currentJpanel = 2;
 			}
 			
 		});
@@ -394,8 +393,9 @@ public class LoggedInDriverGUI extends JFrame{
 				mainPanel.remove(mpg);
 			else if (currentJpanel == 2)
 			{
-				mainPanel.remove(testField);
-				mainPanel.remove(testButton);
+				mainPanel.remove(searchGUI);
+//				mainPanel.remove(testField);
+//				mainPanel.remove(testButton);
 			}
 			else if (currentJpanel ==3)
 			{
