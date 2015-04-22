@@ -355,6 +355,17 @@ public class MusicPlayer extends JPanel{
 				else
 				{
 					favoriteLabel.setIcon(emptyHeart);
+					try
+					{
+						PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("DELETE FROM favorite_songs WHERE " + "user_id = ?" + " and " + "song_id = ?");
+						ps.setInt(1, LoggedInDriverGUI.userID);
+						ps.setInt(2, musicObject.getMusicID());
+						ps.executeUpdate();
+						ps.close();
+					} catch (SQLException e1)
+					{
+						e1.printStackTrace();
+					}
 				}
 				
 			}
