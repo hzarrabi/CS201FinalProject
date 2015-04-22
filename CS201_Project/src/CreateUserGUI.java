@@ -61,8 +61,8 @@ public class CreateUserGUI extends JFrame{
 	
 	public CreateUserGUI(){
 		super("Create your Account!");
+		this.conn=ConnectionClass.conn;
 		//connect();
-		//this.firstPage = firstPage;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
 

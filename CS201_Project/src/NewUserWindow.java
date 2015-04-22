@@ -44,7 +44,6 @@ public class NewUserWindow extends JFrame
 	private JPasswordField passwordField;
 	private JPasswordField passwordField2;
 	
-	Connection connection;
 	String dburl;
 	String userName;
 	String passWord;
@@ -52,6 +51,7 @@ public class NewUserWindow extends JFrame
 
 	public NewUserWindow()
 	{
+		this.conn=ConnectionClass.conn;
 		//connect();
 		initialize();
 		addActionListener();
