@@ -546,9 +546,16 @@ public class MusicPlayer extends JPanel{
 		{
 			
 		}
+		oneStar.setIcon(emptyStar);
+		twoStar.setIcon(emptyStar);
+		threeStar.setIcon(emptyStar);
+		fourStar.setIcon(emptyStar);
+		fiveStar.setIcon(emptyStar);
+		favoriteLabel.setIcon(emptyHeart);
 		int rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
 		int listens = musicObject.getnumberOfPlayCounts();
 		rating.setText("Rating: "+rate+" # of Listens: "+listens);
+		
 	}
 	
 	private void removePanel()
