@@ -136,7 +136,7 @@ public class MusicPlayer extends JPanel{
 		artist = new JLabel(musicObject.getSongName() + " "+musicObject.getArtistName());
 		artist.setPreferredSize(new Dimension(dim.width-10, dim.height/15));
 		rating = new JLabel("Rating and # of Listens");
-		resetStuff();
+
 		backButton = new JButton();
 		
 		playButton = new JButton();
@@ -328,6 +328,7 @@ public class MusicPlayer extends JPanel{
 		tabPanelMain.setBackground(FirstPageGUI.white);
 		tabPanel.add(tabPanelMain, BorderLayout.CENTER);
 		tabPanel.add(buttonPanel, BorderLayout.SOUTH);
+		resetStuff();
 		add(mainPanel, BorderLayout.CENTER);
 		//add(bottomPanel, BorderLayout.CENTER);
 		add(tabPanel, BorderLayout.SOUTH);
