@@ -27,7 +27,7 @@ public class MusicModel {
 	private JButton playButtonThatLeadsToMusicPlayer;
 	private static final int BUFFER_SIZE = 2200;
 	private SourceDataLine audioLine;
-	
+	private Boolean wasFavorited;
 	
 	//MUSIC ID
 	public int getMusicID(){
@@ -115,7 +115,7 @@ public class MusicModel {
 	//constructor
 	public MusicModel(){
 		playButtonThatLeadsToMusicPlayer = new JButton("");
-		
+		wasFavorited = false;
 		playButtonThatLeadsToMusicPlayer.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -124,6 +124,15 @@ public class MusicModel {
 		});
 	}
 	
+	public Boolean getFavoritedBool()
+	{
+		return wasFavorited;
+	}
+	
+	public void setFavoritedBool(Boolean boo)
+	{
+		wasFavorited = boo;
+	}
 	class musicPlay extends Thread{
 		//play song function
 		public void playSong(){

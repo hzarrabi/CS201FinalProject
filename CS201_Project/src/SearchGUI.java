@@ -261,18 +261,18 @@ public class SearchGUI extends JPanel {
 			rs = ps.executeQuery();
 			if(rs.absolute(1))
 			{	
-				MusicModel MusicObject = new MusicModel();
+				MusicModel MusicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(rs.getString(2));
 				
-				//adding all of the values from the database to the object
-				MusicObject.setMusicID(rs.getInt(1));
-				MusicObject.setSongName(rs.getString(2));
-				MusicObject.setArtistName(rs.getString(3));
-				MusicObject.setRatingSum(rs.getInt(4));
-				MusicObject.setNumberOfRatings(rs.getInt(5));
-				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
-				MusicObject.setSongPath(rs.getString(7));
-				MusicObject.setAlbumPath(rs.getString(8));
-				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
+//				//adding all of the values from the database to the object
+//				MusicObject.setMusicID(rs.getInt(1));
+//				MusicObject.setSongName(rs.getString(2));
+//				MusicObject.setArtistName(rs.getString(3));
+//				MusicObject.setRatingSum(rs.getInt(4));
+//				MusicObject.setNumberOfRatings(rs.getInt(5));
+//				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
+//				MusicObject.setSongPath(rs.getString(7));
+//				MusicObject.setAlbumPath(rs.getString(8));
+//				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
 				
 				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
 				IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, new ActionListenerComplicated(), dim);
@@ -318,19 +318,19 @@ public class SearchGUI extends JPanel {
 			rs = ps.executeQuery();
 			if(rs.absolute(1))
 			{	
-				MusicModel MusicObject = new MusicModel();
+				MusicModel MusicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(rs.getString(2));
 				
 				//adding all of the values from the database to the object
-				MusicObject.setMusicID(rs.getInt(1));
-				MusicObject.setSongName(rs.getString(2));
-				MusicObject.setArtistName(rs.getString(3));
-				MusicObject.setRatingSum(rs.getInt(4));
-				MusicObject.setNumberOfRatings(rs.getInt(5));
-				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
-				MusicObject.setSongPath(rs.getString(7));
-				MusicObject.setAlbumPath(rs.getString(8));
-				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
-				
+//				MusicObject.setMusicID(rs.getInt(1));
+//				MusicObject.setSongName(rs.getString(2));
+//				MusicObject.setArtistName(rs.getString(3));
+//				MusicObject.setRatingSum(rs.getInt(4));
+//				MusicObject.setNumberOfRatings(rs.getInt(5));
+//				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
+//				MusicObject.setSongPath(rs.getString(7));
+//				MusicObject.setAlbumPath(rs.getString(8));
+//				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
+//				
 				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
 				IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, new ActionListenerComplicated(), dim);
 				name.addActionListener(new ActionListenerSong(player));

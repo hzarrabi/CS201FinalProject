@@ -78,32 +78,24 @@ public class IndpMusicPlayer extends JPanel{
 		createUserGUI();
 		setEventHandlers();
 		setBounds(0,0,dim.width/4, dim.height);
-		
 		setVisible(true);
-		//dim = Toolkit.getDefaultToolkit().getScreenSize();
-		
-		//starting a thread for the song
-		//myThread = musicObject.playTheSong();
-
 	}
 	
+	//constructor that will be called from searchGUI, profileGUI and feedGUI
 	public IndpMusicPlayer(MusicModel model, ActionListener forBackButton, Dimension d)
 	{
 		dim = d;
 		musicObject = model;
 		songName = musicObject.getSongName();
+		//passed in to be the actionlistener for the back button, which will remove this
+		//music player from the loggedindrivergui and go back to the previous panel
 		this.forBackButton = forBackButton;
 		backPageButton = new JButton("back");
 		initializeComponents();
 		createUserGUI();
 		setEventHandlers();
-		setBounds(0,0,dim.width/4, dim.height);
-		
+		setBounds(0,0,dim.width/4, dim.height);		
 		setVisible(true);
-		//dim = Toolkit.getDefaultToolkit().getScreenSize();
-		
-		//starting a thread for the song
-		//myThread = musicObject.playTheSong();
 
 	}
 	
@@ -119,6 +111,8 @@ public class IndpMusicPlayer extends JPanel{
 	{
 		myThread.suspend();
 	}
+	
+	//also makes GUI... 
 	private void initializeComponents(){
 		currentPanel = 0;
 		album = new JLabel("");
@@ -133,36 +127,20 @@ public class IndpMusicPlayer extends JPanel{
 		jspComments = new JScrollPane(comment);
 		ratingButtons = new ArrayList<JButton>();
 		setPreferredSize(new Dimension(dim.width, dim.height));
-		
-		try {
-            URL imageurl = new URL(musicObject.getAlbumPath());
-            BufferedImage img = ImageIO.read(imageurl);
-            ImageIcon icon = new ImageIcon(img);
-            Image ResizedImage = icon.getImage().getScaledInstance(dim.width/2, dim.width/2, Image.SCALE_SMOOTH);
-            album.setIcon(new ImageIcon(ResizedImage));
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
-		
-		
-		
-		artist = new JLabel(musicObject.getSongName() + " "+musicObject.getArtistName());
+
+		artist = new JLabel("");
 		artist.setPreferredSize(new Dimension(dim.width-10, dim.height/26));
 		ratingPanel = new JPanel();
 		ratingPanel.setPreferredSize(new Dimension(dim.width-10, dim.height/20));
 		ratingPanel.setBackground(FirstPageGUI.white);
-		rating = new JLabel("Overall Rating: ");
+		rating = new JLabel("");
 		ratingPanel.add(rating);
-		listens = new JLabel("# of listens");
+		listens = new JLabel("");
 		listens.setPreferredSize(new Dimension(dim.width-10, dim.height/26));
 		listens.setFont(FirstPageGUI.smallFont);
 		listens.setForeground(FirstPageGUI.darkGrey);
 		listens.setHorizontalAlignment(SwingConstants.CENTER);
-
-		//backButton = new JButton();
-		
 		playButton = new JButton();
-		//forwardButton = new JButton();
 		pauseButton = new JButton();
 
 		rateButton = new JButton();
@@ -172,11 +150,11 @@ public class IndpMusicPlayer extends JPanel{
 		fullStar = new ImageIcon("data/starFullBlack.png");
 	}
 	
+	//makes GUI
 	private void createUserGUI()
 	{
 		setBackground(FirstPageGUI.white);
 		JPanel buttonPanel = new JPanel();
-		//buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width/50, dim.height));
 		buttonPanel.setPreferredSize(new Dimension(dim.width, dim.height/12));
 		buttonPanel.setBackground(FirstPageGUI.green);
 		
@@ -203,15 +181,8 @@ public class IndpMusicPlayer extends JPanel{
 		buttonPanel.add(rateButton);
 		
 		JPanel bottomPanel = new JPanel();
-		//bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width/50, dim.height));
 		bottomPanel.setPreferredSize(new Dimension(dim.width, dim.height/13));
 		bottomPanel.setBackground(FirstPageGUI.green);
-//	
-//		backButton.setOpaque(false);
-//		backButton.setContentAreaFilled(false);
-//		backButton.setBorderPainted(false);
-//		backButton.setIcon(new ImageIcon("data/ReverseButton.png"));
-//		backButton.setPreferredSize(new Dimension(dim.width/5, dim.height/17));
 		
 		playButton.setOpaque(false);
 		playButton.setContentAreaFilled(false);
@@ -225,17 +196,9 @@ public class IndpMusicPlayer extends JPanel{
 		pauseButton.setIcon(new ImageIcon("data/pauseButton.png"));
 		pauseButton.setPreferredSize(new Dimension(dim.width/5, dim.height/17));
 		
-//		forwardButton.setOpaque(false);
-//		forwardButton.setContentAreaFilled(false);
-//		forwardButton.setBorderPainted(false);
-//		forwardButton.setIcon(new ImageIcon("data/forwardButton.png"));
-//		forwardButton.setPreferredSize(new Dimension(dim.width/5, dim.height/17));
-		
-		//bottomPanel.add(backButton);
 		bottomPanel.add(playButton);
 		bottomPanel.add(pauseButton);
 		bottomPanel.add(backPageButton);
-		//bottomPanel.add(forwardButton);
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(FirstPageGUI.white);
@@ -267,7 +230,6 @@ public class IndpMusicPlayer extends JPanel{
 		favoriteLabel.setBorderPainted(false);
 		favoriteLabel.setIcon(emptyHeart);
 		
-		//fiveStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
 		commentPanel = new JPanel();
 		commentPanel.setPreferredSize(new Dimension(dim.width, 32*dim.height/115));
 		ratePanel.setPreferredSize(new Dimension(dim.width, 2*dim.height/24));
@@ -356,30 +318,31 @@ public class IndpMusicPlayer extends JPanel{
 		tabPanel.add(buttonPanel, BorderLayout.SOUTH);
 		resetStuff();
 		add(mainPanel, BorderLayout.CENTER);
-		//add(bottomPanel, BorderLayout.CENTER);
 		add(tabPanel, BorderLayout.SOUTH);
 	}
 	
 	private void setEventHandlers(){
 		
+		//plays music
 		playButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//musicObject.resumeSong();
 				myThread.resume();
 			}
 		});
 		
+		//pauses music
 		pauseButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				//musicObject.pauseSong();
 				myThread.suspend();
 			}
 		});
 
 		backPageButton.addActionListener(forBackButton);
 		
+		//this sets the favoriting icon appropriately and changes the database depending on whether the 
+		//user favorited or unfavorited the song
 		favoriteLabel.addActionListener(new ActionListener(){
 
 			@Override
@@ -387,37 +350,47 @@ public class IndpMusicPlayer extends JPanel{
 				if (favoriteLabel.getIcon() == emptyHeart)
 				{
 					favoriteLabel.setIcon(fullHeart);
-					try
+					if (!musicObject.getFavoritedBool())
 					{
-						PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO favorite_songs (user_id, song_id)" + "VALUES (?, ?)");
-						ps.setInt(1, LoggedInDriverGUI.userID);
-						ps.setInt(2, musicObject.getMusicID());
-						ps.executeUpdate();
-						ps.close();
-					} catch (SQLException e1)
-					{
-						e1.printStackTrace();
+						try
+						{
+							PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO favorite_songs (user_id, song_id)" + "VALUES (?, ?)");
+							ps.setInt(1, LoggedInDriverGUI.userID);
+							ps.setInt(2, musicObject.getMusicID());
+							ps.executeUpdate();
+							ps.close();
+						} catch (SQLException e1)
+						{
+							e1.printStackTrace();
+						}
+						musicObject.setFavoritedBool(true);
 					}
 				}
 				else
 				{
 					favoriteLabel.setIcon(emptyHeart);
-					try
+					if (musicObject.getFavoritedBool())
 					{
-						PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("DELETE FROM favorite_songs WHERE " + "user_id = ?" + " and " + "song_id = ?");
-						ps.setInt(1, LoggedInDriverGUI.userID);
-						ps.setInt(2, musicObject.getMusicID());
-						ps.executeUpdate();
-						ps.close();
-					} catch (SQLException e1)
-					{
-						e1.printStackTrace();
+						try
+						{
+							PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("DELETE FROM favorite_songs WHERE " + "user_id = ?" + " and " + "song_id = ?");
+							ps.setInt(1, LoggedInDriverGUI.userID);
+							ps.setInt(2, musicObject.getMusicID());
+							ps.executeUpdate();
+							ps.close();
+						} catch (SQLException e1)
+						{
+							e1.printStackTrace();
+						}
+						musicObject.setFavoritedBool(false);
 					}
 				}
 				
 			}
 			
 		});
+		
+		//favoriteButton is on my custom tabbedPane. for switching to the favorite panel
 		favoriteButton.addActionListener(new ActionListener(){
 
 			@Override
@@ -432,6 +405,7 @@ public class IndpMusicPlayer extends JPanel{
 			}
 		});
 		
+		//rateButton is on my custom tabbedPane. for switching to the rate panel
 		rateButton.addActionListener(new ActionListener(){
 
 			@Override
@@ -439,13 +413,13 @@ public class IndpMusicPlayer extends JPanel{
 				removePanel();
 				currentPanel = 1;
 				tabPanelMain.add(ratePanel, BorderLayout.SOUTH);
-				//mainPanel.add(musicPlayerTopListened);
 				tabPanelMain.revalidate();
 	            tabPanelMain.repaint();
 				
 			}
 		});
 		
+		//commentButton is on my custom tabbedPane. for switching to the comment panel
 		commentButton.addActionListener(new ActionListener(){
 
 			@Override
@@ -453,13 +427,14 @@ public class IndpMusicPlayer extends JPanel{
 				removePanel();
 				currentPanel = 0;
 				tabPanelMain.add(commentPanel);
-				//mainPanel.add(musicPlayerTopListened);
 				tabPanelMain.revalidate();
 	            tabPanelMain.repaint();
 				
 			}
 		});
 		
+		//the following actionlisteners are for setting the rating icons appropriately determined
+		//by the rating the user gives the song
 		oneStar.addActionListener(new ActionListener(){
 
 			@Override
@@ -533,6 +508,8 @@ public class IndpMusicPlayer extends JPanel{
 		
 	}
 	
+	//when a song is changed, this function resets all the information to display the info
+	//of this new song
 	private void resetStuff()
 	{
 		artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
@@ -560,32 +537,18 @@ public class IndpMusicPlayer extends JPanel{
 		
 	}
 	
+	//sets the star icons for the overall rating of the song
 	private void setRating(double rate)
 	{
 		rating.setText("Overall Rating: "+rate+"  ");
 		ratingPanel.removeAll();
 		ratingPanel.add(rating);
 		int i = 0;
-		if (rate <= 1.4)
-		{
-			i = 1;
-		}
-		else if (rate <=2.4)
-		{	
-			i=2;
-		}
-		else if (rate <=3.4)
-		{
-			i =3;
-		}
-		else if (rate <= 4.4)
-		{
-			i = 4;
-		}
-		else
-		{
-			i=5;
-		}
+		if (rate <= 1.4) { i = 1; }
+		else if (rate <=2.4) { i=2; }
+		else if (rate <=3.4) { i =3; }
+		else if (rate <= 4.4) { i = 4; }
+		else { i=5; }
 		for (int j = 0; j<=i; j++)
 		{
 			JLabel temp = new JLabel("");
@@ -595,19 +558,12 @@ public class IndpMusicPlayer extends JPanel{
 		ratingPanel.revalidate();
 		ratingPanel.repaint();
 	}
+	
+	//removes the current panel (this is for tabbedPane functionality)
 	private void removePanel()
 	{
-			if (currentPanel == 0) 
-			{
-				tabPanelMain.remove(commentPanel);
-			}
-			else if (currentPanel == 1)
-			{
-				tabPanelMain.remove(ratePanel);
-			}
-			else if (currentPanel == 2)
-			{
-				tabPanelMain.remove(favoritePanel);
-			}
+			if (currentPanel == 0) { tabPanelMain.remove(commentPanel); }
+			else if (currentPanel == 1) { tabPanelMain.remove(ratePanel); }
+			else if (currentPanel == 2) { tabPanelMain.remove(favoritePanel); }
 	}
 }
