@@ -3,6 +3,8 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.sql.Connection;
@@ -148,208 +150,8 @@ public class SearchGUI extends JPanel {
 		searchButton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) {
-				searchText = inputField.getText();
-				artistPanel.removeAll();
-				songPanel.removeAll();
-				userPanel.removeAll();
-				artistPanel.revalidate();
-				artistPanel.repaint();
-				songPanel.revalidate();
-				songPanel.repaint();
-				userPanel.revalidate();
-				userPanel.repaint();
-				try {
-					Statement st = conn.createStatement();
-					String queryCheck = "";
-					boolean check_found = false;
-
-					//check for users
-					queryCheck = sql_queries[0];
-					PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-					ps.setString(1, searchText);
-					ResultSet rs = ps.executeQuery();
-					if(rs.absolute(1))
-					{	
-						System.out.println("Username " + searchText +" exists!");
-						check_found = true;
-						String sql = "Select * from user_table Where username='" + searchText +"'";
-						rs = st.executeQuery(sql);
-						
-						while (rs.next())
-						{
-							Integer userId = rs.getInt(1);
-							String userFirstName = rs.getString(2);
-							String userLastName = rs.getString(3);
-							JButton name = new JButton(userFirstName + " "+userLastName);
-							name.addActionListener(new ActionListener(){
-
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									
-									
-								}
-								
-							});
-							JLabel profileImage = new JLabel("");
-							ImageIcon icon = new ImageIcon("data/MomAndMoose");
-							Image ResizedImage = icon.getImage().getScaledInstance(dim.height/20, dim.height/20, Image.SCALE_SMOOTH);
-							profileImage.setIcon(new ImageIcon(ResizedImage));
-							JPanel temp = new JPanel();
-							temp.setPreferredSize(new Dimension(dim.width/2, dim.height/15));
-							temp.add(profileImage);
-							temp.add(name);
-							userPanel.add(temp);
-							userPanel.revalidate();
-							userPanel.repaint();
-							//String profilePicPath
-						}
-						
-						
-						if (rs.next() && searchText.equals(rs.getString("username"))) {
-							userFollowID = rs.getInt("iduser_table");
-						}
-						//addFollowButton();
-					}
-					else
-					{
-						JLabel nonFound = new JLabel("no users found");
-						userPanel.add(nonFound);
-						userPanel.revalidate();
-						userPanel.repaint();
-					}
-					//check for songs
-					queryCheck = sql_queries[1];
-					ps= (PreparedStatement) conn.prepareStatement(queryCheck);
-					ps.setString(1, searchText);
-					rs = ps.executeQuery();
-					if(rs.absolute(1))
-					{	
-						MusicModel MusicObject = new MusicModel();
-						
-						//adding all of the values from the database to the object
-						MusicObject.setMusicID(rs.getInt(1));
-						MusicObject.setSongName(rs.getString(2));
-						MusicObject.setArtistName(rs.getString(3));
-						MusicObject.setRatingSum(rs.getInt(4));
-						MusicObject.setNumberOfRatings(rs.getInt(5));
-						MusicObject.setnumberOfPlayCounts(rs.getInt(6));
-						MusicObject.setSongPath(rs.getString(7));
-						MusicObject.setAlbumPath(rs.getString(8));
-						MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
-						
-						JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
-						name.addActionListener(new ActionListener(){
-
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								
-								
-							}
-							
-						});
-						JLabel profileImage = new JLabel("");
-						try
-						{
-							URL imageurl = new URL(MusicObject.getAlbumPath());
-							BufferedImage img = ImageIO.read(imageurl);
-							ImageIcon icon = new ImageIcon(img);
-							Image ResizedImage = icon.getImage().getScaledInstance(dim.height/20, dim.height/20, Image.SCALE_SMOOTH);
-						//album.setIcon(new ImageIcon(ResizedImage));
-							profileImage.setIcon(new ImageIcon(ResizedImage));
-						}
-						catch (Exception t)
-						{
-							
-						}
-						JPanel temp = new JPanel();
-						temp.setPreferredSize(new Dimension(dim.width/2, dim.height/15));
-						temp.add(profileImage);
-						temp.add(name);
-						songPanel.add(temp);
-						songPanel.revalidate();
-						songPanel.repaint();
-						System.out.println("found song");
-						check_found = true;
-					}
-					else
-					{
-						JLabel nonFound = new JLabel("no songs found");
-						songPanel.add(nonFound);
-						songPanel.revalidate();
-						songPanel.repaint();
-					}
-					//check for artists
-					queryCheck = sql_queries[2];
-					ps= (PreparedStatement) conn.prepareStatement(queryCheck);
-					ps.setString(1, searchText);
-					rs = ps.executeQuery();
-					if(rs.absolute(1))
-					{	
-						MusicModel MusicObject = new MusicModel();
-						
-						//adding all of the values from the database to the object
-						MusicObject.setMusicID(rs.getInt(1));
-						MusicObject.setSongName(rs.getString(2));
-						MusicObject.setArtistName(rs.getString(3));
-						MusicObject.setRatingSum(rs.getInt(4));
-						MusicObject.setNumberOfRatings(rs.getInt(5));
-						MusicObject.setnumberOfPlayCounts(rs.getInt(6));
-						MusicObject.setSongPath(rs.getString(7));
-						MusicObject.setAlbumPath(rs.getString(8));
-						MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
-						
-						JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
-						name.addActionListener(new ActionListener(){
-
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								
-								
-							}
-							
-						});
-						JLabel profileImage = new JLabel("");
-						try
-						{
-							URL imageurl = new URL(MusicObject.getAlbumPath());
-							BufferedImage img = ImageIO.read(imageurl);
-							ImageIcon icon = new ImageIcon(img);
-							Image ResizedImage = icon.getImage().getScaledInstance(dim.height/20, dim.height/20, Image.SCALE_SMOOTH);
-						//album.setIcon(new ImageIcon(ResizedImage));
-							profileImage.setIcon(new ImageIcon(ResizedImage));
-						}
-						catch (Exception t)
-						{
-							
-						}
-						JPanel temp = new JPanel();
-						temp.setPreferredSize(new Dimension(dim.width/2, dim.height/15));
-						temp.add(profileImage);
-						temp.add(name);
-						artistPanel.add(temp);
-						artistPanel.revalidate();
-						artistPanel.repaint();
-						System.out.println("Artist " + searchText + " exists!");
-						check_found = true;
-					}
-					else
-					{
-						JLabel notFound = new JLabel("no artist found");
-						artistPanel.add(notFound);
-						artistPanel.revalidate();
-						artistPanel.repaint();
-					}
-				
-					if (!check_found)
-					{
-						System.out.println("Not found");
-					}
-				
-				} catch (SQLException e1)
-				{
-					e1.printStackTrace();
-				} 	}
-
+				search();
+			}
 		});
 		//follow user
 		add.addActionListener(new ActionListener(){
@@ -368,6 +170,236 @@ public class SearchGUI extends JPanel {
 				}
 			}
 		});
+		
+		inputField.addKeyListener(new KeyListener()
+		{
+			public void keyPressed(KeyEvent e){}
+			public void keyReleased(KeyEvent e){}
+			
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				if(e.getKeyChar() == KeyEvent.VK_ENTER)
+				{
+					search();	
+                }       
+			}
+		});
+	}
+	
+	private void search()
+	{
+		searchText = inputField.getText();
+		artistPanel.removeAll();
+		songPanel.removeAll();
+		userPanel.removeAll();
+		artistPanel.revalidate();
+		artistPanel.repaint();
+		songPanel.revalidate();
+		songPanel.repaint();
+		userPanel.revalidate();
+		userPanel.repaint();
+		try {
+			Statement st = conn.createStatement();
+			String queryCheck = "";
+			boolean check_found = false;
+
+			//check for users
+			queryCheck = sql_queries[0];
+			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
+			ps.setString(1, searchText);
+			ResultSet rs = ps.executeQuery();
+			if(rs.absolute(1))
+			{	
+				System.out.println("Username " + searchText +" exists!");
+				check_found = true;
+				String sql = "Select * from user_table Where username='" + searchText +"'";
+				rs = st.executeQuery(sql);
+				
+				while (rs.next())
+				{
+					Integer userId = rs.getInt(1);
+					String userFirstName = rs.getString(2);
+					String userLastName = rs.getString(3);
+					JButton name = new JButton(userFirstName + " "+userLastName);
+					name.addActionListener(new ActionListener(){
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							
+						}
+						
+					});
+					JLabel profileImage = new JLabel("");
+					ImageIcon icon = new ImageIcon("data/MomAndMoose.jpg");
+					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
+					profileImage.setIcon(new ImageIcon(ResizedImage));
+					JPanel temp = new JPanel();
+					temp.setPreferredSize(new Dimension(dim.width, dim.height/13));
+					temp.add(profileImage);
+					temp.add(name);
+					temp.setBackground(FirstPageGUI.white);
+					userPanel.add(temp);
+					userPanel.revalidate();
+					userPanel.repaint();
+					//String profilePicPath
+				}
+				
+				
+				if (rs.next() && searchText.equals(rs.getString("username"))) {
+					userFollowID = rs.getInt("iduser_table");
+				}
+				//addFollowButton();
+			}
+			else
+			{
+				JLabel nonFound = new JLabel("no users found");
+				nonFound.setFont(FirstPageGUI.font);
+				nonFound.setForeground(FirstPageGUI.darkGrey);
+				userPanel.add(nonFound);
+				userPanel.revalidate();
+				userPanel.repaint();
+			}
+			//check for songs
+			queryCheck = sql_queries[1];
+			ps= (PreparedStatement) conn.prepareStatement(queryCheck);
+			ps.setString(1, searchText);
+			rs = ps.executeQuery();
+			if(rs.absolute(1))
+			{	
+				MusicModel MusicObject = new MusicModel();
+				
+				//adding all of the values from the database to the object
+				MusicObject.setMusicID(rs.getInt(1));
+				MusicObject.setSongName(rs.getString(2));
+				MusicObject.setArtistName(rs.getString(3));
+				MusicObject.setRatingSum(rs.getInt(4));
+				MusicObject.setNumberOfRatings(rs.getInt(5));
+				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
+				MusicObject.setSongPath(rs.getString(7));
+				MusicObject.setAlbumPath(rs.getString(8));
+				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
+				
+				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
+				name.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+						
+					}
+					
+				});
+				JLabel profileImage = new JLabel("");
+				try
+				{
+					URL imageurl = new URL(MusicObject.getAlbumPath());
+					BufferedImage img = ImageIO.read(imageurl);
+					ImageIcon icon = new ImageIcon(img);
+					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
+				//album.setIcon(new ImageIcon(ResizedImage));
+					profileImage.setIcon(new ImageIcon(ResizedImage));
+				}
+				catch (Exception t)
+				{
+					
+				}
+				JPanel temp = new JPanel();
+				temp.setPreferredSize(new Dimension(dim.width, dim.height/13));
+				temp.add(profileImage);
+				temp.add(name);
+				temp.setBackground(FirstPageGUI.white);
+				songPanel.add(temp);
+				songPanel.revalidate();
+				songPanel.repaint();
+				System.out.println("found song");
+				check_found = true;
+			}
+			else
+			{
+				JLabel nonFound = new JLabel("no songs found");
+				nonFound.setFont(FirstPageGUI.font);
+				nonFound.setForeground(FirstPageGUI.darkGrey);
+				songPanel.add(nonFound);
+				songPanel.revalidate();
+				songPanel.repaint();
+			}
+			//check for artists
+			queryCheck = sql_queries[2];
+			ps= (PreparedStatement) conn.prepareStatement(queryCheck);
+			ps.setString(1, searchText);
+			rs = ps.executeQuery();
+			if(rs.absolute(1))
+			{	
+				MusicModel MusicObject = new MusicModel();
+				
+				//adding all of the values from the database to the object
+				MusicObject.setMusicID(rs.getInt(1));
+				MusicObject.setSongName(rs.getString(2));
+				MusicObject.setArtistName(rs.getString(3));
+				MusicObject.setRatingSum(rs.getInt(4));
+				MusicObject.setNumberOfRatings(rs.getInt(5));
+				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
+				MusicObject.setSongPath(rs.getString(7));
+				MusicObject.setAlbumPath(rs.getString(8));
+				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
+				
+				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
+				name.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+						
+					}
+					
+				});
+				JLabel profileImage = new JLabel("");
+				try
+				{
+					URL imageurl = new URL(MusicObject.getAlbumPath());
+					BufferedImage img = ImageIO.read(imageurl);
+					ImageIcon icon = new ImageIcon(img);
+					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
+				//album.setIcon(new ImageIcon(ResizedImage));
+					profileImage.setIcon(new ImageIcon(ResizedImage));
+				}
+				catch (Exception t)
+				{
+					
+				}
+				JPanel temp = new JPanel();
+				temp.setPreferredSize(new Dimension(dim.width, dim.height/13));
+				temp.add(profileImage);
+				temp.add(name);
+				temp.setBackground(FirstPageGUI.white);
+				artistPanel.add(temp);
+				artistPanel.revalidate();
+				artistPanel.repaint();
+				System.out.println("Artist " + searchText + " exists!");
+				check_found = true;
+			}
+			else
+			{
+				JLabel notFound = new JLabel("no artist found");
+				notFound.setFont(FirstPageGUI.font);
+				notFound.setForeground(FirstPageGUI.darkGrey);
+				artistPanel.add(notFound);
+				artistPanel.revalidate();
+				artistPanel.repaint();
+			}
+		
+			if (!check_found)
+			{
+				System.out.println("Not found");
+			}
+			ps.close();
+		
+		} catch (SQLException e1)
+		{
+			e1.printStackTrace();
+		} 
 	}
 	private void addFollowButton() {
 		add(add, BorderLayout.SOUTH);
