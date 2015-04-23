@@ -74,6 +74,8 @@ public class MusicPlayer extends JPanel{
 	private JButton favoriteLabel;
 	private Icon emptyHeart;
 	private ImageIcon fullHeart;
+	private JLabel listens;
+	private JPanel ratingPanel;
 	
 	public MusicPlayer(Dimension d, ArrayList<JButton> buttons, ArrayList<MusicModel> songs, int currentSong)
 	{
@@ -135,8 +137,17 @@ public class MusicPlayer extends JPanel{
 		
 		
 		artist = new JLabel(musicObject.getSongName() + " "+musicObject.getArtistName());
-		artist.setPreferredSize(new Dimension(dim.width-10, dim.height/15));
-		rating = new JLabel("Rating and # of Listens");
+		artist.setPreferredSize(new Dimension(dim.width-10, dim.height/26));
+		ratingPanel = new JPanel();
+		ratingPanel.setPreferredSize(new Dimension(dim.width-10, dim.height/20));
+		ratingPanel.setBackground(FirstPageGUI.white);
+		rating = new JLabel("Overall Rating: ");
+		ratingPanel.add(rating);
+		listens = new JLabel("# of listens");
+		listens.setPreferredSize(new Dimension(dim.width-10, dim.height/26));
+		listens.setFont(FirstPageGUI.smallFont);
+		listens.setForeground(FirstPageGUI.darkGrey);
+		listens.setHorizontalAlignment(SwingConstants.CENTER);
 
 		backButton = new JButton();
 		
@@ -215,18 +226,19 @@ public class MusicPlayer extends JPanel{
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(FirstPageGUI.white);
-		mainPanel.setPreferredSize(new Dimension(dim.width, 14*dim.height/24));
+		mainPanel.setPreferredSize(new Dimension(dim.width, 56*dim.height/93));
 		mainPanel.add(album);
 		mainPanel.add(artist);
 		artist.setBackground(FirstPageGUI.white);
 		rating.setBackground(FirstPageGUI.white);
 		artist.setForeground(FirstPageGUI.darkGrey);
 		rating.setForeground(FirstPageGUI.darkGrey);
-		artist.setFont(FirstPageGUI.font);
-		rating.setFont(FirstPageGUI.font);
+		artist.setFont(FirstPageGUI.smallFont);
+		rating.setFont(FirstPageGUI.smallFont);
 		rating.setHorizontalAlignment(SwingConstants.CENTER);
 		artist.setHorizontalAlignment(SwingConstants.CENTER);
-		mainPanel.add(rating);
+		mainPanel.add(ratingPanel);
+		mainPanel.add(listens);
 		mainPanel.add(bottomPanel);
 		
 		favoriteLabel = new JButton();
@@ -244,8 +256,8 @@ public class MusicPlayer extends JPanel{
 		
 		//fiveStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
 		commentPanel = new JPanel();
-		commentPanel.setPreferredSize(new Dimension(dim.width, 8*dim.height/24));
-		ratePanel.setPreferredSize(new Dimension(dim.width, 2*dim.height/17));
+		commentPanel.setPreferredSize(new Dimension(dim.width, 32*dim.height/115));
+		ratePanel.setPreferredSize(new Dimension(dim.width, 2*dim.height/24));
 		comments.setPreferredSize(new Dimension(dim.width, 5*dim.height/24));
 		comment.setPreferredSize(new Dimension(3*dim.width/5, dim.height/24));
 		jspComments.setPreferredSize(new Dimension(dim.width, 5*dim.height/24));
@@ -324,7 +336,7 @@ public class MusicPlayer extends JPanel{
 		tabPanel.setPreferredSize(new Dimension(dim.width, 11*dim.height/24));
 		tabPanel.setBackground(FirstPageGUI.white);
 		tabPanelMain = new JPanel();
-		tabPanelMain.setPreferredSize(new Dimension(dim.width, 7*dim.height/24));
+		tabPanelMain.setPreferredSize(new Dimension(dim.width, 7*dim.height/25));
 		tabPanelMain.add(commentPanel, BorderLayout.CENTER);
 		tabPanelMain.setBackground(FirstPageGUI.white);
 		tabPanel.add(tabPanelMain, BorderLayout.CENTER);
@@ -393,7 +405,7 @@ public class MusicPlayer extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				removePanel();
 				currentPanel = 1;
-				tabPanelMain.add(ratePanel, BorderLayout.CENTER);
+				tabPanelMain.add(ratePanel, BorderLayout.SOUTH);
 				//mainPanel.add(musicPlayerTopListened);
 				tabPanelMain.revalidate();
 	            tabPanelMain.repaint();
@@ -579,12 +591,48 @@ public class MusicPlayer extends JPanel{
 		fourStar.setIcon(emptyStar);
 		fiveStar.setIcon(emptyStar);
 		favoriteLabel.setIcon(emptyHeart);
-		int rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
-		int listens = musicObject.getnumberOfPlayCounts();
-		rating.setText("Rating: "+rate+" # of Listens: "+listens);
+		double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+		int listens1 = musicObject.getnumberOfPlayCounts();
+		listens.setText("#Listens: "+listens1);
+		setRating(rate);
 		
 	}
 	
+	private void setRating(double rate)
+	{
+		rating.setText("Overall Rating: "+rate+"  ");
+		ratingPanel.removeAll();
+		ratingPanel.add(rating);
+		int i = 0;
+		if (rate <= 1.4)
+		{
+			i = 1;
+		}
+		else if (rate <=2.4)
+		{	
+			i=2;
+		}
+		else if (rate <=3.4)
+		{
+			i =3;
+		}
+		else if (rate <= 4.4)
+		{
+			i = 4;
+		}
+		else
+		{
+			i=5;
+		}
+		for (int j = 0; j<=i; j++)
+		{
+			JLabel temp = new JLabel("");
+			temp.setIcon(new ImageIcon("data/star2.png"));
+			ratingPanel.add(temp);
+		}
+		ratingPanel.revalidate();
+		ratingPanel.repaint();
+	}
 	private void removePanel()
 	{
 			if (currentPanel == 0) 
