@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -59,11 +60,12 @@ public class LoggedInDriverGUI extends JFrame{
 	JPanel bottomColor;
 	
 	static int numFavoriteSongs = 0;
+	static Vector<Integer> songID = new Vector<Integer> ();
+	static Vector<String> favoriteSongNames = new Vector<String> ();
 	
 	String [] sql_queries = {"SELECT * from user_table WHERE username = ?", 
 			"SELECT * from music_table WHERE song_name = ?",
-			"SELECT * from music_table WHERE artist_name = ?",
-			"SELECT * from favorite_songs, COUNT (?) "};
+			"SELECT * from music_table WHERE artist_name = ?"};
 	
 	static int userID;//unique user ID of the user that logged in
 	//private Connection conn;//for database connection
@@ -111,7 +113,6 @@ public class LoggedInDriverGUI extends JFrame{
 
 			int columns = rs.getMetaData().getColumnCount();
 			boolean check_user = false;
-
 			while (rs.next()) {
 			    for (int i = 1; i <= columns; i++) {
 
@@ -125,6 +126,29 @@ public class LoggedInDriverGUI extends JFrame{
 			    		check_user = false;
 			    	}
 			    }
+			}
+			queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(this.userID);
+			rs = st.executeQuery(queryCheck);
+			columns = rs.getMetaData().getColumnCount();
+			while(rs.next())
+			{
+				for (int i = 1; i <= columns; i++)
+				{
+					songID.addElement(Integer.parseInt(rs.getString(i)));
+				}
+			}
+			for (int i = 0; i < songID.size(); i++)
+			{
+				queryCheck = "SELECT song_name from music_table where idmusic_table = " + songID.get(i);
+				rs = st.executeQuery(queryCheck);
+				columns = rs.getMetaData().getColumnCount();
+				while(rs.next())
+				{
+					for (int j = 1; j <= columns; j++)
+					{
+						favoriteSongNames.add(rs.getString(j));
+					}
+				}
 			}
 		} catch (SQLException e1)
 		{
