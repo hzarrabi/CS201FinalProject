@@ -326,6 +326,9 @@ public class ProfileGUI extends JPanel{
 			followersButtons.add(temp);
 			JButton temp3 = new JButton("User");
 			followingButtons.add(temp3);
+		}
+		for (int i = 0; i <LoggedInDriverGUI.numFavoriteSongs; i++)
+		{
 			JButton temp2 = new JButton("Song");
 			favoritesButtons.add(temp2);
 		}

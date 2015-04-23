@@ -58,9 +58,12 @@ public class LoggedInDriverGUI extends JFrame{
 	private String searchText;
 	JPanel bottomColor;
 	
+	static int numFavoriteSongs = 0;
+	
 	String [] sql_queries = {"SELECT * from user_table WHERE username = ?", 
 			"SELECT * from music_table WHERE song_name = ?",
-			"SELECT * from music_table WHERE artist_name = ?"};
+			"SELECT * from music_table WHERE artist_name = ?",
+			"SELECT * from favorite_songs, COUNT (?) "};
 	
 	static int userID;//unique user ID of the user that logged in
 	//private Connection conn;//for database connection
@@ -91,7 +94,44 @@ public class LoggedInDriverGUI extends JFrame{
 		});
 		testButton = new JButton("Search");
 		this.userID=userID;
-		
+		Connection conn; 
+		String dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
+		String userName = "cs201";
+		String passWord = "manishhostage";
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+			Statement st = conn.createStatement();
+			String queryCheck = "";
+			boolean check_found = false;
+
+			//check for users
+			queryCheck = "SELECT user_id,COUNT(*) as user FROM favorite_songs GROUP BY user_id ORDER BY user DESC;";
+			ResultSet rs = st.executeQuery(queryCheck);
+
+			int columns = rs.getMetaData().getColumnCount();
+			boolean check_user = false;
+
+			while (rs.next()) {
+			    for (int i = 1; i <= columns; i++) {
+
+			    	if ((i == 1) && rs.getString(i).equals(Integer.toString(this.userID)))
+			    	{
+			    		check_user = true;
+			    	}
+			    	if (check_user && (i == 2))
+			    	{
+			    		numFavoriteSongs = Integer.parseInt(rs.getString(2));
+			    		check_user = false;
+			    	}
+			    }
+			}
+		} catch (SQLException e1)
+		{
+			e1.printStackTrace();
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		}			
 		try{
 			sharedMusicLibrary = new MusicLibrary();
 		}catch(Exception e){
@@ -365,7 +405,6 @@ public class LoggedInDriverGUI extends JFrame{
 					{
 						System.out.println("Not found");
 					}
-				
 				} catch (SQLException e1)
 				{
 					e1.printStackTrace();
