@@ -49,6 +49,7 @@ public class MusicPlayer extends JPanel{
 	private JPanel tabPanelMain;
 	private ArrayList<JButton> allButtons;
 	private ArrayList<MusicModel> allSongs;
+	//keeps track of the current song in the allSongs arraylist, NOT the song id in SQL
 	private int currentSong;
 
 	private JPanel favoritePanel;

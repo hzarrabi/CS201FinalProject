@@ -65,7 +65,7 @@ public class ProfileGUI extends JPanel{
 	private JLabel picturePic;
 	private JButton pictureButton;
 	private JButton backButton;
-	
+	private ActionListener forBackButton;
 	private String key;
 	private Integer userId;
 	private Connection conn;
@@ -85,6 +85,25 @@ public class ProfileGUI extends JPanel{
 		setEventHandlers();
 		setVisible(true);
 		
+	}
+	
+	public ProfileGUI(Dimension d, String key, int userID, Connection conn, ActionListener forBackButton)
+	{
+		dim = d;
+		this.key = key;
+		this.userId=userID;
+		this.conn=conn;
+		backButton = new JButton("Back");
+		this.forBackButton = forBackButton;
+		backButton.addActionListener(forBackButton);
+		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
+		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
+		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+		profilePic = new ImageIcon(img2);
+		this.setPreferredSize(dim);
+		initializeComponents();
+		setEventHandlers();
+		setVisible(true);
 	}
 	
 	private void initializeComponents()
@@ -276,10 +295,12 @@ public class ProfileGUI extends JPanel{
 		if (key.equals("not friends"))
 		{
 			buttonP.add(follow);
+			buttonP.add(backButton);
 		}
 		else if (key.equals("friends"))
 		{
 			buttonP.add(unFollow);
+			buttonP.add(backButton);
 		}
 		else if (key.equals("current user"))
 		{
@@ -605,5 +626,6 @@ public class ProfileGUI extends JPanel{
 				
 			}
 		});
+
 	}
 }

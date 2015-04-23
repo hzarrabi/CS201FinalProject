@@ -43,6 +43,7 @@ public class SearchGUI extends JPanel {
 	private JPanel userPanel;
 	private JButton add;
 	private int userID;
+	private LoggedInDriverGUI mainPage;
 	private Connection conn;
 	private String [] sql_queries = {"SELECT * from user_table WHERE username = ?", 
 			"SELECT * from music_table WHERE song_name = ?",
@@ -50,12 +51,12 @@ public class SearchGUI extends JPanel {
 	
 	private int userFollowID;
 
-	public SearchGUI (Dimension d, int userID, Connection conn) {
+	public SearchGUI (Dimension d, int userID, Connection conn, LoggedInDriverGUI mainPage) {
 		dim = d;
 		this.userID = userID;
 		this.setPreferredSize(dim);
 		this.conn = conn;
-		
+		this.mainPage = mainPage;
 		add = new JButton("Follow");
 		inputField = new JTextField();
 		searchButton = new JButton();
@@ -218,19 +219,11 @@ public class SearchGUI extends JPanel {
 				
 				while (rs.next())
 				{
-					Integer userId = rs.getInt(1);
+					Integer userId2 = rs.getInt(1);
 					String userFirstName = rs.getString(2);
 					String userLastName = rs.getString(3);
 					JButton name = new JButton(userFirstName + " "+userLastName);
-					name.addActionListener(new ActionListener(){
-
-						@Override
-						public void actionPerformed(ActionEvent e) {
-							
-							
-						}
-						
-					});
+					name.addActionListener(new ActionListenerProfile(userId2));
 					JLabel profileImage = new JLabel("");
 					ImageIcon icon = new ImageIcon("data/MomAndMoose.jpg");
 					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
@@ -405,5 +398,58 @@ public class SearchGUI extends JPanel {
 		add(add, BorderLayout.SOUTH);
 		revalidate();
 		repaint();
+	}
+	
+	//ActionListener that I'm going to pass to the ProfileGUI for the back button to add
+	//this will allow to back button to remove the profile page and go back to the search results
+	class ActionListenerComplicated implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			mainPage.removeGUI();
+			
+		}
+		
+	}
+	
+	class ActionListenerProfile implements ActionListener{
+		private int id;
+		public ActionListenerProfile(int id)
+		{
+			this.id = id;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("in actionlistener");
+			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ LoggedInDriverGUI.userID+" AND user_being_followed = "+id+")";
+			ProfileGUI newProfile;
+			/*try{
+				System.out.println("in try");
+				PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sqlQuery);
+				ResultSet rs = ps.executeQuery();
+				//ResultSet rs = ps.executeQuery();
+				System.out.println("after rs");
+				
+				if (rs.getRow() == 0)
+				{*/
+					System.out.println("in if"); 
+					newProfile = new ProfileGUI(dim, "friends", id, ConnectionClass.conn, new ActionListenerComplicated());
+					//mainPage.addGUI(newProfile);
+				/*}
+				else
+				{
+					System.out.println("in else");
+					newProfile = new ProfileGUI(dim, "not friends", userID, ConnectionClass.conn, new ActionListenerComplicated());
+					//mainPage.addGUI(newProfile);
+				}*/
+				mainPage.addGUI(newProfile);
+				//ps.close();
+			//}
+//			catch (Exception p){
+//				
+//			}
+			
+		}
+		
 	}
 }

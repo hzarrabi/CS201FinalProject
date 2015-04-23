@@ -53,6 +53,9 @@ public class LoggedInDriverGUI extends JFrame{
 	private int currentJpanel;
 	private Color myColor;
 	
+	//this is a either a ProfileGUI or a IndpMusicPlayer
+	private JPanel tempGUI;
+	
 	private JTextField testField;
 	private JButton testButton;
 	private String searchText;
@@ -222,7 +225,7 @@ public class LoggedInDriverGUI extends JFrame{
 		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
 		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
 		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,ConnectionClass.conn);
-		searchGUI = new SearchGUI(new Dimension(dim.width/3, 15*dim.height/20), userID, ConnectionClass.conn);
+		searchGUI = new SearchGUI(new Dimension(dim.width/3, 15*dim.height/20), userID, ConnectionClass.conn, this);
 
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
@@ -448,6 +451,25 @@ public class LoggedInDriverGUI extends JFrame{
 				mainPanel.remove(musicPlayerTopListened);
 				tlg.stopSong();
 			}
+	}
+	
+	//these two functions are called from the searchGUI in order to change the panel on the searchGUI 
+	//when a user clicks one of the buttons from the results
+	public void removeGUI()
+	{
+		mainPanel.remove(tempGUI);
+		mainPanel.add(searchGUI);
+		mainPanel.revalidate();
+		mainPanel.repaint();
+	}
+	
+	public void addGUI(JPanel temp)
+	{
+		tempGUI = temp;
+		mainPanel.remove(searchGUI);
+		mainPanel.add(temp);
+		mainPanel.revalidate();
+		mainPanel.repaint();
 	}
 			
 }
