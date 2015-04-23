@@ -275,15 +275,8 @@ public class SearchGUI extends JPanel {
 				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
 				
 				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
-				name.addActionListener(new ActionListener(){
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						
-						
-					}
-					
-				});
+				IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, new ActionListenerComplicated(), dim);
+				name.addActionListener(new ActionListenerSong(player));
 				JLabel profileImage = new JLabel("");
 				try
 				{
@@ -339,15 +332,8 @@ public class SearchGUI extends JPanel {
 				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
 				
 				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
-				name.addActionListener(new ActionListener(){
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						
-						
-					}
-					
-				});
+				IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, new ActionListenerComplicated(), dim);
+				name.addActionListener(new ActionListenerSong(player));
 				JLabel profileImage = new JLabel("");
 				try
 				{
@@ -448,6 +434,20 @@ public class SearchGUI extends JPanel {
 //			catch (Exception p){
 //				
 //			}
+			
+		}
+		
+	}
+	
+	class ActionListenerSong implements ActionListener{
+		private IndpMusicPlayer myModel;
+		public ActionListenerSong(IndpMusicPlayer player)
+		{
+			myModel = player;
+		}
+		public void actionPerformed(ActionEvent e) {
+				//IndpMusicPlayer player = new IndpMusicPlayer
+				mainPage.addGUI(myModel);
 			
 		}
 		
