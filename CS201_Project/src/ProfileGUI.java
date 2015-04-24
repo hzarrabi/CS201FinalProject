@@ -77,7 +77,7 @@ public class ProfileGUI extends JPanel{
 		this.userId=userID;
 		this.conn=conn;
 		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
-		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
+		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
 		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
 		profilePic = new ImageIcon(img2);
 		this.setPreferredSize(dim);
