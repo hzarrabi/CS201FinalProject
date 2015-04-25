@@ -9,7 +9,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -346,23 +349,48 @@ public class IndpMusicPlayer extends JPanel{
 		favoriteLabel.addActionListener(new ActionListener(){
 
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e) 
+			{
+				//String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(this.userID);
+				try
+				{
+				ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+				
+				Statement st = ConnectionClass.conn.createStatement();
+				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+				String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID);
+				ResultSet rs = st.executeQuery(queryCheck);
+				int columns = rs.getMetaData().getColumnCount();
+//				if (rs.next())
+//				{
+//					favoriteLabel.setIcon(fullHeart);
+//				}
+//				else
+//				{
+//					favoriteLabel.setIcon(emptyHeart);
+//				}
+				
 				if (favoriteLabel.getIcon() == emptyHeart)
 				{
 					favoriteLabel.setIcon(fullHeart);
 					if (!musicObject.getFavoritedBool())
 					{
-						try
-						{
-							PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO favorite_songs (user_id, song_id)" + "VALUES (?, ?)");
-							ps.setInt(1, LoggedInDriverGUI.userID);
-							ps.setInt(2, musicObject.getMusicID());
-							ps.executeUpdate();
-							ps.close();
-						} catch (SQLException e1)
-						{
-							e1.printStackTrace();
-						}
+
+							if (!rs.next()) 
+							{
+								try
+								{
+									PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO favorite_songs (user_id, song_id)" + "VALUES (?, ?)");
+									ps.setInt(1, LoggedInDriverGUI.userID);
+									ps.setInt(2, musicObject.getMusicID());
+									ps.executeUpdate();
+									ps.close();
+								} 
+								catch (SQLException e1)
+								{
+									e1.printStackTrace();
+								}
+							}			
 						musicObject.setFavoritedBool(true);
 					}
 				}
@@ -371,21 +399,30 @@ public class IndpMusicPlayer extends JPanel{
 					favoriteLabel.setIcon(emptyHeart);
 					if (musicObject.getFavoritedBool())
 					{
-						try
-						{
-							PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("DELETE FROM favorite_songs WHERE " + "user_id = ?" + " and " + "song_id = ?");
-							ps.setInt(1, LoggedInDriverGUI.userID);
-							ps.setInt(2, musicObject.getMusicID());
-							ps.executeUpdate();
-							ps.close();
-						} catch (SQLException e1)
-						{
-							e1.printStackTrace();
-						}
+							if (rs.next()) 
+							{
+								try
+								{
+									PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("DELETE FROM favorite_songs WHERE " + "user_id = ?" + " and " + "song_id = ?");
+									ps.setInt(1, LoggedInDriverGUI.userID);
+									ps.setInt(2, musicObject.getMusicID());
+									ps.executeUpdate();
+									ps.close();
+								} 
+								catch (SQLException e1)
+								{
+									e1.printStackTrace();
+								}
+								
+							}
 						musicObject.setFavoritedBool(false);
 					}
 				}
-				
+				}
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -401,6 +438,28 @@ public class IndpMusicPlayer extends JPanel{
 				//mainPanel.add(musicPlayerTopListened);
 				tabPanelMain.revalidate();
 	            tabPanelMain.repaint();
+	            try
+				{
+					ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+					
+					Statement st = ConnectionClass.conn.createStatement();
+					//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+					String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID);
+					ResultSet rs = st.executeQuery(queryCheck);
+					int columns = rs.getMetaData().getColumnCount();
+					if (rs.next())
+					{
+						favoriteLabel.setIcon(fullHeart);
+					}
+					else
+					{
+						favoriteLabel.setIcon(emptyHeart);
+					}
+				}
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 				
 			}
 		});
