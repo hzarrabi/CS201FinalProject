@@ -671,31 +671,34 @@ public class MusicPlayer extends JPanel{
 		ratingPanel.add(rating);
 		int i = 0;
 		System.out.println(rate);
-		if (rate <= 1.4 && i>.9)
+		if (rate <= 1.4 && rate>.9)
 		{
 			i = 1;
 		}
-		else if (rate <=2.4)
+		else if (rate <=2.4 && rate>1.4)
 		{	
 			i=2;
 		}
-		else if (rate <=3.4)
+		else if (rate <=3.4 && rate>2.4)
 		{
 			i =3;
 		}
-		else if (rate <= 4.4)
+		else if (rate <= 4.4 && rate > 3.4)
 		{
 			i = 4;
 		}
-		else
+		else if (rate >4.4)
 		{
 			i=5;
 		}
-		for (int j = 0; j<=i; j++)
+		if (i!= 0)
 		{
-			JLabel temp = new JLabel("");
-			temp.setIcon(new ImageIcon("data/star2.png"));
-			ratingPanel.add(temp);
+			for (int j = 0; j<=i; j++)
+			{
+				JLabel temp = new JLabel("");
+				temp.setIcon(new ImageIcon("data/star2.png"));
+				ratingPanel.add(temp);
+			}
 		}
 		ratingPanel.revalidate();
 		ratingPanel.repaint();
