@@ -509,8 +509,9 @@ public class LoggedInDriverGUI extends JFrame{
 		if (currentPanelNum == 1)
 		{
 			mainPanel.remove(currentGUI);
-			mainPanel.add(tempGUI);
-			previousGUI = currentGUI;
+			mainPanel.add(mpg);
+			//previousGUI = currentGUI;
+			currentGUI = mpg;
 			mainPanel.revalidate();
 			mainPanel.repaint();
 		}
@@ -527,13 +528,26 @@ public class LoggedInDriverGUI extends JFrame{
 	
 	public void addNext(JPanel temp)
 	{
-		currentPanelNum++;
-		previousGUI = currentGUI;
-		currentGUI = temp;
-		mainPanel.remove(previousGUI);
-		mainPanel.add(currentGUI);
-		mainPanel.revalidate();
-		mainPanel.repaint();
+		if (currentPanelNum ==0)
+		{
+			currentPanelNum++;
+			previousGUI = mpg;
+			currentGUI = temp;
+			mainPanel.remove(mpg);
+			mainPanel.add(currentGUI);
+			mainPanel.revalidate();
+			mainPanel.repaint();
+		}
+		else
+		{
+			currentPanelNum++;
+			previousGUI = currentGUI;
+			currentGUI = temp;
+			mainPanel.remove(previousGUI);
+			mainPanel.add(currentGUI);
+			mainPanel.revalidate();
+			mainPanel.repaint();
+		}
 	}
 		
 	public void setTemp(JPanel p)

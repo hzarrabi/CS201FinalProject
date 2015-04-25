@@ -399,6 +399,7 @@ public class ProfileGUI extends JPanel{
 			String queryCheck = "SELECT user FROM friend_relationship WHERE user_being_followed = " + Integer.toString(LoggedInDriverGUI.userID);
 			ResultSet rs = st.executeQuery(queryCheck);
 			int columns = rs.getMetaData().getColumnCount();
+			System.out.println("after query");
 			while (rs.next())
 			{
 				JButton temp = new JButton(Integer.toString(rs.getInt(1)));
@@ -431,14 +432,6 @@ public class ProfileGUI extends JPanel{
 			
 		}
 		catch (Exception e) {}
-		
-//		for (int i = 0; i<100; i++)
-//		{
-//			JButton temp = new JButton("User");
-//			followersButtons.add(temp);
-//			JButton temp3 = new JButton("User");
-//			followingButtons.add(temp3);
-//		}
 		for (int i = 0; i <LoggedInDriverGUI.numFavoriteSongs; i++)
 		{
 			MusicModel MusicObject = LoggedInDriverGUI.favoriteSongNames.get(i);
@@ -447,32 +440,7 @@ public class ProfileGUI extends JPanel{
 			temp2.addActionListener(new ActionListenerSong(player));
 			favoritesButtons.add(temp2);
 		}
-		
-//		Iterator<JButton> it = followersButtons.iterator();
-//		Iterator<JButton> it2 = followingButtons.iterator();
 		Iterator<JButton> it3 = favoritesButtons.iterator();
-//		while (it.hasNext())
-//		{
-//			JButton temp = it.next();
-//			temp.setBackground(FirstPageGUI.green);
-//			temp.setForeground(FirstPageGUI.white);
-//			temp.setFont(FirstPageGUI.smallFont);
-//			temp.setBorder(new RoundedBorder());
-//			temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
-//			temp.setOpaque(true);
-//			jpFollowers.add(temp);
-//		}
-//		while (it2.hasNext())
-//		{
-//			JButton temp = it2.next();
-//			temp.setBackground(FirstPageGUI.green);
-//			temp.setForeground(FirstPageGUI.white);
-//			temp.setFont(FirstPageGUI.smallFont);
-//			temp.setBorder(new RoundedBorder());
-//			temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
-//			temp.setOpaque(true);
-//			jpFollowing.add(temp);
-//		}
 		while (it3.hasNext())
 		{
 			JButton temp = it3.next();
@@ -789,8 +757,8 @@ public class ProfileGUI extends JPanel{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mainPage.removePrevious();
 			mainPage.setTemp(ProfileGUI.this);
+			mainPage.removePrevious();
 		}
 		
 	}
