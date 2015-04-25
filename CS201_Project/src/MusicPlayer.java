@@ -247,7 +247,7 @@ public class MusicPlayer extends JPanel{
 		favoriteLabel.setOpaque(false);
 		favoriteLabel.setContentAreaFilled(false);
 		favoriteLabel.setBorderPainted(false);
-		favoriteLabel.setIcon(emptyHeart);
+		//favoriteLabel.setIcon(emptyHeart);
 		
 		//fiveStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
 		commentPanel = new JPanel();
@@ -354,6 +354,7 @@ public class MusicPlayer extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
+				System.out.println(musicObject.getSongName());
 				//String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(this.userID);
 				try
 				{
@@ -361,20 +362,13 @@ public class MusicPlayer extends JPanel{
 				
 				Statement st = ConnectionClass.conn.createStatement();
 				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-				String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID);
+				String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) +" AND song_id = " + Integer.toString(musicObject.getMusicID());
 				ResultSet rs = st.executeQuery(queryCheck);
 				int columns = rs.getMetaData().getColumnCount();
-//				if (rs.next())
-//				{
-//					favoriteLabel.setIcon(fullHeart);
-//				}
-//				else
-//				{
-//					favoriteLabel.setIcon(emptyHeart);
-//				}
 				
 				if (favoriteLabel.getIcon() == emptyHeart)
 				{
+					System.out.println("should be here");
 					favoriteLabel.setIcon(fullHeart);
 					if (!musicObject.getFavoritedBool())
 					{
@@ -399,6 +393,7 @@ public class MusicPlayer extends JPanel{
 				}
 				else
 				{
+					System.out.println("should not be here");
 					favoriteLabel.setIcon(emptyHeart);
 					if (musicObject.getFavoritedBool())
 					{
