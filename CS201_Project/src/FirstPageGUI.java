@@ -64,31 +64,15 @@ public class FirstPageGUI extends JFrame{
 	final static Font smallFont = new Font("Helvetica Neue", Font.PLAIN, 14);
 	final static Font fontTitle = new Font("Helvetica Neue", Font.PLAIN, 24);
 	
-	//for connecting database
-	//static Connection conn;
-	
 	public FirstPageGUI()
 	{
 		super("Login Screen");
 		initializeComponents();
 		createGUI();
 		makePretty();
-		//System.out.println("YOOOOOOO");
 		setEventHandlers();
-		//connect();
 	}
-	
-//	private void connect(){
-//			 try {
-//				 Class.forName("com.mysql.jdbc.Driver");
-//				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-//				 } catch (ClassNotFoundException e) {
-//				 e.printStackTrace();
-//				 } catch (SQLException e) {
-//				 e.printStackTrace();
-//				 }
-//	}
-	
+
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		userName = new JTextField("Username");
@@ -102,7 +86,7 @@ public class FirstPageGUI extends JFrame{
 		bottomColor.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
 		bottomColor.setBackground(color);
 		topColor = new JPanel();
-		topColor.setPreferredSize(new Dimension(dim.width/3, dim.height/15));
+		topColor.setPreferredSize(new Dimension(dim.width/3, 2*dim.height/20));
 		topColor.setBackground(color);
 	}
 	
@@ -120,28 +104,18 @@ public class FirstPageGUI extends JFrame{
 		createNewUser.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
 		guest.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
 		newUser.setPreferredSize(new Dimension(dim.width/4, dim.height/12));
-		//newUser.setBackground(Color.cyan);
 		newUser.setHorizontalAlignment(SwingConstants.CENTER);
-		//Image myImage = image.getScaledInstance(dim.width-1, dim.height-1, Image.SCALE_SMOOTH);
 		
 		main.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width, dim.height/40));
 		main.setPreferredSize(new Dimension(dim.width/3, 13*dim.height/20));
-		//main.setBackground(Color.WHITE);
-		//Box.createGlue();
 		add(new JTextField());//we do this because we don't want focus on first jtexfield initially
 		main.add(userName);
-		//Box.createGlue();
 		main.add(password);
 		password.setEchoChar((char)0);
-		//Box.createGlue();
 		main.add(login);
-		//Box.createGlue();
 		main.add(newUser);
-		//Box.createGlue();
 		main.add(createNewUser);
-		//Box.createGlue();
 		main.add(guest);
-		//Box.createGlue();
 		JPanel mainPanel = new JPanel();
 		mainPanel.add(main, BorderLayout.CENTER);
 		incorrectInput = new JLabel("");
@@ -151,7 +125,7 @@ public class FirstPageGUI extends JFrame{
 		mainPanel.add(main);
 		mainPanel.add(incorrectInput);
 		incorrectInput.setPreferredSize(new Dimension(dim.width, dim.height/20));
-		mainPanel.setPreferredSize(new Dimension(dim.width/3, 14*dim.height/20));
+		mainPanel.setPreferredSize(new Dimension(dim.width/3, 17*dim.height/20));
 		add(topColor, BorderLayout.NORTH);
 		add(mainPanel, BorderLayout.CENTER);
 		add(bottomColor, BorderLayout.SOUTH);

@@ -122,7 +122,7 @@ public class CreateUserGUI extends JFrame{
 		bottomColor.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
 		bottomColor.setBackground(FirstPageGUI.color);
 		topColor = new JPanel();
-		topColor.setPreferredSize(new Dimension(dim.width/3, dim.height/15));
+		topColor.setPreferredSize(new Dimension(dim.width/3, 2*dim.height/20));
 		topColor.setBackground(FirstPageGUI.color);
 		UserNameField.setPreferredSize(new Dimension(dim.width/4, dim.height/17));
 		passwordField.setPreferredSize(new Dimension(dim.width/4, dim.height/17));
@@ -187,7 +187,7 @@ public class CreateUserGUI extends JFrame{
 		incorrectInput.setHorizontalAlignment(SwingConstants.CENTER);
 		bottom.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
 		main.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width, dim.height/40));
-		main.setPreferredSize(new Dimension(dim.width/3, 14*dim.height/20));
+		main.setPreferredSize(new Dimension(dim.width/3, 17*dim.height/20));
 		//main.add(title);
 		main.setBackground(FirstPageGUI.white);
 		//JTextField first = new JTextField();

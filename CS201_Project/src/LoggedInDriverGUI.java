@@ -197,7 +197,7 @@ public class LoggedInDriverGUI extends JFrame{
 		testField.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
 		testField.setEditable(true);
 		mainPanel = new JPanel();
-		mainPanel.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
+		mainPanel.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
 		trgButton = new JButton();
 		tlgButton = new JButton();
 		mpgButton = new JButton();
@@ -236,7 +236,7 @@ public class LoggedInDriverGUI extends JFrame{
 		
 		logout = new JButton("Logout");
 		buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(dim.width/3, dim.height/15));
+		buttonPanel.setPreferredSize(new Dimension(dim.width/3, 3*dim.height/40));
 		buttonPanel.setBackground(myColor);
 		buttonPanel.add(feedButton);
 		buttonPanel.add(mpgButton);
@@ -246,10 +246,10 @@ public class LoggedInDriverGUI extends JFrame{
 
 
 
-		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
-		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20), new Dimension(dim.width, 15*dim.height/20));
-		mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,ConnectionClass.conn);
-		searchGUI = new SearchGUI(new Dimension(dim.width/3, 15*dim.height/20), userID, ConnectionClass.conn, this);
+		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
+		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
+		mpg = new ProfileGUI(new Dimension(dim.width/3, 31*dim.height/40), "current user", userID,ConnectionClass.conn);
+		searchGUI = new SearchGUI(new Dimension(dim.width/3, 31*dim.height/40), userID, ConnectionClass.conn, this);
 
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
@@ -258,9 +258,9 @@ public class LoggedInDriverGUI extends JFrame{
 		tlgScroll = new JScrollPane(tlg);
 		fgScroll = new JScrollPane(fg);
 		notifications = new JLabel("notifications");
-		trgScroll.setPreferredSize(new Dimension(dim.width/12, 15*dim.height/20));
-		tlgScroll.setPreferredSize(new Dimension(dim.width/12, 15*dim.height/20));
-		fgScroll.setPreferredSize(new Dimension(dim.width/15, 15*dim.height/20));
+		trgScroll.setPreferredSize(new Dimension(dim.width/12, 35*dim.height/40));
+		tlgScroll.setPreferredSize(new Dimension(dim.width/12, 35*dim.height/40));
+		fgScroll.setPreferredSize(new Dimension(dim.width/15, 35*dim.height/40));
 		trgScroll.setBorder(null);
 		tlgScroll.setBorder(null);
 		mainPanel.add(fgScroll, BorderLayout.CENTER);
@@ -315,7 +315,6 @@ public class LoggedInDriverGUI extends JFrame{
 	
 	private void createGUI()
 	{
-		setLayout(new FlowLayout());
 		add(buttonPanel, BorderLayout.NORTH);
 		add(mainPanel, BorderLayout.CENTER);
 		add(bottomColor, BorderLayout.SOUTH);

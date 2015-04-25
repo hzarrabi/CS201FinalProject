@@ -95,14 +95,6 @@ public class MusicPlayer extends JPanel{
 
 	}
 	
-//	public void startThread()
-//	{
-//		if (myThread == null)
-//			myThread = musicObject.playTheSong();
-//		else
-//			myThread.resume();
-//	}
-//	
 	public void stopThread()
 	{
 		if (myThread != null)
@@ -110,6 +102,7 @@ public class MusicPlayer extends JPanel{
 	}	
 	
 	private void initializeComponents(){
+		this.setSize(dim);
 		currentPanel = 0;
 		album = new JLabel("");
 		album.setPreferredSize(new Dimension(3*dim.width/4, 3*dim.width/4));
@@ -133,7 +126,6 @@ public class MusicPlayer extends JPanel{
          } catch (IOException e) {
             e.printStackTrace();
          }
-		
 		
 		
 		artist = new JLabel(musicObject.getSongName() + " "+musicObject.getArtistName());
@@ -165,26 +157,26 @@ public class MusicPlayer extends JPanel{
 		setBackground(FirstPageGUI.white);
 		JPanel buttonPanel = new JPanel();
 		//buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width/50, dim.height));
-		buttonPanel.setPreferredSize(new Dimension(dim.width, dim.height/12));
+		buttonPanel.setPreferredSize(new Dimension(dim.width, 7*dim.height/93));
 		buttonPanel.setBackground(FirstPageGUI.green);
 		
 		commentButton.setOpaque(false);
 		commentButton.setContentAreaFilled(false);
 		commentButton.setBorderPainted(false);
 		commentButton.setIcon(new ImageIcon("data/comments1.png"));
-		commentButton.setPreferredSize(new Dimension(dim.width/5, dim.height/14));
+		commentButton.setPreferredSize(new Dimension(dim.width/5, 6*dim.height/93));
 		
 		rateButton.setOpaque(false);
 		rateButton.setContentAreaFilled(false);
 		rateButton.setBorderPainted(false);
 		rateButton.setIcon(new ImageIcon("data/rating1.png"));
-		rateButton.setPreferredSize(new Dimension(dim.width/5, dim.height/15));
+		rateButton.setPreferredSize(new Dimension(dim.width/5, 6*dim.height/93));
 		
 		favoriteButton.setOpaque(false);
 		favoriteButton.setContentAreaFilled(false);
 		favoriteButton.setBorderPainted(false);
 		favoriteButton.setIcon(new ImageIcon("data/favorite_empty1.png"));
-		favoriteButton.setPreferredSize(new Dimension(dim.width/5, dim.height/15));
+		favoriteButton.setPreferredSize(new Dimension(dim.width/5, 6*dim.height/93));
 		
 		buttonPanel.add(commentButton);
 		buttonPanel.add(favoriteButton);
@@ -192,32 +184,32 @@ public class MusicPlayer extends JPanel{
 		
 		JPanel bottomPanel = new JPanel();
 		//bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width/50, dim.height));
-		bottomPanel.setPreferredSize(new Dimension(dim.width, dim.height/13));
+		bottomPanel.setPreferredSize(new Dimension(dim.width, 7*dim.height/93));
 		bottomPanel.setBackground(FirstPageGUI.green);
 	
 		backButton.setOpaque(false);
 		backButton.setContentAreaFilled(false);
 		backButton.setBorderPainted(false);
 		backButton.setIcon(new ImageIcon("data/ReverseButton.png"));
-		backButton.setPreferredSize(new Dimension(dim.width/5, dim.height/17));
+		backButton.setPreferredSize(new Dimension(dim.width/5, 6*dim.height/93));
 		
 		playButton.setOpaque(false);
 		playButton.setContentAreaFilled(false);
 		playButton.setBorderPainted(false);
 		playButton.setIcon(new ImageIcon("data/playButton.png"));
-		playButton.setPreferredSize(new Dimension(dim.width/5, dim.height/15));
+		playButton.setPreferredSize(new Dimension(dim.width/5, 6*dim.height/93));
 		
 		pauseButton.setOpaque(false);
 		pauseButton.setContentAreaFilled(false);
 		pauseButton.setBorderPainted(false);
 		pauseButton.setIcon(new ImageIcon("data/pauseButton.png"));
-		pauseButton.setPreferredSize(new Dimension(dim.width/5, dim.height/17));
+		pauseButton.setPreferredSize(new Dimension(dim.width/5, 6*dim.height/93));
 		
 		forwardButton.setOpaque(false);
 		forwardButton.setContentAreaFilled(false);
 		forwardButton.setBorderPainted(false);
 		forwardButton.setIcon(new ImageIcon("data/forwardButton.png"));
-		forwardButton.setPreferredSize(new Dimension(dim.width/5, dim.height/17));
+		forwardButton.setPreferredSize(new Dimension(dim.width/5, 6*dim.height/93));
 		
 		bottomPanel.add(backButton);
 		bottomPanel.add(playButton);
@@ -226,7 +218,7 @@ public class MusicPlayer extends JPanel{
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(FirstPageGUI.white);
-		mainPanel.setPreferredSize(new Dimension(dim.width, 56*dim.height/93));
+		mainPanel.setPreferredSize(new Dimension(dim.width, 50*dim.height/93));
 		mainPanel.add(album);
 		mainPanel.add(artist);
 		artist.setBackground(FirstPageGUI.white);
@@ -243,8 +235,8 @@ public class MusicPlayer extends JPanel{
 		
 		favoriteLabel = new JButton();
 		favoritePanel = new JPanel();
-		favoritePanel.setPreferredSize(new Dimension(dim.width, 7*dim.height/24));
-		favoriteLabel.setPreferredSize(new Dimension(dim.width, 7*dim.height/24));
+		favoritePanel.setPreferredSize(new Dimension(dim.width, 18*dim.height/93));
+		favoriteLabel.setPreferredSize(new Dimension(dim.width, 18*dim.height/93));
 		favoritePanel.add(favoriteLabel);
 		
 		emptyHeart = new ImageIcon("data/heartOutline.png");
@@ -256,16 +248,19 @@ public class MusicPlayer extends JPanel{
 		
 		//fiveStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
 		commentPanel = new JPanel();
-		commentPanel.setPreferredSize(new Dimension(dim.width, 32*dim.height/115));
-		ratePanel.setPreferredSize(new Dimension(dim.width, 2*dim.height/24));
-		comments.setPreferredSize(new Dimension(dim.width, 5*dim.height/24));
-		comment.setPreferredSize(new Dimension(3*dim.width/5, dim.height/24));
-		jspComments.setPreferredSize(new Dimension(dim.width, 5*dim.height/24));
+		commentPanel.setPreferredSize(new Dimension(dim.width, 22*dim.height/93));
+		ratePanel.setPreferredSize(new Dimension(dim.width,18*dim.height/93));
+		comments.setPreferredSize(new Dimension(dim.width, 15*dim.height/93));
+		comment.setPreferredSize(new Dimension(3*dim.width/5, 4*dim.height/93));
+		jspComments.setPreferredSize(new Dimension(dim.width, 15*dim.height/93));
+		//comments.setBackground(FirstPageGUI.darkGrey);
+		//jspComments.setBackground(FirstPageGUI.darkGrey);
+		//commentPanel.setBackground(FirstPageGUI.darkGrey);
 		favoritePanel.setBackground(FirstPageGUI.white);
 		commentPanel.setBackground(FirstPageGUI.white);
 		comments.setBackground(FirstPageGUI.white);
 		ratePanel.setBackground(FirstPageGUI.white);
-		enter.setPreferredSize(new Dimension(dim.width/5, dim.height/24));
+		enter.setPreferredSize(new Dimension(dim.width/5, 4*dim.height/93));
 		
 		enter.setBorder(new RoundedBorder());
 		enter.setBackground(FirstPageGUI.darkGrey);
@@ -324,7 +319,7 @@ public class MusicPlayer extends JPanel{
 		}
 		
 		JPanel other = new JPanel();
-		other.setPreferredSize(new Dimension(dim.width, dim.height/17));
+		other.setPreferredSize(new Dimension(dim.width, 9*dim.height/93));
 		other.add(enter, BorderLayout.WEST);
 		other.add(comment, BorderLayout.EAST);
 		commentPanel.add(jspComments, BorderLayout.CENTER);
@@ -333,17 +328,21 @@ public class MusicPlayer extends JPanel{
 		JPanel tabPanel = new JPanel();
 		
 		
-		tabPanel.setPreferredSize(new Dimension(dim.width, 11*dim.height/24));
+		tabPanel.setPreferredSize(new Dimension(dim.width, 28*dim.height/93));
 		tabPanel.setBackground(FirstPageGUI.white);
 		tabPanelMain = new JPanel();
-		tabPanelMain.setPreferredSize(new Dimension(dim.width, 7*dim.height/25));
+		tabPanelMain.setPreferredSize(new Dimension(dim.width, 21*dim.height/93));
+		//tabPanelMain.setBackground(Fir);
+		//tabPanel.setBackground(FirstPageGUI.darkGrey);
+		//tabPanelMain.setBackground(FirstPageGUI.darkGrey);
 		tabPanelMain.add(commentPanel, BorderLayout.CENTER);
 		tabPanelMain.setBackground(FirstPageGUI.white);
-		tabPanel.add(tabPanelMain, BorderLayout.CENTER);
-		tabPanel.add(buttonPanel, BorderLayout.SOUTH);
+		tabPanel.add(tabPanelMain);
+		tabPanel.add(buttonPanel);
 		resetStuff();
-		add(mainPanel, BorderLayout.CENTER);
-		//add(bottomPanel, BorderLayout.CENTER);
+		//setBackground(FirstPageGUI.green);
+		//mainPanel.setBackground(FirstPageGUI.darkGrey);
+		add(mainPanel, BorderLayout.NORTH);
 		add(tabPanel, BorderLayout.SOUTH);
 	}
 	private void setEventHandlers(){
