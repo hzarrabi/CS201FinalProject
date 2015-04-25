@@ -238,8 +238,8 @@ public class MusicPlayer extends JPanel{
 		
 		favoriteLabel = new JButton();
 		favoritePanel = new JPanel();
-		favoritePanel.setPreferredSize(new Dimension(dim.width, 21*dim.height/93));
-		favoriteLabel.setPreferredSize(new Dimension(dim.width, 21*dim.height/93));
+		favoritePanel.setPreferredSize(new Dimension(dim.width, 15*dim.height/93));
+		favoriteLabel.setPreferredSize(new Dimension(dim.width, 15*dim.height/93));
 		favoritePanel.add(favoriteLabel);
 		
 		emptyHeart = new ImageIcon("data/heartOutline.png");
@@ -636,7 +636,8 @@ public class MusicPlayer extends JPanel{
 		ratingPanel.removeAll();
 		ratingPanel.add(rating);
 		int i = 0;
-		if (rate <= 1.4)
+		System.out.println(rate);
+		if (rate <= 1.4 && i>.9)
 		{
 			i = 1;
 		}

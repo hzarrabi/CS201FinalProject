@@ -603,7 +603,7 @@ public class IndpMusicPlayer extends JPanel{
 		ratingPanel.removeAll();
 		ratingPanel.add(rating);
 		int i = 0;
-		if (rate <= 1.4) { i = 1; }
+		if (rate <= 1.4 && i>.9) { i = 1; }
 		else if (rate <=2.4) { i=2; }
 		else if (rate <=3.4) { i =3; }
 		else if (rate <= 4.4) { i = 4; }
