@@ -386,6 +386,7 @@ public class ProfileGUI extends JPanel{
 				temp.setOpaque(true);
 				jpFollowing.add(temp);
 			}
+			st.close();
 			
 		}
 		catch (Exception e) {}
@@ -420,6 +421,7 @@ public class ProfileGUI extends JPanel{
 					System.out.println("now here");
 					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "not friends"));
 				}
+				st2.close();
 				temp.setBackground(FirstPageGUI.green);
 				temp.setForeground(FirstPageGUI.white);
 				temp.setFont(FirstPageGUI.smallFont);
@@ -428,6 +430,7 @@ public class ProfileGUI extends JPanel{
 				temp.setOpaque(true);
 				jpFollowers.add(temp);
 			}
+			st.close();
 			
 			
 		}
