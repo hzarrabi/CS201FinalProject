@@ -64,7 +64,7 @@ public class LoggedInDriverGUI extends JFrame{
 	
 	static int numFavoriteSongs = 0;
 	static Vector<Integer> songID = new Vector<Integer> ();
-	static Vector<String> favoriteSongNames = new Vector<String> ();
+	static Vector<MusicModel> favoriteSongNames = new Vector<MusicModel> ();
 	
 	String [] sql_queries = {"SELECT * from user_table WHERE username = ?", 
 			"SELECT * from music_table WHERE song_name = ?",
@@ -103,6 +103,11 @@ public class LoggedInDriverGUI extends JFrame{
 		String dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
 		String userName = "cs201";
 		String passWord = "manishhostage";
+		try{
+			sharedMusicLibrary = new MusicLibrary();
+		}catch(Exception e){
+			
+		}
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
@@ -149,7 +154,8 @@ public class LoggedInDriverGUI extends JFrame{
 				{
 					for (int j = 1; j <= columns; j++)
 					{
-						favoriteSongNames.add(rs.getString(j));
+						
+						favoriteSongNames.add(sharedMusicLibrary.getMusicModelMap().get(rs.getString(j)));
 					}
 				}
 			}
@@ -159,11 +165,6 @@ public class LoggedInDriverGUI extends JFrame{
 		} catch (ClassNotFoundException e1) {
 			e1.printStackTrace();
 		}			
-		try{
-			sharedMusicLibrary = new MusicLibrary();
-		}catch(Exception e){
-			
-		}
 
 		//connect();
 		initializeComponents();
@@ -174,19 +175,6 @@ public class LoggedInDriverGUI extends JFrame{
 		setVisible(true);
 		setResizable(false);
 	}
-//	
-//	private void connect(){
-//		 try {
-//			 Class.forName("com.mysql.jdbc.Driver");
-//			 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-//			 } catch (ClassNotFoundException e) {
-//			 e.printStackTrace();
-//			 } catch (SQLException e) {
-//			 e.printStackTrace();
-//			 }
-//}
-//	
-	
 	
 	private void initializeComponents()
 	{
@@ -248,7 +236,7 @@ public class LoggedInDriverGUI extends JFrame{
 
 		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
 		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
-		mpg = new ProfileGUI(new Dimension(dim.width/3, 31*dim.height/40), "current user", userID,ConnectionClass.conn);
+		mpg = new ProfileGUI(this, new Dimension(dim.width/3, 31*dim.height/40), "current user", userID,ConnectionClass.conn);
 		searchGUI = new SearchGUI(new Dimension(dim.width/3, 31*dim.height/40), userID, ConnectionClass.conn, this);
 
 		musicPlayerTopRated = trg.initPlayer();
@@ -478,7 +466,7 @@ public class LoggedInDriverGUI extends JFrame{
 	
 	//these two functions are called from the searchGUI in order to change the panel on the searchGUI 
 	//when a user clicks one of the buttons from the results
-	public void removeGUI()
+	public void removeGUIForSearch()
 	{
 		mainPanel.remove(tempGUI);
 		mainPanel.add(searchGUI);
@@ -486,7 +474,7 @@ public class LoggedInDriverGUI extends JFrame{
 		mainPanel.repaint();
 	}
 	
-	public void addGUI(JPanel temp)
+	public void addGUIForSearch(JPanel temp)
 	{
 		tempGUI = temp;
 		mainPanel.remove(searchGUI);
@@ -494,6 +482,23 @@ public class LoggedInDriverGUI extends JFrame{
 		mainPanel.revalidate();
 		mainPanel.repaint();
 	}
-			
+	
+	public void removeGUIForProfile()
+	{
+		mainPanel.remove(tempGUI);
+		mainPanel.add(mpg);
+		mainPanel.revalidate();
+		mainPanel.repaint();
+	}
+	
+	public void addGUIForProfile(JPanel temp)
+	{
+		tempGUI = temp;
+		mainPanel.remove(mpg);
+		mainPanel.add(temp);
+		mainPanel.revalidate();
+		mainPanel.repaint();
+	}
+		
 }
 

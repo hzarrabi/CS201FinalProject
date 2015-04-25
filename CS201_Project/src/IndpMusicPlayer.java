@@ -603,16 +603,34 @@ public class IndpMusicPlayer extends JPanel{
 		ratingPanel.removeAll();
 		ratingPanel.add(rating);
 		int i = 0;
-		if (rate <= 1.4 && i>.9) { i = 1; }
-		else if (rate <=2.4) { i=2; }
-		else if (rate <=3.4) { i =3; }
-		else if (rate <= 4.4) { i = 4; }
-		else { i=5; }
-		for (int j = 0; j<=i; j++)
+		if (rate <= 1.4 && rate>.9)
 		{
-			JLabel temp = new JLabel("");
-			temp.setIcon(new ImageIcon("data/star2.png"));
-			ratingPanel.add(temp);
+			i = 1;
+		}
+		else if (rate <=2.4 && rate>1.4)
+		{	
+			i=2;
+		}
+		else if (rate <=3.4 && rate>2.4)
+		{
+			i =3;
+		}
+		else if (rate <= 4.4 && rate > 3.4)
+		{
+			i = 4;
+		}
+		else if (rate >4.4)
+		{
+			i=5;
+		}
+		if (i!= 0)
+		{
+			for (int j = 0; j<=i; j++)
+			{
+				JLabel temp = new JLabel("");
+				temp.setIcon(new ImageIcon("data/star2.png"));
+				ratingPanel.add(temp);
+			}
 		}
 		ratingPanel.revalidate();
 		ratingPanel.repaint();

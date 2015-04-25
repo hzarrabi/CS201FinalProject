@@ -392,7 +392,7 @@ public class SearchGUI extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			mainPage.removeGUI();
+			mainPage.removeGUIForSearch();
 			
 		}
 		
@@ -428,7 +428,7 @@ public class SearchGUI extends JPanel {
 					newProfile = new ProfileGUI(dim, "not friends", userID, ConnectionClass.conn, new ActionListenerComplicated());
 					//mainPage.addGUI(newProfile);
 				}*/
-				mainPage.addGUI(newProfile);
+				mainPage.addGUIForSearch(newProfile);
 				//ps.close();
 			//}
 //			catch (Exception p){
@@ -447,7 +447,7 @@ public class SearchGUI extends JPanel {
 		}
 		public void actionPerformed(ActionEvent e) {
 				//IndpMusicPlayer player = new IndpMusicPlayer
-				mainPage.addGUI(myModel);
+				mainPage.addGUIForSearch(myModel);
 			
 		}
 		

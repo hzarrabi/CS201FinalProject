@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
@@ -69,13 +70,15 @@ public class ProfileGUI extends JPanel{
 	private String key;
 	private Integer userId;
 	private Connection conn;
+	private LoggedInDriverGUI mainPage;
 	
-	public ProfileGUI(Dimension d, String key, int userID, Connection conn)
+	public ProfileGUI(LoggedInDriverGUI mainPage, Dimension d, String key, int userID, Connection conn)
 	{
 		dim = d;
 		this.key = key;
 		this.userId=userID;
 		this.conn=conn;
+		this.mainPage = mainPage;
 		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
 		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
 		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
@@ -350,7 +353,10 @@ public class ProfileGUI extends JPanel{
 		}
 		for (int i = 0; i <LoggedInDriverGUI.numFavoriteSongs; i++)
 		{
-			JButton temp2 = new JButton(LoggedInDriverGUI.favoriteSongNames.get(i));
+			MusicModel MusicObject = LoggedInDriverGUI.favoriteSongNames.get(i);
+			JButton temp2 = new JButton(MusicObject.getSongName());
+			IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, new ActionListenerComplicated(), dim);
+			temp2.addActionListener(new ActionListenerSong(player));
 			favoritesButtons.add(temp2);
 		}
 		
@@ -627,5 +633,70 @@ public class ProfileGUI extends JPanel{
 			}
 		});
 
+	}
+	
+	class ActionListenerProfile implements ActionListener{
+		private int id;
+		public ActionListenerProfile(int id)
+		{
+			this.id = id;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("in actionlistener");
+			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ LoggedInDriverGUI.userID+" AND user_being_followed = "+id+")";
+			ProfileGUI newProfile;
+			/*try{
+				System.out.println("in try");
+				PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sqlQuery);
+				ResultSet rs = ps.executeQuery();
+				//ResultSet rs = ps.executeQuery();
+				System.out.println("after rs");
+				
+				if (rs.getRow() == 0)
+				{*/
+					System.out.println("in if"); 
+					newProfile = new ProfileGUI(dim, "friends", id, ConnectionClass.conn, new ActionListenerComplicated());
+					//mainPage.addGUI(newProfile);
+				/*}
+				else
+				{
+					System.out.println("in else");
+					newProfile = new ProfileGUI(dim, "not friends", userID, ConnectionClass.conn, new ActionListenerComplicated());
+					//mainPage.addGUI(newProfile);
+				}*/
+				mainPage.addGUIForProfile(newProfile);
+				//ps.close();
+			//}
+//			catch (Exception p){
+//				
+//			}
+			
+		}
+		
+	}
+	
+	class ActionListenerSong implements ActionListener{
+		private IndpMusicPlayer myModel;
+		public ActionListenerSong(IndpMusicPlayer player)
+		{
+			myModel = player;
+		}
+		public void actionPerformed(ActionEvent e) {
+				//IndpMusicPlayer player = new IndpMusicPlayer
+				mainPage.addGUIForProfile(myModel);
+			
+		}
+		
+	}
+	
+	class ActionListenerComplicated implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			mainPage.removeGUIForProfile();
+			
+		}
+		
 	}
 }
