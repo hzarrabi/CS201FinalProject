@@ -54,6 +54,9 @@ public class LoggedInDriverGUI extends JFrame{
 	private int currentJpanel;
 	private Color myColor;
 	
+	private JPanel currentGUI;
+	private JPanel previousGUI;
+	
 	//this is a either a ProfileGUI or a IndpMusicPlayer
 	private JPanel tempGUI;
 	
@@ -79,6 +82,7 @@ public class LoggedInDriverGUI extends JFrame{
 	
 	private IndpMusicPlayer currentPlayer;
 	//private FirstPageGUI firstPage;
+	private int currentPanelNum;
 	
 	public LoggedInDriverGUI(int userID)
 	{		
@@ -232,7 +236,7 @@ public class LoggedInDriverGUI extends JFrame{
 		buttonPanel.add(trgButton);
 		buttonPanel.add(searchButton);
 
-
+		currentPanelNum = 0;
 
 		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
 		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
@@ -498,6 +502,43 @@ public class LoggedInDriverGUI extends JFrame{
 		mainPanel.add(temp);
 		mainPanel.revalidate();
 		mainPanel.repaint();
+	}
+		
+	public void removePrevious()
+	{
+		if (currentPanelNum == 1)
+		{
+			mainPanel.remove(currentGUI);
+			mainPanel.add(tempGUI);
+			previousGUI = currentGUI;
+			mainPanel.revalidate();
+			mainPanel.repaint();
+		}
+		else
+		{
+			mainPanel.remove(currentGUI);
+			mainPanel.add(previousGUI);
+			previousGUI = currentGUI;
+			mainPanel.revalidate();
+			mainPanel.repaint();
+		}
+		currentPanelNum--;
+	}
+	
+	public void addNext(JPanel temp)
+	{
+		currentPanelNum++;
+		previousGUI = currentGUI;
+		currentGUI = temp;
+		mainPanel.remove(previousGUI);
+		mainPanel.add(currentGUI);
+		mainPanel.revalidate();
+		mainPanel.repaint();
+	}
+		
+	public void setTemp(JPanel p)
+	{
+		tempGUI = p;
 	}
 		
 }

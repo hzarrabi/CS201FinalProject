@@ -10,11 +10,13 @@ import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.sql.Statement;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -29,9 +31,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-
 import com.mysql.jdbc.PreparedStatement;
-import com.mysql.jdbc.Statement;
 
 
 public class ProfileGUI extends JPanel{
@@ -93,6 +93,27 @@ public class ProfileGUI extends JPanel{
 	public ProfileGUI(Dimension d, String key, int userID, Connection conn, ActionListener forBackButton)
 	{
 		dim = d;
+	//	this.mainPage = mainPage;
+		this.key = key;
+		this.userId=userID;
+		this.conn=conn;
+		backButton = new JButton("Back");
+		this.forBackButton = forBackButton;
+		backButton.addActionListener(forBackButton);
+		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
+		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
+		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+		profilePic = new ImageIcon(img2);
+		this.setPreferredSize(dim);
+		initializeComponents();
+		setEventHandlers();
+		setVisible(true);
+	}
+	
+	public ProfileGUI(LoggedInDriverGUI mainPage, Dimension d, String key, int userID, Connection conn, ActionListener forBackButton)
+	{
+		dim = d;
+		this.mainPage = mainPage;
 		this.key = key;
 		this.userId=userID;
 		this.conn=conn;
@@ -344,13 +365,80 @@ public class ProfileGUI extends JPanel{
 	
 	private void populate()
 	{
-		for (int i = 0; i<100; i++)
+		try
 		{
-			JButton temp = new JButton("User");
-			followersButtons.add(temp);
-			JButton temp3 = new JButton("User");
-			followingButtons.add(temp3);
+			//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+			
+			Statement st = ConnectionClass.conn.createStatement();
+			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+			String queryCheck = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(LoggedInDriverGUI.userID);
+			ResultSet rs = st.executeQuery(queryCheck);
+			int columns = rs.getMetaData().getColumnCount();
+			while (rs.next())
+			{
+				JButton temp = new JButton(Integer.toString(rs.getInt(1)));
+				temp.addActionListener(new ActionListenerProfile(rs.getInt(1), "friends"));
+				temp.setBackground(FirstPageGUI.green);
+				temp.setForeground(FirstPageGUI.white);
+				temp.setFont(FirstPageGUI.smallFont);
+				temp.setBorder(new RoundedBorder());
+				temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
+				temp.setOpaque(true);
+				jpFollowing.add(temp);
+			}
+			
 		}
+		catch (Exception e) {}
+		
+		try
+		{
+			//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+			
+			Statement st = ConnectionClass.conn.createStatement();
+			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+			String queryCheck = "SELECT user FROM friend_relationship WHERE user_being_followed = " + Integer.toString(LoggedInDriverGUI.userID);
+			ResultSet rs = st.executeQuery(queryCheck);
+			int columns = rs.getMetaData().getColumnCount();
+			while (rs.next())
+			{
+				JButton temp = new JButton(Integer.toString(rs.getInt(1)));
+				Statement st2 = ConnectionClass.conn.createStatement();
+				System.out.println("here here");
+				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+				String queryCheck2 = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(LoggedInDriverGUI.userID) + " AND user_being_followed = "+Integer.toString(rs.getInt(1));
+				System.out.println("here again");
+				ResultSet rs2 = st2.executeQuery(queryCheck);
+				int columns2 = rs2.getMetaData().getColumnCount();
+				if (!rs.next())
+				{
+					System.out.println("here");
+					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "friends"));
+				}
+				else
+				{
+					System.out.println("now here");
+					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "not friends"));
+				}
+				temp.setBackground(FirstPageGUI.green);
+				temp.setForeground(FirstPageGUI.white);
+				temp.setFont(FirstPageGUI.smallFont);
+				temp.setBorder(new RoundedBorder());
+				temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
+				temp.setOpaque(true);
+				jpFollowers.add(temp);
+			}
+			
+			
+		}
+		catch (Exception e) {}
+		
+//		for (int i = 0; i<100; i++)
+//		{
+//			JButton temp = new JButton("User");
+//			followersButtons.add(temp);
+//			JButton temp3 = new JButton("User");
+//			followingButtons.add(temp3);
+//		}
 		for (int i = 0; i <LoggedInDriverGUI.numFavoriteSongs; i++)
 		{
 			MusicModel MusicObject = LoggedInDriverGUI.favoriteSongNames.get(i);
@@ -360,31 +448,31 @@ public class ProfileGUI extends JPanel{
 			favoritesButtons.add(temp2);
 		}
 		
-		Iterator<JButton> it = followersButtons.iterator();
-		Iterator<JButton> it2 = followingButtons.iterator();
+//		Iterator<JButton> it = followersButtons.iterator();
+//		Iterator<JButton> it2 = followingButtons.iterator();
 		Iterator<JButton> it3 = favoritesButtons.iterator();
-		while (it.hasNext())
-		{
-			JButton temp = it.next();
-			temp.setBackground(FirstPageGUI.green);
-			temp.setForeground(FirstPageGUI.white);
-			temp.setFont(FirstPageGUI.smallFont);
-			temp.setBorder(new RoundedBorder());
-			temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
-			temp.setOpaque(true);
-			jpFollowers.add(temp);
-		}
-		while (it2.hasNext())
-		{
-			JButton temp = it2.next();
-			temp.setBackground(FirstPageGUI.green);
-			temp.setForeground(FirstPageGUI.white);
-			temp.setFont(FirstPageGUI.smallFont);
-			temp.setBorder(new RoundedBorder());
-			temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
-			temp.setOpaque(true);
-			jpFollowing.add(temp);
-		}
+//		while (it.hasNext())
+//		{
+//			JButton temp = it.next();
+//			temp.setBackground(FirstPageGUI.green);
+//			temp.setForeground(FirstPageGUI.white);
+//			temp.setFont(FirstPageGUI.smallFont);
+//			temp.setBorder(new RoundedBorder());
+//			temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
+//			temp.setOpaque(true);
+//			jpFollowers.add(temp);
+//		}
+//		while (it2.hasNext())
+//		{
+//			JButton temp = it2.next();
+//			temp.setBackground(FirstPageGUI.green);
+//			temp.setForeground(FirstPageGUI.white);
+//			temp.setFont(FirstPageGUI.smallFont);
+//			temp.setBorder(new RoundedBorder());
+//			temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
+//			temp.setOpaque(true);
+//			jpFollowing.add(temp);
+//		}
 		while (it3.hasNext())
 		{
 			JButton temp = it3.next();
@@ -637,8 +725,10 @@ public class ProfileGUI extends JPanel{
 	
 	class ActionListenerProfile implements ActionListener{
 		private int id;
-		public ActionListenerProfile(int id)
+		private String relation;
+		public ActionListenerProfile(int id, String relationship)
 		{
+			relation = relationship;
 			this.id = id;
 		}
 		@Override
@@ -646,32 +736,27 @@ public class ProfileGUI extends JPanel{
 			System.out.println("in actionlistener");
 			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ LoggedInDriverGUI.userID+" AND user_being_followed = "+id+")";
 			ProfileGUI newProfile;
-			/*try{
-				System.out.println("in try");
-				PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sqlQuery);
-				ResultSet rs = ps.executeQuery();
-				//ResultSet rs = ps.executeQuery();
-				System.out.println("after rs");
-				
-				if (rs.getRow() == 0)
-				{*/
-					System.out.println("in if"); 
-					newProfile = new ProfileGUI(dim, "friends", id, ConnectionClass.conn, new ActionListenerComplicated());
-					//mainPage.addGUI(newProfile);
-				/*}
-				else
-				{
-					System.out.println("in else");
-					newProfile = new ProfileGUI(dim, "not friends", userID, ConnectionClass.conn, new ActionListenerComplicated());
-					//mainPage.addGUI(newProfile);
-				}*/
-				mainPage.addGUIForProfile(newProfile);
-				//ps.close();
-			//}
-//			catch (Exception p){
-//				
-//			}
-			
+			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());
+			mainPage.addGUIForProfile(newProfile);
+		}
+		
+	}
+	
+	class ActionListenerProfileComplicated implements ActionListener{
+		private int id;
+		private String relation;
+		public ActionListenerProfileComplicated(int id, String relationship)
+		{
+			relation = relationship;
+			this.id = id;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			System.out.println("in actionlistener");
+			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ LoggedInDriverGUI.userID+" AND user_being_followed = "+id+")";
+			ProfileGUI newProfile;
+			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());
+			mainPage.addNext(newProfile);
 		}
 		
 	}
@@ -696,6 +781,16 @@ public class ProfileGUI extends JPanel{
 		public void actionPerformed(ActionEvent e) {
 			mainPage.removeGUIForProfile();
 			
+		}
+		
+	}
+	
+	class ActionListenerComplicatedProfile implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			mainPage.removePrevious();
+			mainPage.setTemp(ProfileGUI.this);
 		}
 		
 	}

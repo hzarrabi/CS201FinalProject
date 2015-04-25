@@ -358,7 +358,7 @@ public class MusicPlayer extends JPanel{
 				//String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(this.userID);
 				try
 				{
-				ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+				//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
 				
 				Statement st = ConnectionClass.conn.createStatement();
 				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
@@ -368,7 +368,7 @@ public class MusicPlayer extends JPanel{
 				
 				if (favoriteLabel.getIcon() == emptyHeart)
 				{
-					System.out.println("should be here");
+					//System.out.println("should be here");
 					favoriteLabel.setIcon(fullHeart);
 					if (!musicObject.getFavoritedBool())
 					{
@@ -393,7 +393,7 @@ public class MusicPlayer extends JPanel{
 				}
 				else
 				{
-					System.out.println("should not be here");
+					//System.out.println("should not be here");
 					favoriteLabel.setIcon(emptyHeart);
 					if (musicObject.getFavoritedBool())
 					{
