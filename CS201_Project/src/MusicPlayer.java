@@ -567,8 +567,11 @@ public class MusicPlayer extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//musicObject.resumeSong();
-				if (myThread == null)
+				if (myThread == null){
 					myThread = musicObject.playTheSong();
+					Sample LeapMotionThread = new Sample(myThread);
+					LeapMotionThread.run();
+				}
 				else
 					myThread.resume();
 			}
