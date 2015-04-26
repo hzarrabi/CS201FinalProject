@@ -564,8 +564,8 @@ public class MusicPlayer extends JPanel{
 				//musicObject.resumeSong();
 				if (myThread == null){
 					myThread = musicObject.playTheSong();
-					Sample LeapMotionThread = new Sample(myThread);
-					LeapMotionThread.run();
+					//Sample LeapMotionThread = new Sample(myThread);
+					//LeapMotionThread.run();
 				}
 				else
 					myThread.resume();
