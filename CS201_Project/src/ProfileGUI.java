@@ -67,41 +67,23 @@ public class ProfileGUI extends JPanel{
 	private JFileChooser jfl;
 	private JLabel picturePic;
 	private JButton pictureButton;
-	private JButton backButton;
-	private ActionListener forBackButton;
+	//private JButton backButton;
+	//private ActionListener forBackButton;
 	private String key;
 	private Integer userId;
-	private Connection conn;
+	//private Connection conn;
 	private LoggedInDriverGUI mainPage;
 	
-	public ProfileGUI(LoggedInDriverGUI mainPage, Dimension d, String key, int userID, Connection conn)
-	{
-		dim = d;
-		this.key = key;
-		this.userId=userID;
-		this.conn=conn;
-		this.mainPage = mainPage;
-		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
-		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
-		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
-		profilePic = new ImageIcon(img2);
-		this.setPreferredSize(dim);
-		initializeComponents();
-		setEventHandlers();
-		setVisible(true);
-		
-	}
-	
-	public ProfileGUI(Dimension d, String key, int userID, Connection conn, ActionListener forBackButton)
+	public ProfileGUI(Dimension d, String key, int userID)
 	{
 		dim = d;
 	//	this.mainPage = mainPage;
 		this.key = key;
 		this.userId=userID;
-		this.conn=conn;
-		backButton = new JButton("Back");
-		this.forBackButton = forBackButton;
-		backButton.addActionListener(forBackButton);
+		//this.conn=conn;
+		//backButton = new JButton("Back");
+		//this.forBackButton = forBackButton;
+		//backButton.addActionListener(forBackButton);
 		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
 		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
 		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
@@ -112,16 +94,15 @@ public class ProfileGUI extends JPanel{
 		setVisible(true);
 	}
 	
-	public ProfileGUI(LoggedInDriverGUI mainPage, Dimension d, String key, int userID, Connection conn, ActionListener forBackButton)
+	public ProfileGUI(LoggedInDriverGUI mainPage, Dimension d, String key, int userID)
 	{
 		dim = d;
 		this.mainPage = mainPage;
 		this.key = key;
 		this.userId=userID;
-		this.conn=conn;
-		backButton = new JButton("Back");
-		this.forBackButton = forBackButton;
-		backButton.addActionListener(forBackButton);
+		//backButton = new JButton("Back");
+		//this.forBackButton = forBackButton;
+		//backButton.addActionListener(forBackButton);
 		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
 		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
 		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
@@ -271,7 +252,7 @@ public class ProfileGUI extends JPanel{
 		
 		try
 		{
-			Statement stat = (Statement) conn.createStatement();
+			Statement stat = (Statement) ConnectionClass.conn.createStatement();
 			String sql = "Select * from user_table Where iduser_table='" + userId+"'";
 			ResultSet rs = stat.executeQuery(sql);
 			if (rs.next())
@@ -321,12 +302,12 @@ public class ProfileGUI extends JPanel{
 		if (key.equals("not friends"))
 		{
 			buttonP.add(follow);
-			buttonP.add(backButton);
+			//buttonP.add(backButton);
 		}
 		else if (key.equals("friends"))
 		{
 			buttonP.add(unFollow);
-			buttonP.add(backButton);
+			//buttonP.add(backButton);
 		}
 		else if (key.equals("current user"))
 		{
@@ -523,12 +504,16 @@ public class ProfileGUI extends JPanel{
 				if (rs.next())
 				{
 					System.out.println("friends");
-					button.addActionListener(new ActionListenerProfileComplicated(userIDVector.get(i), "friends"));
+					ProfileGUI newProfile;
+					newProfile = new ProfileGUI(mainPage, dim, "friends", userIDVector.get(i));
+					//button.addActionListener(new ActionListenerProfileComplicated(userIDVector.get(i), "friends"));
 				}
 				else
 				{
 					System.out.println("not friends");
-					button.addActionListener(new ActionListenerProfileComplicated(userIDVector.get(i), "not friends"));
+					ProfileGUI newProfile;
+					newProfile = new ProfileGUI(mainPage, dim, "not friends", userIDVector.get(i));
+					//button.addActionListener(new ActionListenerProfileComplicated(userIDVector.get(i), "not friends"));
 				}
 			}
 			st.close();
@@ -540,8 +525,8 @@ public class ProfileGUI extends JPanel{
 		{
 			MusicModel MusicObject = LoggedInDriverGUI.favoriteSongNames.get(i);
 			JButton temp2 = new JButton(MusicObject.getSongName());
-			IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, new ActionListenerComplicated(), dim);
-			temp2.addActionListener(new ActionListenerSong(player));
+			IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, dim);
+			temp2.addActionListener(new ActionListenerNewPage(player));
 			favoritesButtons.add(temp2);
 		}
 		Iterator<JButton> it3 = favoritesButtons.iterator();
@@ -808,62 +793,43 @@ public class ProfileGUI extends JPanel{
 			//System.out.println("in actionlistener");
 			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ userId+" AND user_being_followed = "+id+")";
 			ProfileGUI newProfile;
-			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());
-			mainPage.addGUIForProfile(newProfile);
+			newProfile = new ProfileGUI(mainPage, dim, relation, id);
+			mainPage.addCurrent(newProfile);
 		}
 		
 	}
 	
-	class ActionListenerProfileComplicated implements ActionListener{
-		private int id;
-		private String relation;
-		public ActionListenerProfileComplicated(int id, String relationship)
-		{
-			relation = relationship;
-			this.id = id;
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			//System.out.println("in actionlistener");
-			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ userId+" AND user_being_followed = "+id+")";
-			ProfileGUI newProfile;
-			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());
-			mainPage.addNext(newProfile);
-		}
-		
-	}
+//	class ActionListenerProfileComplicated implements ActionListener{
+//		private int id;
+//		private String relation;
+//		public ActionListenerProfileComplicated(int id, String relationship)
+//		{
+//			relation = relationship;
+//			this.id = id;
+//		}
+//		@Override
+//		public void actionPerformed(ActionEvent e) {
+//			//System.out.println("in actionlistener");
+//			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ userId+" AND user_being_followed = "+id+")";
+//			ProfileGUI newProfile;
+//			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());
+//			mainPage.addNext(newProfile);
+//		}
+//		
+//	}
 	
-	class ActionListenerSong implements ActionListener{
-		private IndpMusicPlayer myModel;
-		public ActionListenerSong(IndpMusicPlayer player)
+	class ActionListenerNewPage implements ActionListener{
+		private JPanel myModel;
+		public ActionListenerNewPage(JPanel player)
 		{
 			myModel = player;
 		}
 		public void actionPerformed(ActionEvent e) {
 				//IndpMusicPlayer player = new IndpMusicPlayer
-				mainPage.addGUIForProfile(myModel);
+				mainPage.addCurrent(myModel);
 			
 		}
 		
 	}
-	
-	class ActionListenerComplicated implements ActionListener{
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			mainPage.removeGUIForProfile();
-			
-		}
-		
-	}
-	
-	class ActionListenerComplicatedProfile implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			mainPage.setTemp(ProfileGUI.this);
-			mainPage.removePrevious();
-		}
-		
-	}
 }

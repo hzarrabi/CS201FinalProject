@@ -48,8 +48,8 @@ public class IndpMusicPlayer extends JPanel{
 	
 	TopGUI top;
 	
-	private JButton backPageButton;
-	private ActionListener forBackButton;
+	//private JButton backPageButton;
+	//private ActionListener forBackButton;
 	private JPanel favoritePanel;
 	private JPanel ratingPanel;
 	private JLabel listens;
@@ -78,7 +78,7 @@ public class IndpMusicPlayer extends JPanel{
 	{
 		songName = songTitle;
 		musicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(songName);
-		backPageButton = new JButton();
+		//backPageButton = new JButton();
 		initializeComponents();
 		createUserGUI();
 		setEventHandlers();
@@ -87,15 +87,15 @@ public class IndpMusicPlayer extends JPanel{
 	}
 	
 	//constructor that will be called from searchGUI, profileGUI and feedGUI
-	public IndpMusicPlayer(MusicModel model, ActionListener forBackButton, Dimension d)
+	public IndpMusicPlayer(MusicModel model, Dimension d)
 	{
 		dim = d;
 		musicObject = model;
 		songName = musicObject.getSongName();
 		//passed in to be the actionlistener for the back button, which will remove this
 		//music player from the loggedindrivergui and go back to the previous panel
-		this.forBackButton = forBackButton;
-		backPageButton = new JButton("back");
+	//	this.forBackButton = forBackButton;
+		//backPageButton = new JButton("back");
 		initializeComponents();
 		createUserGUI();
 		setEventHandlers();
@@ -203,7 +203,7 @@ public class IndpMusicPlayer extends JPanel{
 		
 		bottomPanel.add(playButton);
 		bottomPanel.add(pauseButton);
-		bottomPanel.add(backPageButton);
+		//bottomPanel.add(backPageButton);
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(FirstPageGUI.white);
@@ -363,7 +363,7 @@ public class IndpMusicPlayer extends JPanel{
 			}
 		});
 
-		backPageButton.addActionListener(forBackButton);
+		//backPageButton.addActionListener(forBackButton);
 		
 		//this sets the favoriting icon appropriately and changes the database depending on whether the 
 		//user favorited or unfavorited the song

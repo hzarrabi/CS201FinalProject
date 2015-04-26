@@ -95,25 +95,8 @@ public class TopRatedGUI extends TopGUI{
 			current_song = i;
 		}
 		public void actionPerformed(ActionEvent e) {
-			//IndpMusicPlayer thisMusicPlayer = new IndpMusicPlayer(TopRatedGUI.this, playerBigDim, buttons, songs, current_song);
-			////mainPage.changeRatedFrame(thisMusicPlayer);
 			myPlayer.changeSong(song, current_song);
 		}
-		
-	}
-	
-//	@Override
-//	public void addEventHandlers() {
-//		for (int j = 0; j < buttons.size(); j++)
-//		{
-//			JButton temp = buttons.get(j);
-//		}
-//		
-//	}
-
-	@Override
-	public void removePlayer() {
-		mainPage.changeBackRatedFrame();
 		
 	}
 

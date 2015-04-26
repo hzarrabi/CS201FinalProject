@@ -44,7 +44,7 @@ public class SearchGUI extends JPanel {
 	private JButton add;
 	private int userID;
 	private LoggedInDriverGUI mainPage;
-	private Connection conn;
+	//private Connection conn;
 	private String [] sql_queries = {"SELECT * from user_table WHERE username = ?", 
 			"SELECT * from music_table WHERE song_name = ?",
 			"SELECT * from music_table WHERE artist_name = ?"};
@@ -55,7 +55,7 @@ public class SearchGUI extends JPanel {
 		dim = d;
 		this.userID = userID;
 		this.setPreferredSize(dim);
-		this.conn = conn;
+		//this.conn = conn;
 		this.mainPage = mainPage;
 		add = new JButton("Follow");
 		inputField = new JTextField();
@@ -201,13 +201,13 @@ public class SearchGUI extends JPanel {
 		userPanel.revalidate();
 		userPanel.repaint();
 		try {
-			Statement st = conn.createStatement();
+			Statement st = ConnectionClass.conn.createStatement();
 			String queryCheck = "";
 			boolean check_found = false;
 
 			//check for users
 			queryCheck = sql_queries[0];
-			PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
+			PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement(queryCheck);
 			ps.setString(1, searchText);
 			ResultSet rs = ps.executeQuery();
 			if(rs.absolute(1))
@@ -223,7 +223,9 @@ public class SearchGUI extends JPanel {
 					String userFirstName = rs.getString(2);
 					String userLastName = rs.getString(3);
 					JButton name = new JButton(userFirstName + " "+userLastName);
-					name.addActionListener(new ActionListenerProfile(userId2));
+					ProfileGUI newProfile;
+					newProfile = new ProfileGUI(mainPage, dim, "not friends", userId2);
+					name.addActionListener(new ActionListenerNewPage(newProfile));
 					JLabel profileImage = new JLabel("");
 					ImageIcon icon = new ImageIcon("data/MomAndMoose.jpg");
 					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
@@ -256,7 +258,7 @@ public class SearchGUI extends JPanel {
 			}
 			//check for songs
 			queryCheck = sql_queries[1];
-			ps= (PreparedStatement) conn.prepareStatement(queryCheck);
+			ps= (PreparedStatement) ConnectionClass.conn.prepareStatement(queryCheck);
 			ps.setString(1, searchText);
 			rs = ps.executeQuery();
 			if(rs.absolute(1))
@@ -275,8 +277,8 @@ public class SearchGUI extends JPanel {
 //				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
 				
 				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
-				IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, new ActionListenerComplicated(), dim);
-				name.addActionListener(new ActionListenerSong(player));
+				IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, dim);
+				name.addActionListener(new ActionListenerNewPage(player));
 				JLabel profileImage = new JLabel("");
 				try
 				{
@@ -313,7 +315,7 @@ public class SearchGUI extends JPanel {
 			}
 			//check for artists
 			queryCheck = sql_queries[2];
-			ps= (PreparedStatement) conn.prepareStatement(queryCheck);
+			ps= (PreparedStatement) ConnectionClass.conn.prepareStatement(queryCheck);
 			ps.setString(1, searchText);
 			rs = ps.executeQuery();
 			if(rs.absolute(1))
@@ -332,8 +334,8 @@ public class SearchGUI extends JPanel {
 //				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
 //				
 				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
-				IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, new ActionListenerComplicated(), dim);
-				name.addActionListener(new ActionListenerSong(player));
+				IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, dim);
+				name.addActionListener(new ActionListenerNewPage(player));
 				JLabel profileImage = new JLabel("");
 				try
 				{
@@ -388,66 +390,57 @@ public class SearchGUI extends JPanel {
 	
 	//ActionListener that I'm going to pass to the ProfileGUI for the back button to add
 	//this will allow to back button to remove the profile page and go back to the search results
-	class ActionListenerComplicated implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			mainPage.removeGUIForSearch();
-			
-		}
-		
-	}
 	
-	class ActionListenerProfile implements ActionListener{
-		private int id;
-		public ActionListenerProfile(int id)
-		{
-			this.id = id;
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			System.out.println("in actionlistener");
-			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ LoggedInDriverGUI.userID+" AND user_being_followed = "+id+")";
-			ProfileGUI newProfile;
-			/*try{
-				System.out.println("in try");
-				PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sqlQuery);
-				ResultSet rs = ps.executeQuery();
-				//ResultSet rs = ps.executeQuery();
-				System.out.println("after rs");
-				
-				if (rs.getRow() == 0)
-				{*/
-					System.out.println("in if"); 
-					newProfile = new ProfileGUI(dim, "friends", id, ConnectionClass.conn, new ActionListenerComplicated());
-					//mainPage.addGUI(newProfile);
-				/*}
-				else
-				{
-					System.out.println("in else");
-					newProfile = new ProfileGUI(dim, "not friends", userID, ConnectionClass.conn, new ActionListenerComplicated());
-					//mainPage.addGUI(newProfile);
-				}*/
-				mainPage.addGUIForSearch(newProfile);
-				//ps.close();
-			//}
-//			catch (Exception p){
+//	class ActionListenerProfile implements ActionListener{
+//		private int id;
+//		public ActionListenerProfile(int id)
+//		{
+//			this.id = id;
+//		}
+//		@Override
+//		public void actionPerformed(ActionEvent e) {
+//			System.out.println("in actionlistener");
+//			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ LoggedInDriverGUI.userID+" AND user_being_followed = "+id+")";
+//			ProfileGUI newProfile;
+//			/*try{
+//				System.out.println("in try");
+//				PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sqlQuery);
+//				ResultSet rs = ps.executeQuery();
+//				//ResultSet rs = ps.executeQuery();
+//				System.out.println("after rs");
 //				
-//			}
-			
-		}
-		
-	}
+//				if (rs.getRow() == 0)
+//				{*/
+//					System.out.println("in if"); 
+//					newProfile = new ProfileGUI(dim, "friends", id);
+//					//mainPage.addGUI(newProfile);
+//				/*}
+//				else
+//				{
+//					System.out.println("in else");
+//					newProfile = new ProfileGUI(dim, "not friends", userID, ConnectionClass.conn, new ActionListenerComplicated());
+//					//mainPage.addGUI(newProfile);
+//				}*/
+//				mainPage.addCurrent(newProfile);
+//				//ps.close();
+//			//}
+////			catch (Exception p){
+////				
+////			}
+//			
+//		}
+//		
+//	}
 	
-	class ActionListenerSong implements ActionListener{
-		private IndpMusicPlayer myModel;
-		public ActionListenerSong(IndpMusicPlayer player)
+	class ActionListenerNewPage implements ActionListener{
+		private JPanel myModel;
+		public ActionListenerNewPage(JPanel player)
 		{
 			myModel = player;
 		}
 		public void actionPerformed(ActionEvent e) {
 				//IndpMusicPlayer player = new IndpMusicPlayer
-				mainPage.addGUIForSearch(myModel);
+				mainPage.addCurrent(myModel);
 			
 		}
 		

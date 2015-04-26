@@ -117,11 +117,5 @@ public class TopListenedGUI extends TopGUI{
 //		}
 //		
 //	}
-
-	@Override
-	public void removePlayer() {
-		mainPage.changeBackListenedFrame();
-		
-	}
 }
 
