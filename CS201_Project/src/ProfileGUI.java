@@ -736,7 +736,28 @@ public class ProfileGUI extends JPanel{
 				
 			}
 		});
-
+		//follow user
+		follow.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO friend_relationship (user, user_being_followed)" + "VALUES (?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setInt(2, userId);
+					System.out.println(userId);
+					ps.executeUpdate();
+					ps.close();
+					buttonP.remove(follow);
+					buttonP.add(unFollow);
+					buttonP.revalidate();
+					buttonP.repaint();
+				} catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 	
 	class ActionListenerProfile implements ActionListener{
