@@ -196,7 +196,7 @@ public class LoggedInDriverGUI extends JFrame{
 		feedButton = new JButton();
 		searchButton = new JButton();
 		trgButton.setIcon(new ImageIcon("data/star1.png"));
-		tlgButton.setIcon(new ImageIcon("data/headphones1.png"));
+		tlgButton.setIcon(new ImageIcon("data/head1.png"));
 		mpgButton.setIcon(new ImageIcon("data/profile.png"));
 		feedButton.setIcon(new ImageIcon("data/home.png"));
 		searchButton.setIcon(new ImageIcon("data/search.png"));
