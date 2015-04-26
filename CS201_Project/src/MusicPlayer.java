@@ -436,11 +436,11 @@ public class MusicPlayer extends JPanel{
 	            tabPanelMain.repaint();
 	            try
 				{
-					ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+					//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
 					
 					Statement st = ConnectionClass.conn.createStatement();
 					//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-					String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID);
+					String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) + " AND song_id = " + Integer.toString(musicObject.getMusicID());
 					ResultSet rs = st.executeQuery(queryCheck);
 					int columns = rs.getMetaData().getColumnCount();
 					if (rs.next())
@@ -655,15 +655,29 @@ public class MusicPlayer extends JPanel{
 		fourStar.setIcon(emptyStar);
 		fiveStar.setIcon(emptyStar);
 		//favoriteLabel.setIcon(emptyHeart);
-		if (!musicObject.getFavoritedBool())
-		{	
-			favoriteLabel.setIcon(emptyHeart);
-		}
-
-		else if (musicObject.getFavoritedBool())
-		{
-			favoriteLabel.setIcon(fullHeart);
-		}
+		 try
+			{
+				//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+				
+				Statement st = ConnectionClass.conn.createStatement();
+				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+				String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) + " AND song_id = " + Integer.toString(musicObject.getMusicID());
+				ResultSet rs = st.executeQuery(queryCheck);
+				int columns = rs.getMetaData().getColumnCount();
+				if (rs.next())
+				{
+					favoriteLabel.setIcon(fullHeart);
+				}
+				else
+				{
+					favoriteLabel.setIcon(emptyHeart);
+				}
+			}
+			catch (SQLException e1)
+			{
+				e1.printStackTrace();
+			}
+			
 		double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
 		int listens1 = musicObject.getnumberOfPlayCounts();
 		listens.setText("#Listens: "+listens1);

@@ -37,6 +37,7 @@ public class LoggedInDriverGUI extends JFrame{
 	private TopListenedGUI tlg;
 	private FeedGUI fg;
 	private ProfileGUI mpg;
+	private Boolean hasIndpFrame;
 	private SearchGUI searchGUI;
 	private JButton logout;
 	private JLabel notifications;
@@ -101,6 +102,7 @@ public class LoggedInDriverGUI extends JFrame{
 			}
 
 		});
+		hasIndpFrame = false;
 		testButton = new JButton("Search");
 		this.userID=userID;
 		Connection conn; 
@@ -240,7 +242,7 @@ public class LoggedInDriverGUI extends JFrame{
 
 		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
 		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
-		mpg = new ProfileGUI(this, new Dimension(dim.width/3, 31*dim.height/40), "current user", userID,ConnectionClass.conn);
+		mpg = new ProfileGUI(this, new Dimension(dim.width/3, 31*dim.height/40), "current user", userID);
 		searchGUI = new SearchGUI(new Dimension(dim.width/3, 31*dim.height/40), userID, ConnectionClass.conn, this);
 
 		musicPlayerTopRated = trg.initPlayer();
@@ -264,45 +266,63 @@ public class LoggedInDriverGUI extends JFrame{
 		mainPanel.setBackground(FirstPageGUI.white);
 	}
 	
-	public void changeListenedFrame(IndpMusicPlayer player)
-	{
-		currentPlayer = player;
-		tlg.stopSong();
-		mainPanel.remove(tlgScroll);
-		mainPanel.remove(musicPlayerTopListened);
-		mainPanel.add(player);
-		 mainPanel.revalidate();
-	        mainPanel.repaint();
-	}
+//	public void changeListenedFrame(IndpMusicPlayer player)
+//	{
+//		currentPlayer = player;
+//		tlg.stopSong();
+//		mainPanel.remove(tlgScroll);
+//		mainPanel.remove(musicPlayerTopListened);
+//		mainPanel.add(player);
+//		 mainPanel.revalidate();
+//	        mainPanel.repaint();
+//	}
+//	
+//	public void changeRatedFrame(IndpMusicPlayer player)
+//	{
+//		currentPlayer = player;
+//		trg.stopSong();
+//		mainPanel.remove(trgScroll);
+//		mainPanel.remove(musicPlayerTopRated);
+//		mainPanel.add(player);
+//		 mainPanel.revalidate();
+//	        mainPanel.repaint();
+//	}
+//	
+//	public void changeBackListenedFrame()
+//	{
+//		mainPanel.remove(currentPlayer);
+//		mainPanel.add(tlgScroll, BorderLayout.WEST);
+//		mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
+//        mainPanel.revalidate();
+//        mainPanel.repaint();
+//	}
+//	
+//	public void changeBackRatedFrame()
+//	{
+//		mainPanel.remove(currentPlayer);
+//		mainPanel.add(trgScroll, BorderLayout.WEST);
+//		mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
+//		//trg.startSong();
+//        mainPanel.revalidate();
+//        mainPanel.repaint();
+//	}
 	
-	public void changeRatedFrame(IndpMusicPlayer player)
+	public void addCurrent(JPanel currentP)
 	{
-		currentPlayer = player;
-		trg.stopSong();
-		mainPanel.remove(trgScroll);
-		mainPanel.remove(musicPlayerTopRated);
-		mainPanel.add(player);
-		 mainPanel.revalidate();
-	        mainPanel.repaint();
-	}
-	
-	public void changeBackListenedFrame()
-	{
-		mainPanel.remove(currentPlayer);
-		mainPanel.add(tlgScroll, BorderLayout.WEST);
-		mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
-        mainPanel.revalidate();
-        mainPanel.repaint();
-	}
-	
-	public void changeBackRatedFrame()
-	{
-		mainPanel.remove(currentPlayer);
-		mainPanel.add(trgScroll, BorderLayout.WEST);
-		mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
-		//trg.startSong();
-        mainPanel.revalidate();
-        mainPanel.repaint();
+		if (currentGUI != null)
+		{
+			mainPanel.remove(currentGUI);
+		}
+		else
+		{
+			removePanel();
+		}
+		currentGUI = currentP;
+		//removePanel();
+		hasIndpFrame = true;
+		mainPanel.add(currentGUI);
+		mainPanel.revalidate();
+		mainPanel.repaint();
 	}
 	
 	private void createGUI()
@@ -318,12 +338,26 @@ public class LoggedInDriverGUI extends JFrame{
 		trgButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removePanel();
-				mainPanel.add(trgScroll, BorderLayout.WEST);
-				mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
-				currentJpanel = 3;
-	            mainPanel.revalidate();
-	            mainPanel.repaint();
+				if (hasIndpFrame)
+				{
+					mainPanel.remove(currentGUI);
+					mainPanel.add(trgScroll, BorderLayout.WEST);
+					mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
+					currentJpanel = 3;
+					hasIndpFrame = false;
+					currentGUI = null;
+		            mainPanel.revalidate();
+		            mainPanel.repaint();
+				}
+				else
+				{
+					removePanel();
+					mainPanel.add(trgScroll, BorderLayout.WEST);
+					mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
+					currentJpanel = 3;
+		            mainPanel.revalidate();
+		            mainPanel.repaint();
+				}
 			}
 		});
 		
@@ -331,45 +365,95 @@ public class LoggedInDriverGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				removePanel();
-				mainPanel.add(tlgScroll, BorderLayout.WEST);
-				mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
-
-				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
-				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
-				currentJpanel = 4;
-	            mainPanel.revalidate();
-	            mainPanel.repaint();
+				if (hasIndpFrame)
+				{
+					mainPanel.remove(currentGUI);
+					mainPanel.add(tlgScroll, BorderLayout.WEST);
+					mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
+					currentJpanel = 4;
+					hasIndpFrame = false;
+					currentGUI = null;
+		            mainPanel.revalidate();
+		            mainPanel.repaint();
+				}
+				else
+				{
+					mainPanel.add(tlgScroll, BorderLayout.WEST);
+					mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
+					currentJpanel = 4;
+		            mainPanel.revalidate();
+		            mainPanel.repaint();
+				}
 			}
 		});
 		mpgButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removePanel();
-				mainPanel.add(mpg, BorderLayout.CENTER);
-	            mainPanel.revalidate();
-	            mainPanel.repaint();
-				currentJpanel = 1;
+				if (hasIndpFrame)
+				{
+					mainPanel.remove(currentGUI);
+					hasIndpFrame = false;
+					currentGUI = null;
+					mainPanel.add(mpg, BorderLayout.CENTER);
+		            mainPanel.revalidate();
+		            mainPanel.repaint();
+					currentJpanel = 1;
+				}
+				else
+				{
+					removePanel();
+					mainPanel.add(mpg, BorderLayout.CENTER);
+		            mainPanel.revalidate();
+		            mainPanel.repaint();
+					currentJpanel = 1;
+				}
 			}
 		});
 		feedButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removePanel();
-				currentJpanel = 0;
-			    mainPanel.add(fgScroll, BorderLayout.CENTER);
-	            mainPanel.revalidate();
-	            mainPanel.repaint();
+				if (hasIndpFrame)
+				{
+					mainPanel.remove(currentGUI);
+					currentJpanel = 0;
+					hasIndpFrame = false;
+					currentGUI = null;
+					mainPanel.add(fgScroll, BorderLayout.CENTER);
+					mainPanel.revalidate();
+					mainPanel.repaint();
+				}
+				else
+				{
+					removePanel();
+					currentJpanel = 0;
+					mainPanel.add(fgScroll, BorderLayout.CENTER);
+					mainPanel.revalidate();
+					mainPanel.repaint();
+				}
 			}
 		});
 		searchButton.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removePanel();
-				mainPanel.add(searchGUI, BorderLayout.CENTER);
-				mainPanel.revalidate();
-	            mainPanel.repaint();
-	            currentJpanel = 2;
+				if (hasIndpFrame)
+				{
+					mainPanel.remove(currentGUI);
+					mainPanel.add(searchGUI, BorderLayout.CENTER);
+					mainPanel.revalidate();
+		            mainPanel.repaint();
+		            currentJpanel = 2;
+		            hasIndpFrame = false;
+		            currentGUI = null;
+				}
+				else
+				{
+					removePanel();
+					mainPanel.add(searchGUI, BorderLayout.CENTER);
+					mainPanel.revalidate();
+					mainPanel.repaint();
+					currentJpanel = 2;
+				}
 			}
 			
 		});
@@ -451,8 +535,6 @@ public class LoggedInDriverGUI extends JFrame{
 			else if (currentJpanel == 2)
 			{
 				mainPanel.remove(searchGUI);
-//				mainPanel.remove(testField);
-//				mainPanel.remove(testButton);
 			}
 			else if (currentJpanel ==3)
 			{
@@ -470,90 +552,90 @@ public class LoggedInDriverGUI extends JFrame{
 	
 	//these two functions are called from the searchGUI in order to change the panel on the searchGUI 
 	//when a user clicks one of the buttons from the results
-	public void removeGUIForSearch()
-	{
-		mainPanel.remove(tempGUI);
-		mainPanel.add(searchGUI);
-		mainPanel.revalidate();
-		mainPanel.repaint();
-	}
-	
-	public void addGUIForSearch(JPanel temp)
-	{
-		tempGUI = temp;
-		mainPanel.remove(searchGUI);
-		mainPanel.add(temp);
-		mainPanel.revalidate();
-		mainPanel.repaint();
-	}
-	
-	public void removeGUIForProfile()
-	{
-		mainPanel.remove(tempGUI);
-		mainPanel.add(mpg);
-		mainPanel.revalidate();
-		mainPanel.repaint();
-	}
-	
-	public void addGUIForProfile(JPanel temp)
-	{
-		tempGUI = temp;
-		mainPanel.remove(mpg);
-		mainPanel.add(temp);
-		mainPanel.revalidate();
-		mainPanel.repaint();
-	}
-		
-	public void removePrevious()
-	{
-		if (currentPanelNum == 1)
-		{
-			mainPanel.remove(currentGUI);
-			mainPanel.add(mpg);
-			//previousGUI = currentGUI;
-			currentGUI = mpg;
-			mainPanel.revalidate();
-			mainPanel.repaint();
-		}
-		else
-		{
-			mainPanel.remove(currentGUI);
-			mainPanel.add(previousGUI);
-			previousGUI = currentGUI;
-			mainPanel.revalidate();
-			mainPanel.repaint();
-		}
-		currentPanelNum--;
-	}
-	
-	public void addNext(JPanel temp)
-	{
-		if (currentPanelNum ==0)
-		{
-			currentPanelNum++;
-			previousGUI = mpg;
-			currentGUI = temp;
-			mainPanel.remove(mpg);
-			mainPanel.add(currentGUI);
-			mainPanel.revalidate();
-			mainPanel.repaint();
-		}
-		else
-		{
-			currentPanelNum++;
-			previousGUI = currentGUI;
-			currentGUI = temp;
-			mainPanel.remove(previousGUI);
-			mainPanel.add(currentGUI);
-			mainPanel.revalidate();
-			mainPanel.repaint();
-		}
-	}
-		
-	public void setTemp(JPanel p)
-	{
-		tempGUI = p;
-	}
+//	public void removeGUIForSearch()
+//	{
+//		mainPanel.remove(tempGUI);
+//		mainPanel.add(searchGUI);
+//		mainPanel.revalidate();
+//		mainPanel.repaint();
+//	}
+//	
+//	public void addGUIForSearch(JPanel temp)
+//	{
+//		tempGUI = temp;
+//		mainPanel.remove(searchGUI);
+//		mainPanel.add(temp);
+//		mainPanel.revalidate();
+//		mainPanel.repaint();
+//	}
+//	
+//	public void removeGUIForProfile()
+//	{
+//		mainPanel.remove(tempGUI);
+//		mainPanel.add(mpg);
+//		mainPanel.revalidate();
+//		mainPanel.repaint();
+//	}
+//	
+//	public void addGUIForProfile(JPanel temp)
+//	{
+//		tempGUI = temp;
+//		mainPanel.remove(mpg);
+//		mainPanel.add(temp);
+//		mainPanel.revalidate();
+//		mainPanel.repaint();
+//	}
+//		
+//	public void removePrevious()
+//	{
+//		if (currentPanelNum == 1)
+//		{
+//			mainPanel.remove(currentGUI);
+//			mainPanel.add(mpg);
+//			//previousGUI = currentGUI;
+//			currentGUI = mpg;
+//			mainPanel.revalidate();
+//			mainPanel.repaint();
+//		}
+//		else
+//		{
+//			mainPanel.remove(currentGUI);
+//			mainPanel.add(previousGUI);
+//			previousGUI = currentGUI;
+//			mainPanel.revalidate();
+//			mainPanel.repaint();
+//		}
+//		currentPanelNum--;
+//	}
+//	
+//	public void addNext(JPanel temp)
+//	{
+//		if (currentPanelNum ==0)
+//		{
+//			currentPanelNum++;
+//			previousGUI = mpg;
+//			currentGUI = temp;
+//			mainPanel.remove(mpg);
+//			mainPanel.add(currentGUI);
+//			mainPanel.revalidate();
+//			mainPanel.repaint();
+//		}
+//		else
+//		{
+//			currentPanelNum++;
+//			previousGUI = currentGUI;
+//			currentGUI = temp;
+//			mainPanel.remove(previousGUI);
+//			mainPanel.add(currentGUI);
+//			mainPanel.revalidate();
+//			mainPanel.repaint();
+//		}
+//	}
+//		
+//	public void setTemp(JPanel p)
+//	{
+//		tempGUI = p;
+//	}
 		
 }
 

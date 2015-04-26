@@ -38,8 +38,6 @@ public abstract class TopGUI extends JPanel{
 	public abstract MusicPlayer initPlayer();
 	//public abstract void addEventHandlers();
 	
-	public abstract void removePlayer();
-	
 	private class ButtonActionListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent e)
