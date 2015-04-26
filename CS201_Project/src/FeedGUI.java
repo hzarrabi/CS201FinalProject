@@ -44,6 +44,7 @@ public class FeedGUI extends JPanel{
 	public void makeGUI()
 	{
 		Collections.sort(activities);
+		System.out.println("Size of activities array " + activities.size());
 		for (int i = activities.size()-1; i > -1; i--)
 		{
 			Activity act = activities.get(i);
@@ -134,6 +135,7 @@ public class FeedGUI extends JPanel{
 		user.add(timeStamp);
 		newActivity.add(user);
 		newActivity.add(song);
+		System.out.println("adding activity to GUI");
 		add(newActivity);
 		
 	}
