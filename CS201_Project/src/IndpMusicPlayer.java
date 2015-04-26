@@ -354,21 +354,13 @@ public class IndpMusicPlayer extends JPanel{
 				//String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(this.userID);
 				try
 				{
-				ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+				//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
 				
 				Statement st = ConnectionClass.conn.createStatement();
 				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-				String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID);
+				String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) +" AND song_id = " + Integer.toString(musicObject.getMusicID());
 				ResultSet rs = st.executeQuery(queryCheck);
 				int columns = rs.getMetaData().getColumnCount();
-//				if (rs.next())
-//				{
-//					favoriteLabel.setIcon(fullHeart);
-//				}
-//				else
-//				{
-//					favoriteLabel.setIcon(emptyHeart);
-//				}
 				
 				if (favoriteLabel.getIcon() == emptyHeart)
 				{
