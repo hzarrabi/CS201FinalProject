@@ -252,7 +252,7 @@ public class LoggedInDriverGUI extends JFrame{
 		notifications = new JLabel("notifications");
 		trgScroll.setPreferredSize(new Dimension(dim.width/12, 35*dim.height/40));
 		tlgScroll.setPreferredSize(new Dimension(dim.width/12, 35*dim.height/40));
-		fgScroll.setPreferredSize(new Dimension(dim.width/15, 35*dim.height/40));
+		fgScroll.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
 		trgScroll.setBorder(null);
 		tlgScroll.setBorder(null);
 		mainPanel.add(fgScroll, BorderLayout.CENTER);

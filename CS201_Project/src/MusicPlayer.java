@@ -356,8 +356,7 @@ public class MusicPlayer extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				System.out.println(musicObject.getSongName());
-			
+
 				try
 				{
 				//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
@@ -761,7 +760,7 @@ public class MusicPlayer extends JPanel{
 		ratingPanel.removeAll();
 		ratingPanel.add(rating);
 		int i = 0;
-		System.out.println(rate);
+		//System.out.println(rate);
 		if (rate <= 1.4 && rate>.9)
 		{
 			i = 1;

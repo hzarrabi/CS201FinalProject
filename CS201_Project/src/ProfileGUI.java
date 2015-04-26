@@ -13,9 +13,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.Vector;
 import java.sql.Statement;
 
 import javax.swing.BoxLayout;
@@ -374,17 +376,45 @@ public class ProfileGUI extends JPanel{
 			String queryCheck = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(userId);
 			ResultSet rs = st.executeQuery(queryCheck);
 			int columns = rs.getMetaData().getColumnCount();
+			Vector<JButton> buttonVector = new Vector<JButton> ();
+			Vector<Integer> userIDVector = new Vector<Integer> ();
 			while (rs.next())
 			{
+				//System.out.println("CHECK");
 				JButton temp = new JButton(Integer.toString(rs.getInt(1)));
 				temp.addActionListener(new ActionListenerProfile(rs.getInt(1), "friends"));
+				userIDVector.add(rs.getInt(1));
 				temp.setBackground(FirstPageGUI.green);
 				temp.setForeground(FirstPageGUI.white);
 				temp.setFont(FirstPageGUI.smallFont);
 				temp.setBorder(new RoundedBorder());
 				temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
 				temp.setOpaque(true);
-				jpFollowing.add(temp);
+				buttonVector.add(temp);
+				//jpFollowing.add(temp);
+			}
+			//System.out.println(userIDVector.size());
+			for (int i = 0; i < userIDVector.size(); i++)
+			{
+				//System.out.println("USer " +userIDVector.get(i));
+				queryCheck = "SELECT first_name, last_name FROM user_table WHERE iduser_table = " + userIDVector.get(i);
+				rs = st.executeQuery(queryCheck);
+				columns = rs.getMetaData().getColumnCount();
+				int index = 0;
+				while (rs.next())
+				{
+					String name = "";
+					JButton temp = buttonVector.get(i);
+					for (int j = 1; j <= columns; j++)
+					{
+						name = name + rs.getString(j) + " ";
+						//System.out.println(rs.getString(i));
+					}
+					System.out.println("Name " + name);
+					temp.setText(name);
+					jpFollowing.add(temp);
+				}
+
 			}
 			st.close();
 			
@@ -397,29 +427,61 @@ public class ProfileGUI extends JPanel{
 			
 			Statement st = ConnectionClass.conn.createStatement();
 			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-			String queryCheck = "SELECT user FROM friend_relationship WHERE user_being_followed = " + Integer.toString(userId);
+			String queryCheck = "SELECT user FROM friend_relationship WHERE user_being_followed = " + Integer.toString(LoggedInDriverGUI.userID);
 			ResultSet rs = st.executeQuery(queryCheck);
 			int columns = rs.getMetaData().getColumnCount();
+
 			System.out.println("after query");
+			Vector<JButton> buttonVector = new Vector<JButton> ();
+			Vector<Integer> userIDVector = new Vector<Integer> ();
+
 			while (rs.next())
 			{
-				JButton temp = new JButton(Integer.toString(rs.getInt(1)));
+				for (int i = 1; i <= columns; i++)
+				{
+					JButton temp = new JButton(Integer.toString(rs.getInt(1)));
+					//temp.addActionListener(new ActionListenerProfile(rs.getInt(1), "friends"));
+					userIDVector.add(rs.getInt(1));
+					temp.setBackground(FirstPageGUI.green);
+					temp.setForeground(FirstPageGUI.white);
+					temp.setFont(FirstPageGUI.smallFont);
+					temp.setBorder(new RoundedBorder());
+					temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
+					temp.setOpaque(true);
+					buttonVector.add(temp);
+				}
+/*				JButton temp = new JButton(Integer.toString(rs.getInt(1)));
 				Statement st2 = ConnectionClass.conn.createStatement();
-				System.out.println("here here");
+				//System.out.println("here here");
 				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
 				String queryCheck2 = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(userId) + " AND user_being_followed = "+Integer.toString(rs.getInt(1));
+<<<<<<< HEAD
 				System.out.println("here again");
+				ResultSet rs2 = st2.executeQuery(queryCheck2);
+=======
+				//System.out.println("here again");
 				ResultSet rs2 = st2.executeQuery(queryCheck);
+>>>>>>> 5dac6e06bb9d90ee4853e8ae1f4eda13cee5b01b
 				int columns2 = rs2.getMetaData().getColumnCount();
-				if (!rs.next())
+				if (!rs2.next())
 				{
+<<<<<<< HEAD
 					System.out.println("here");
-					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "friends"));
+					temp.addActionListener(new ActionListenerProfileComplicated(rs2.getInt(1), "not friends"));
 				}
 				else
 				{
 					System.out.println("now here");
+					temp.addActionListener(new ActionListenerProfileComplicated(rs2.getInt(1), "friends"));
+=======
+				//	System.out.println("here");
+					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "friends"));
+				}
+				else
+				{
+					//System.out.println("now here");
 					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "not friends"));
+>>>>>>> 5dac6e06bb9d90ee4853e8ae1f4eda13cee5b01b
 				}
 				st2.close();
 				temp.setBackground(FirstPageGUI.green);
@@ -429,6 +491,45 @@ public class ProfileGUI extends JPanel{
 				temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
 				temp.setOpaque(true);
 				jpFollowers.add(temp);
+*/
+			}
+			for (int i = 0; i < userIDVector.size(); i++)
+			{
+				//System.out.println("USer " +userIDVector.get(i));
+				queryCheck = "SELECT first_name, last_name FROM user_table WHERE iduser_table = " + Integer.toString(userIDVector.get(i));
+				rs = st.executeQuery(queryCheck);
+				columns = rs.getMetaData().getColumnCount();
+				int index = 0;
+				while (rs.next())
+				{
+					String name = "";
+					JButton temp = buttonVector.get(i);
+					for (int j = 1; j <= columns; j++)
+					{
+						name = name + rs.getString(j) + " ";
+						//System.out.println(rs.getString(i));
+					}
+					System.out.println("Name " + name);
+					temp.setText(name);
+					jpFollowers.add(temp);
+				}
+			}
+			for ( int i = 0; i <userIDVector.size(); i++)
+			{
+				queryCheck = "SELECT user FROM friend_relationship WHERE user_being_followed = " + Integer.toString(userIDVector.get(i));
+				rs = st.executeQuery(queryCheck);
+				columns = rs.getMetaData().getColumnCount();
+				JButton button = buttonVector.get(i);
+				if (rs.next())
+				{
+					System.out.println("friends");
+					button.addActionListener(new ActionListenerProfileComplicated(userIDVector.get(i), "friends"));
+				}
+				else
+				{
+					System.out.println("not friends");
+					button.addActionListener(new ActionListenerProfileComplicated(userIDVector.get(i), "not friends"));
+				}
 			}
 			st.close();
 			
@@ -551,10 +652,10 @@ public class ProfileGUI extends JPanel{
 					String newLastName = editLastName.getText();
 					String newEmail = editEmail.getText();
 					
-					System.out.println("the id is"+userId);
-					System.out.println("the first name is"+newFirstName);
-					System.out.println("the last name is"+newLastName);
-					System.out.println("the email is"+newEmail);
+					//System.out.println("the id is"+userId);
+					//System.out.println("the first name is"+newFirstName);
+					//System.out.println("the last name is"+newLastName);
+					//System.out.println("the email is"+newEmail);
 					
 					try
 					{
@@ -704,7 +805,7 @@ public class ProfileGUI extends JPanel{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("in actionlistener");
+			//System.out.println("in actionlistener");
 			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ userId+" AND user_being_followed = "+id+")";
 			ProfileGUI newProfile;
 			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());
@@ -723,7 +824,7 @@ public class ProfileGUI extends JPanel{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("in actionlistener");
+			//System.out.println("in actionlistener");
 			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ userId+" AND user_being_followed = "+id+")";
 			ProfileGUI newProfile;
 			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());
