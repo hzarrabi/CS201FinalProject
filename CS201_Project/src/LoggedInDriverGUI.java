@@ -21,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -96,9 +97,21 @@ public class LoggedInDriverGUI extends JFrame{
 			@Override
 			public void windowClosing(WindowEvent e) {
 				//firstPage.setVisible(true);
-				new FirstPageGUI();
-				
-				LoggedInDriverGUI.this.dispose();	
+				Object[] options = {"Yes",
+                	"No"};
+				int n = JOptionPane.showOptionDialog(LoggedInDriverGUI.this,
+			    "Would you like to logout?",
+			    "",
+			    JOptionPane.OK_CANCEL_OPTION,
+			    JOptionPane.QUESTION_MESSAGE,
+			    null,
+			    options,
+			    options[0]);
+				if (n==0) {
+					new FirstPageGUI();
+					LoggedInDriverGUI.this.dispose();
+				}
+				if (n==1) {}
 			}
 
 		});
@@ -463,8 +476,21 @@ public class LoggedInDriverGUI extends JFrame{
 		
 		logout.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				dispose();
-				new FirstPageGUI();
+				Object[] options = {"Yes",
+	                    "No"};
+				int n = JOptionPane.showOptionDialog(LoggedInDriverGUI.this,
+			    "Would you like to logout?",
+			    "",
+			    JOptionPane.OK_CANCEL_OPTION,
+			    JOptionPane.QUESTION_MESSAGE,
+			    null,
+			    options,
+			    options[0]);
+				if (n==0) {
+					dispose();
+					new FirstPageGUI();	
+				}
+				if (n==1) {}
 			}
 		});
 	}

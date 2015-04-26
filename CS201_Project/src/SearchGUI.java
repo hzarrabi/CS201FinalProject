@@ -154,23 +154,6 @@ public class SearchGUI extends JPanel {
 				search();
 			}
 		});
-		//follow user
-		add.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try
-				{
-					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO friend_relationship (user, user_being_followed)" + "VALUES (?, ?)");
-					ps.setInt(1, userID);
-					ps.setInt(2, userFollowID);
-					ps.executeUpdate();
-					ps.close();
-				} catch (SQLException e1)
-				{
-					e1.printStackTrace();
-				}
-			}
-		});
 		
 		inputField.addKeyListener(new KeyListener()
 		{
