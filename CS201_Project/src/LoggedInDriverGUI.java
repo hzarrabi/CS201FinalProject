@@ -183,8 +183,8 @@ public class LoggedInDriverGUI extends JFrame{
 
 		currentPanelNum = 0;
 
-		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
-		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
+		trg = new TopRatedGUI(this, new Dimension(6*dim.width/96, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40));
+		tlg = new TopListenedGUI(this, new Dimension(6*dim.width/96, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40));
 		mpg = new ProfileGUI(this, new Dimension(dim.width/3, 31*dim.height/40), "current user", userID);
 		searchGUI = new SearchGUI(new Dimension(dim.width/3, 31*dim.height/40), userID, ConnectionClass.conn, this);
 
@@ -195,8 +195,8 @@ public class LoggedInDriverGUI extends JFrame{
 		tlgScroll = new JScrollPane(tlg);
 		fgScroll = new JScrollPane(fg);
 		notifications = new JLabel("notifications");
-		trgScroll.setPreferredSize(new Dimension(dim.width/12, 35*dim.height/40));
-		tlgScroll.setPreferredSize(new Dimension(dim.width/12, 35*dim.height/40));
+		trgScroll.setPreferredSize(new Dimension(18*dim.width/192, 35*dim.height/40));
+		tlgScroll.setPreferredSize(new Dimension(18*dim.width/192, 35*dim.height/40));
 		fgScroll.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
 		trgScroll.setBorder(null);
 		tlgScroll.setBorder(null);

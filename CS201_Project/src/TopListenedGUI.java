@@ -18,16 +18,22 @@ import com.mysql.jdbc.PreparedStatement;
 
 
 public class TopListenedGUI extends TopGUI{
-	public TopListenedGUI(LoggedInDriverGUI main, Dimension d, Dimension dimPlayer, Dimension dimBigPlayer)
+	private JButton currentButton;
+	private Dimension d;
+	public TopListenedGUI(LoggedInDriverGUI main, Dimension d, Dimension dimPlayer)
 	{
 		super();
 		this.setPreferredSize(d);
 		this.mainPage = main;
+		this.d = d;
 		this.dimPlayer = dimPlayer;
 		this.setBackground(FirstPageGUI.darkGrey);
-		this.playerBigDim = dimBigPlayer;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtons();
+		JButton firstButton = buttons.get(0);
+		currentButton = firstButton;
+		currentButton.setForeground(FirstPageGUI.darkGrey);
+		currentButton.setBackground(FirstPageGUI.white);
 		//addEventHandlers();
 	}
 	
@@ -35,10 +41,15 @@ public class TopListenedGUI extends TopGUI{
 	{
 		super();
 		this.setPreferredSize(d);
+		this.d = d;
 		this.setBackground(FirstPageGUI.darkGrey);
 		dimPlayer = playerDim;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtonsGuest();
+		JButton firstButton = buttons.get(0);
+		currentButton = firstButton;
+		currentButton.setForeground(FirstPageGUI.darkGrey);
+		currentButton.setBackground(FirstPageGUI.white);
 		//addEventHandlers();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
@@ -51,6 +62,7 @@ public class TopListenedGUI extends TopGUI{
 			MusicModel entry = topSongs.get(j);
 			JButton newButton = new JButton(entry.getSongName());
 			newButton.setFont(FirstPageGUI.smallFont);
+			newButton.setPreferredSize(new Dimension(4*d.width/5, d.height/30));
 			newButton.setBorder(new RoundedBorder());
 			newButton.setBackground(FirstPageGUI.darkGrey);
 			newButton.setForeground(FirstPageGUI.white);
@@ -71,13 +83,14 @@ public class TopListenedGUI extends TopGUI{
 		for (int j = 0; j< topSongs.size(); j++){
 			MusicModel entry = topSongs.get(j);
 			JButton newButton = new JButton(entry.getSongName());
-			newButton.setFont(FirstPageGUI.smallFont);
+			newButton.setFont(FirstPageGUI.smallerFont);
+			newButton.setPreferredSize(new Dimension(4*d.width/5, d.height/30));
 			newButton.setBorder(new RoundedBorder());
 			newButton.setBackground(FirstPageGUI.darkGrey);
 			newButton.setForeground(FirstPageGUI.white);
 			newButton.setOpaque(true);
 			
-			newButton.addActionListener(new ActionListenerButtons(j, entry));
+			newButton.addActionListener(new ActionListenerButtons(j, entry, newButton));
 			buttons.add(newButton);	
 			//songs.add(entry);
 		}
@@ -91,13 +104,20 @@ public class TopListenedGUI extends TopGUI{
 
 		private int current_song;
 		private MusicModel song;
-		public ActionListenerButtons(int i, MusicModel j)
+		private JButton thisButton;
+		public ActionListenerButtons(int i, MusicModel j, JButton thisButton)
 		{
 			song = j;
 			current_song = i;
+			this.thisButton = thisButton;
 		}
 		public void actionPerformed(ActionEvent e) {
 			myPlayer.changeSong(song, current_song);
+			currentButton.setForeground(FirstPageGUI.white);
+			currentButton.setBackground(FirstPageGUI.darkGrey);
+			currentButton = thisButton;
+			currentButton.setForeground(FirstPageGUI.darkGrey);
+			currentButton.setBackground(FirstPageGUI.white);
 		}
 		
 	}
