@@ -488,17 +488,45 @@ public class ProfileGUI extends JPanel{
 			temp2.addActionListener(new ActionListenerPlayer(MusicObject));
 			favoritesButtons.add(temp2);
 		}
-		Iterator<JButton> it3 = favoritesButtons.iterator();
-		while (it3.hasNext())
+		
+		try {
+			//Class.forName("com.mysql.jdbc.Driver");
+			//conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+			Statement st = ConnectionClass.conn.createStatement();
+			//String queryCheck = "";
+			//boolean check_found = false;
+
+			String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + userId;
+			ResultSet rs = st.executeQuery(queryCheck);
+		//	columns = rs.getMetaData().getColumnCount();
+			Vector<Integer> songIds = new Vector<Integer>();
+			while(rs.next())
+			{
+				songIds.add(rs.getInt(1));
+			}
+			for (int i = 0; i < songIds.size(); i++)
+			{
+				queryCheck = "SELECT song_name from music_table where idmusic_table = " + songIds.get(i);
+				rs = st.executeQuery(queryCheck);
+				//columns = rs.getMetaData().getColumnCount();
+				while(rs.next())
+				{
+					JButton temp = new JButton("");
+					temp.setText(rs.getString(1));
+					MusicModel model = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(rs.getString(1));
+					temp.addActionListener(new ActionListenerPlayer(model));
+					temp.setBackground(FirstPageGUI.green);
+					temp.setForeground(FirstPageGUI.white);
+					temp.setFont(FirstPageGUI.smallFont);
+					temp.setBorder(new RoundedBorder());
+					temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
+					temp.setOpaque(true);
+					jpFavorites.add(temp);
+				}
+			}
+		} catch (SQLException e1)
 		{
-			JButton temp = it3.next();
-			temp.setBackground(FirstPageGUI.green);
-			temp.setForeground(FirstPageGUI.white);
-			temp.setFont(FirstPageGUI.smallFont);
-			temp.setBorder(new RoundedBorder());
-			temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
-			temp.setOpaque(true);
-			jpFavorites.add(temp);
+			e1.printStackTrace();
 		}
 		
 	}
@@ -790,6 +818,21 @@ public class ProfileGUI extends JPanel{
 			
 		}
 		
+	}
+	
+	public void refresh()
+	{
+		System.out.println("In refresh for profile");
+		jpFollowers.removeAll();
+		jpFollowing.removeAll();
+		jpFavorites.removeAll();
+		populate();
+		jpFollowers.revalidate();
+		jpFollowers.repaint();
+		jpFollowing.revalidate();
+		jpFollowing.repaint();
+		jpFavorites.revalidate();
+		jpFavorites.repaint();
 	}
 
 }

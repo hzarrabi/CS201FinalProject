@@ -114,63 +114,6 @@ public class LoggedInDriverGUI extends JFrame{
 		}catch(Exception e){
 			
 		}
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-			Statement st = conn.createStatement();
-			String queryCheck = "";
-			boolean check_found = false;
-
-			//check for users
-			queryCheck = "SELECT user_id,COUNT(*) as user FROM favorite_songs GROUP BY user_id ORDER BY user DESC;";
-			ResultSet rs = st.executeQuery(queryCheck);
-
-			int columns = rs.getMetaData().getColumnCount();
-			boolean check_user = false;
-			while (rs.next()) {
-			    for (int i = 1; i <= columns; i++) {
-
-			    	if ((i == 1) && rs.getString(i).equals(Integer.toString(this.userID)))
-			    	{
-			    		check_user = true;
-			    	}
-			    	if (check_user && (i == 2))
-			    	{
-			    		numFavoriteSongs = Integer.parseInt(rs.getString(2));
-			    		check_user = false;
-			    	}
-			    }
-			}
-			queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(this.userID);
-			rs = st.executeQuery(queryCheck);
-			columns = rs.getMetaData().getColumnCount();
-			while(rs.next())
-			{
-				for (int i = 1; i <= columns; i++)
-				{
-					songID.addElement(Integer.parseInt(rs.getString(i)));
-				}
-			}
-			for (int i = 0; i < songID.size(); i++)
-			{
-				queryCheck = "SELECT song_name from music_table where idmusic_table = " + songID.get(i);
-				rs = st.executeQuery(queryCheck);
-				columns = rs.getMetaData().getColumnCount();
-				while(rs.next())
-				{
-					for (int j = 1; j <= columns; j++)
-					{
-						
-						favoriteSongNames.add(sharedMusicLibrary.getMusicModelMap().get(rs.getString(j)));
-					}
-				}
-			}
-		} catch (SQLException e1)
-		{
-			e1.printStackTrace();
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		}			
 
 		//connect();
 		initializeComponents();
@@ -392,6 +335,7 @@ public class LoggedInDriverGUI extends JFrame{
 				if (hasIndpFrame)
 				{
 					mainPanel.remove(currentGUI);
+					mpg.refresh();
 					hasIndpFrame = false;
 					currentGUI = null;
 					mainPanel.add(mpg, BorderLayout.CENTER);
@@ -402,6 +346,7 @@ public class LoggedInDriverGUI extends JFrame{
 				else
 				{
 					removePanel();
+					mpg.refresh();
 					mainPanel.add(mpg, BorderLayout.CENTER);
 		            mainPanel.revalidate();
 		            mainPanel.repaint();

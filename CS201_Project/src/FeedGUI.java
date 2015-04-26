@@ -30,9 +30,10 @@ public class FeedGUI extends JPanel{
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		activities = new ArrayList<Activity>();
 		//setSize(dim);
-		setSize(dim.width/3, dim.height);
+		setSize(dim.width/3, dim.height*10);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		dim = new Dimension(dim.width/3, dim.height);
-		this.setPreferredSize(dim);
+		//this.setPreferredSize(dim);
 		setBounds(0,0,dim.width/3, dim.height);
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setVisible(true);
