@@ -372,6 +372,7 @@ public class ProfileGUI extends JPanel{
 				temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
 				temp.setOpaque(true);
 				buttonVector.add(temp);
+				temp.addActionListener(new ActionListenerProfile(rs.getInt(1), "friends"));
 				//jpFollowing.add(temp);
 			}
 			//System.out.println(userIDVector.size());
@@ -429,50 +430,9 @@ public class ProfileGUI extends JPanel{
 					temp.setBorder(new RoundedBorder());
 					temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
 					temp.setOpaque(true);
+					
 					buttonVector.add(temp);
 				}
-/*				JButton temp = new JButton(Integer.toString(rs.getInt(1)));
-				Statement st2 = ConnectionClass.conn.createStatement();
-				//System.out.println("here here");
-				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-				String queryCheck2 = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(userId) + " AND user_being_followed = "+Integer.toString(rs.getInt(1));
-<<<<<<< HEAD
-				System.out.println("here again");
-				ResultSet rs2 = st2.executeQuery(queryCheck2);
-=======
-				//System.out.println("here again");
-				ResultSet rs2 = st2.executeQuery(queryCheck);
->>>>>>> 5dac6e06bb9d90ee4853e8ae1f4eda13cee5b01b
-				int columns2 = rs2.getMetaData().getColumnCount();
-				if (!rs2.next())
-				{
-<<<<<<< HEAD
-					System.out.println("here");
-					temp.addActionListener(new ActionListenerProfileComplicated(rs2.getInt(1), "not friends"));
-				}
-				else
-				{
-					System.out.println("now here");
-					temp.addActionListener(new ActionListenerProfileComplicated(rs2.getInt(1), "friends"));
-=======
-				//	System.out.println("here");
-					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "friends"));
-				}
-				else
-				{
-					//System.out.println("now here");
-					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "not friends"));
->>>>>>> 5dac6e06bb9d90ee4853e8ae1f4eda13cee5b01b
-				}
-				st2.close();
-				temp.setBackground(FirstPageGUI.green);
-				temp.setForeground(FirstPageGUI.white);
-				temp.setFont(FirstPageGUI.smallFont);
-				temp.setBorder(new RoundedBorder());
-				temp.setPreferredSize(new Dimension(dim.width/4, dim.height/20));
-				temp.setOpaque(true);
-				jpFollowers.add(temp);
-*/
 			}
 			for (int i = 0; i < userIDVector.size(); i++)
 			{
@@ -504,16 +464,16 @@ public class ProfileGUI extends JPanel{
 				if (rs.next())
 				{
 					System.out.println("friends");
-					ProfileGUI newProfile;
-					newProfile = new ProfileGUI(mainPage, dim, "friends", userIDVector.get(i));
-					//button.addActionListener(new ActionListenerProfileComplicated(userIDVector.get(i), "friends"));
+					//ProfileGUI newProfile;
+					//newProfile = new ProfileGUI(mainPage, dim, "friends", userIDVector.get(i));
+					button.addActionListener(new ActionListenerProfile(userIDVector.get(i), "friends"));
 				}
 				else
 				{
 					System.out.println("not friends");
-					ProfileGUI newProfile;
-					newProfile = new ProfileGUI(mainPage, dim, "not friends", userIDVector.get(i));
-					//button.addActionListener(new ActionListenerProfileComplicated(userIDVector.get(i), "not friends"));
+				//	ProfileGUI newProfile;
+					//newProfile = new ProfileGUI(mainPage, dim, "not friends", userIDVector.get(i));
+					button.addActionListener(new ActionListenerProfile(userIDVector.get(i), "not friends"));
 				}
 			}
 			st.close();
@@ -525,8 +485,7 @@ public class ProfileGUI extends JPanel{
 		{
 			MusicModel MusicObject = LoggedInDriverGUI.favoriteSongNames.get(i);
 			JButton temp2 = new JButton(MusicObject.getSongName());
-			IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, dim);
-			temp2.addActionListener(new ActionListenerNewPage(player));
+			temp2.addActionListener(new ActionListenerPlayer(MusicObject));
 			favoritesButtons.add(temp2);
 		}
 		Iterator<JButton> it3 = favoritesButtons.iterator();
@@ -818,15 +777,16 @@ public class ProfileGUI extends JPanel{
 //		
 //	}
 	
-	class ActionListenerNewPage implements ActionListener{
-		private JPanel myModel;
-		public ActionListenerNewPage(JPanel player)
+	class ActionListenerPlayer implements ActionListener{
+		private MusicModel song;
+		public ActionListenerPlayer(MusicModel song)
 		{
-			myModel = player;
+			this.song = song;
 		}
 		public void actionPerformed(ActionEvent e) {
 				//IndpMusicPlayer player = new IndpMusicPlayer
-				mainPage.addCurrent(myModel);
+			IndpMusicPlayer player = new IndpMusicPlayer(song, dim);
+				mainPage.addCurrent(player);
 			
 		}
 		
