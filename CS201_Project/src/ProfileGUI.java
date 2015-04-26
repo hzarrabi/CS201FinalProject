@@ -371,7 +371,7 @@ public class ProfileGUI extends JPanel{
 			
 			Statement st = ConnectionClass.conn.createStatement();
 			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-			String queryCheck = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(LoggedInDriverGUI.userID);
+			String queryCheck = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(userId);
 			ResultSet rs = st.executeQuery(queryCheck);
 			int columns = rs.getMetaData().getColumnCount();
 			while (rs.next())
@@ -386,6 +386,7 @@ public class ProfileGUI extends JPanel{
 				temp.setOpaque(true);
 				jpFollowing.add(temp);
 			}
+			st.close();
 			
 		}
 		catch (Exception e) {}
@@ -396,7 +397,7 @@ public class ProfileGUI extends JPanel{
 			
 			Statement st = ConnectionClass.conn.createStatement();
 			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-			String queryCheck = "SELECT user FROM friend_relationship WHERE user_being_followed = " + Integer.toString(LoggedInDriverGUI.userID);
+			String queryCheck = "SELECT user FROM friend_relationship WHERE user_being_followed = " + Integer.toString(userId);
 			ResultSet rs = st.executeQuery(queryCheck);
 			int columns = rs.getMetaData().getColumnCount();
 			System.out.println("after query");
@@ -406,7 +407,7 @@ public class ProfileGUI extends JPanel{
 				Statement st2 = ConnectionClass.conn.createStatement();
 				System.out.println("here here");
 				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-				String queryCheck2 = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(LoggedInDriverGUI.userID) + " AND user_being_followed = "+Integer.toString(rs.getInt(1));
+				String queryCheck2 = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(userId) + " AND user_being_followed = "+Integer.toString(rs.getInt(1));
 				System.out.println("here again");
 				ResultSet rs2 = st2.executeQuery(queryCheck);
 				int columns2 = rs2.getMetaData().getColumnCount();
@@ -420,6 +421,7 @@ public class ProfileGUI extends JPanel{
 					System.out.println("now here");
 					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "not friends"));
 				}
+				st2.close();
 				temp.setBackground(FirstPageGUI.green);
 				temp.setForeground(FirstPageGUI.white);
 				temp.setFont(FirstPageGUI.smallFont);
@@ -428,6 +430,7 @@ public class ProfileGUI extends JPanel{
 				temp.setOpaque(true);
 				jpFollowers.add(temp);
 			}
+			st.close();
 			
 			
 		}
@@ -702,7 +705,7 @@ public class ProfileGUI extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("in actionlistener");
-			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ LoggedInDriverGUI.userID+" AND user_being_followed = "+id+")";
+			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ userId+" AND user_being_followed = "+id+")";
 			ProfileGUI newProfile;
 			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());
 			mainPage.addGUIForProfile(newProfile);
@@ -721,7 +724,7 @@ public class ProfileGUI extends JPanel{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			System.out.println("in actionlistener");
-			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ LoggedInDriverGUI.userID+" AND user_being_followed = "+id+")";
+			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ userId+" AND user_being_followed = "+id+")";
 			ProfileGUI newProfile;
 			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());
 			mainPage.addNext(newProfile);
