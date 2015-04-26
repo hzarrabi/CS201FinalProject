@@ -196,7 +196,7 @@ public class LoggedInDriverGUI extends JFrame{
 		feedButton = new JButton();
 		searchButton = new JButton();
 		trgButton.setIcon(new ImageIcon("data/star1.png"));
-		tlgButton.setIcon(new ImageIcon("data/headphones1.png"));
+		tlgButton.setIcon(new ImageIcon("data/head1.png"));
 		mpgButton.setIcon(new ImageIcon("data/profile.png"));
 		feedButton.setIcon(new ImageIcon("data/home.png"));
 		searchButton.setIcon(new ImageIcon("data/search.png"));
@@ -252,7 +252,7 @@ public class LoggedInDriverGUI extends JFrame{
 		notifications = new JLabel("notifications");
 		trgScroll.setPreferredSize(new Dimension(dim.width/12, 35*dim.height/40));
 		tlgScroll.setPreferredSize(new Dimension(dim.width/12, 35*dim.height/40));
-		fgScroll.setPreferredSize(new Dimension(dim.width/15, 35*dim.height/40));
+		fgScroll.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
 		trgScroll.setBorder(null);
 		tlgScroll.setBorder(null);
 		mainPanel.add(fgScroll, BorderLayout.CENTER);

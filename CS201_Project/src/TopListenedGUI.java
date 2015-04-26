@@ -60,7 +60,7 @@ public class TopListenedGUI extends TopGUI{
 		}
 		for (int i = 0; i<topSongs.size(); i++){
 			this.add(buttons.get(i));	
-			System.out.println(i);
+			//System.out.println(i);
 		}
 	}
 	
@@ -76,13 +76,14 @@ public class TopListenedGUI extends TopGUI{
 			newButton.setBackground(FirstPageGUI.darkGrey);
 			newButton.setForeground(FirstPageGUI.white);
 			newButton.setOpaque(true);
+			
 			newButton.addActionListener(new ActionListenerButtons(j, entry));
 			buttons.add(newButton);	
 			//songs.add(entry);
 		}
 		for (int i = 0; i<topSongs.size(); i++){
 			this.add(buttons.get(i));	
-			System.out.println(i);
+			//System.out.println(i);
 		}
 	}
 	
