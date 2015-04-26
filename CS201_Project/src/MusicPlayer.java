@@ -510,6 +510,24 @@ public class MusicPlayer extends JPanel{
 				fourStar.setIcon(emptyStar);
 				fiveStar.setIcon(emptyStar);
 				myRating = 1;
+				
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "rate 1");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -524,6 +542,24 @@ public class MusicPlayer extends JPanel{
 				fourStar.setIcon(emptyStar);
 				fiveStar.setIcon(emptyStar);
 				myRating = 2;
+				
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "rate 2");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -538,6 +574,24 @@ public class MusicPlayer extends JPanel{
 				fourStar.setIcon(emptyStar);
 				fiveStar.setIcon(emptyStar);
 				myRating = 3;
+				
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "rate 3");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -552,6 +606,24 @@ public class MusicPlayer extends JPanel{
 				fourStar.setIcon(fullStar);
 				fiveStar.setIcon(emptyStar);
 				myRating = 4;
+				
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "rate 4");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -566,6 +638,24 @@ public class MusicPlayer extends JPanel{
 				fourStar.setIcon(fullStar);
 				fiveStar.setIcon(fullStar);
 				myRating = 5;
+				
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "rate 5");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
