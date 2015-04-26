@@ -400,25 +400,25 @@ public class ProfileGUI extends JPanel{
 			String queryCheck = "SELECT user FROM friend_relationship WHERE user_being_followed = " + Integer.toString(userId);
 			ResultSet rs = st.executeQuery(queryCheck);
 			int columns = rs.getMetaData().getColumnCount();
-			System.out.println("after query");
+			//System.out.println("after query");
 			while (rs.next())
 			{
 				JButton temp = new JButton(Integer.toString(rs.getInt(1)));
 				Statement st2 = ConnectionClass.conn.createStatement();
-				System.out.println("here here");
+				//System.out.println("here here");
 				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
 				String queryCheck2 = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(userId) + " AND user_being_followed = "+Integer.toString(rs.getInt(1));
-				System.out.println("here again");
+				//System.out.println("here again");
 				ResultSet rs2 = st2.executeQuery(queryCheck);
 				int columns2 = rs2.getMetaData().getColumnCount();
 				if (!rs.next())
 				{
-					System.out.println("here");
+				//	System.out.println("here");
 					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "friends"));
 				}
 				else
 				{
-					System.out.println("now here");
+					//System.out.println("now here");
 					temp.addActionListener(new ActionListenerProfileComplicated(rs.getInt(1), "not friends"));
 				}
 				st2.close();
@@ -551,10 +551,10 @@ public class ProfileGUI extends JPanel{
 					String newLastName = editLastName.getText();
 					String newEmail = editEmail.getText();
 					
-					System.out.println("the id is"+userId);
-					System.out.println("the first name is"+newFirstName);
-					System.out.println("the last name is"+newLastName);
-					System.out.println("the email is"+newEmail);
+					//System.out.println("the id is"+userId);
+					//System.out.println("the first name is"+newFirstName);
+					//System.out.println("the last name is"+newLastName);
+					//System.out.println("the email is"+newEmail);
 					
 					try
 					{
@@ -704,7 +704,7 @@ public class ProfileGUI extends JPanel{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("in actionlistener");
+			//System.out.println("in actionlistener");
 			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ userId+" AND user_being_followed = "+id+")";
 			ProfileGUI newProfile;
 			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());
@@ -723,7 +723,7 @@ public class ProfileGUI extends JPanel{
 		}
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println("in actionlistener");
+			//System.out.println("in actionlistener");
 			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ userId+" AND user_being_followed = "+id+")";
 			ProfileGUI newProfile;
 			newProfile = new ProfileGUI(mainPage, dim, relation, id, ConnectionClass.conn, new ActionListenerComplicatedProfile());

@@ -34,37 +34,11 @@ import com.mysql.jdbc.ResultSetMetaData;
 
 public class MusicLibrary extends JFrame {
 	public static final long serialVersionUID = 1;
-	
-	//hold all the music objects
-	//private Vector<MusicModel> musicModelVector;
+
 	private HashMap<String, MusicModel> musicModelMap;
 	private ArrayList <MusicModel> topListenedSongs;
 	private ArrayList<MusicModel> topRatedSongs;
 	
-//	//fix this cause its bad coding style
-//	//Connection connection;
-//	//String dburl;
-//	//String userName;
-//	//String passWord;
-//	
-//	//Connection conn;
-
-//	private void connect(){
-//		connection = null;
-//		dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
-//		userName = "cs201";
-//		passWord = "manishhostage";
-//
-//			 try {
-//				 Class.forName("com.mysql.jdbc.Driver");
-//				 conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-//				 } catch (ClassNotFoundException e) {
-//				 e.printStackTrace();
-//				 } catch (SQLException e) {
-//				 e.printStackTrace();
-//				 }
-//	}
-//	
 	public HashMap<String,MusicModel> getMusicModelMap(){
 		return musicModelMap;
 	}
@@ -111,18 +85,6 @@ public class MusicLibrary extends JFrame {
 				MusicObject.setAlbumPath(rs.getString(8));
 				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
 				
-				//testing 
-				System.out.println(MusicObject.getMusicID());
-				System.out.println(MusicObject.getSongName());
-				System.out.println(MusicObject.getArtistName());
-				System.out.println(MusicObject.getRatingSum());
-				System.out.println(MusicObject.getNumberOfRatings());
-				System.out.println(MusicObject.getnumberOfPlayCounts());
-				System.out.println(MusicObject.getSongPath());
-				System.out.println(MusicObject.getAlbumPath());
-
-				//adding to the vector
-				//musicModelVector.add(MusicObject);
 				musicModelMap.put(MusicObject.getSongName(),MusicObject);
 				
 				System.out.println("");

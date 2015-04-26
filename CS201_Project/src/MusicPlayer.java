@@ -354,7 +354,7 @@ public class MusicPlayer extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				System.out.println(musicObject.getSongName());
+				//System.out.println(musicObject.getSongName());
 				//String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(this.userID);
 				try
 				{
@@ -674,7 +674,7 @@ public class MusicPlayer extends JPanel{
 		ratingPanel.removeAll();
 		ratingPanel.add(rating);
 		int i = 0;
-		System.out.println(rate);
+		//System.out.println(rate);
 		if (rate <= 1.4 && rate>.9)
 		{
 			i = 1;

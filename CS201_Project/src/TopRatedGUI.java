@@ -52,7 +52,7 @@ public class TopRatedGUI extends TopGUI{
 		}
 		for (int i = 0; i<topSongs.size(); i++){
 			this.add(buttons.get(i));	
-			System.out.println(i);
+			//System.out.println(i);
 		}
 	}
 	
@@ -75,7 +75,7 @@ public class TopRatedGUI extends TopGUI{
 		}
 		for (int i = 0; i<topSongs.size(); i++){
 			this.add(buttons.get(i));	
-			System.out.println(i);
+			//System.out.println(i);
 		}
 	}
 	@Override
