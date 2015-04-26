@@ -371,8 +371,8 @@ public class MusicPlayer extends JPanel{
 				{
 					//System.out.println("should be here");
 					favoriteLabel.setIcon(fullHeart);
-					if (!musicObject.getFavoritedBool())
-					{
+			//		if (!musicObject.getFavoritedBool())
+			//		{
 
 							if (!rs.next()) 
 							{
@@ -400,15 +400,15 @@ public class MusicPlayer extends JPanel{
 									e1.printStackTrace();
 								}
 							}			
-						musicObject.setFavoritedBool(true);
-					}
+				//		musicObject.setFavoritedBool(true);
+				//	}
 				}
 				else
 				{
 					//System.out.println("should not be here");
 					favoriteLabel.setIcon(emptyHeart);
-					if (musicObject.getFavoritedBool())
-					{
+			//		if (musicObject.getFavoritedBool())
+			//		{
 							if (rs.next()) 
 							{
 								try
@@ -425,8 +425,8 @@ public class MusicPlayer extends JPanel{
 								}
 								
 							}
-						musicObject.setFavoritedBool(false);
-					}
+				//		musicObject.setFavoritedBool(false);
+				//	}
 				}
 				}
 				catch (SQLException e1)
