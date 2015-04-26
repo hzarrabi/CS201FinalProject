@@ -9,10 +9,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -330,7 +332,26 @@ public class IndpMusicPlayer extends JPanel{
 		playButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("yessssss"); 
 				myThread.resume();
+				System.out.println("yessssss");
+				try
+				{
+					System.out.println("helloooooo");
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO avtivity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "listen");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+				    System.out.println("utilDate:" + utilDate);
+				    System.out.println("sqlDate:" + sqlDate);
+					ps.executeUpdate();
+					ps.close();
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 		});
 		

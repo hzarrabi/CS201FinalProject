@@ -80,6 +80,8 @@ public class MusicPlayer extends JPanel{
 	private JLabel listens;
 	private JPanel ratingPanel;
 	
+	private boolean beingPlayed = false;
+	
 	public MusicPlayer(Dimension d, ArrayList<JButton> buttons, ArrayList<MusicModel> songs, int currentSong)
 	{
 		this.currentSong = currentSong;
@@ -354,8 +356,7 @@ public class MusicPlayer extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				//System.out.println(musicObject.getSongName());
-				//String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(this.userID);
+
 				try
 				{
 				//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
@@ -370,33 +371,44 @@ public class MusicPlayer extends JPanel{
 				{
 					//System.out.println("should be here");
 					favoriteLabel.setIcon(fullHeart);
-					if (!musicObject.getFavoritedBool())
-					{
+			//		if (!musicObject.getFavoritedBool())
+			//		{
 
 							if (!rs.next()) 
 							{
 								try
 								{
+									//inserting into favorited_songs table
 									PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO favorite_songs (user_id, song_id)" + "VALUES (?, ?)");
 									ps.setInt(1, LoggedInDriverGUI.userID);
 									ps.setInt(2, musicObject.getMusicID());
 									ps.executeUpdate();
 									ps.close();
+									//inserting into activity_feed table
+									PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+									ps1.setInt(1, LoggedInDriverGUI.userID);
+									ps1.setString(2, "favorite");
+									java.util.Date utilDate = new java.util.Date();
+								    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+								    ps1.setInt(3, musicObject.getMusicID());
+								    ps1.setTimestamp(4, sqlDate);
+									ps1.executeUpdate();
+									ps1.close();
 								} 
 								catch (SQLException e1)
 								{
 									e1.printStackTrace();
 								}
 							}			
-						musicObject.setFavoritedBool(true);
-					}
+				//		musicObject.setFavoritedBool(true);
+				//	}
 				}
 				else
 				{
 					//System.out.println("should not be here");
 					favoriteLabel.setIcon(emptyHeart);
-					if (musicObject.getFavoritedBool())
-					{
+			//		if (musicObject.getFavoritedBool())
+			//		{
 							if (rs.next()) 
 							{
 								try
@@ -413,8 +425,8 @@ public class MusicPlayer extends JPanel{
 								}
 								
 							}
-						musicObject.setFavoritedBool(false);
-					}
+				//		musicObject.setFavoritedBool(false);
+				//	}
 				}
 				}
 				catch (SQLException e1)
@@ -566,6 +578,26 @@ public class MusicPlayer extends JPanel{
 					myThread = musicObject.playTheSong();
 					//Sample LeapMotionThread = new Sample(myThread);
 					//LeapMotionThread.run();
+					if (beingPlayed) {}
+					else {
+						try
+						{
+							PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+							ps.setInt(1, LoggedInDriverGUI.userID);
+							ps.setString(2, "listen");
+							java.util.Date utilDate = new java.util.Date();
+						    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+						    ps.setInt(3, musicObject.getMusicID());
+						    ps.setTimestamp(4, sqlDate);
+							ps.executeUpdate();
+							ps.close();
+							beingPlayed = true;
+						} 
+						catch (SQLException e1)
+						{
+							e1.printStackTrace();
+						}
+					}
 				}
 				else
 					myThread.resume();
@@ -599,6 +631,23 @@ public class MusicPlayer extends JPanel{
 				resetStuff();
 				//artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
 				myThread = musicObject.playTheSong();
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "listen");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -621,6 +670,23 @@ public class MusicPlayer extends JPanel{
 				resetStuff();
 				//artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
 				myThread = musicObject.playTheSong();
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "listen");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 		});	
 	}
@@ -633,6 +699,23 @@ public class MusicPlayer extends JPanel{
 		currentSong = currentSg;
 		resetStuff();
 		myThread = m.playTheSong();
+		try
+		{
+			PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+			ps.setInt(1, LoggedInDriverGUI.userID);
+			ps.setString(2, "listen");
+			java.util.Date utilDate = new java.util.Date();
+		    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+		    ps.setInt(3, musicObject.getMusicID());
+		    ps.setTimestamp(4, sqlDate);
+			ps.executeUpdate();
+			ps.close();
+			beingPlayed = true;
+		} 
+		catch (SQLException e1)
+		{
+			e1.printStackTrace();
+		}
 	}
 	
 	private void resetStuff()
@@ -655,29 +738,30 @@ public class MusicPlayer extends JPanel{
 		fourStar.setIcon(emptyStar);
 		fiveStar.setIcon(emptyStar);
 		//favoriteLabel.setIcon(emptyHeart);
-		 try
-			{
-				//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-				
-				Statement st = ConnectionClass.conn.createStatement();
-				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-				String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) + " AND song_id = " + Integer.toString(musicObject.getMusicID());
-				ResultSet rs = st.executeQuery(queryCheck);
-				int columns = rs.getMetaData().getColumnCount();
-				if (rs.next())
-				{
-					favoriteLabel.setIcon(fullHeart);
-				}
-				else
-				{
-					favoriteLabel.setIcon(emptyHeart);
-				}
-			}
-			catch (SQLException e1)
-			{
-				e1.printStackTrace();
-			}
+		
+		try
+		{
+			//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
 			
+			Statement st = ConnectionClass.conn.createStatement();
+			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+			String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) + " AND song_id = " + Integer.toString(musicObject.getMusicID());
+			ResultSet rs = st.executeQuery(queryCheck);
+			int columns = rs.getMetaData().getColumnCount();
+			if (rs.next())
+			{
+				favoriteLabel.setIcon(fullHeart);
+			}
+			else
+			{
+				favoriteLabel.setIcon(emptyHeart);
+			}
+		}
+		catch (SQLException e1)
+		{
+			e1.printStackTrace();
+		}
+		
 		double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
 		int listens1 = musicObject.getnumberOfPlayCounts();
 		listens.setText("#Listens: "+listens1);
