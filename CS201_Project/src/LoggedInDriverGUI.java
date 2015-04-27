@@ -92,6 +92,7 @@ public class LoggedInDriverGUI extends JFrame{
 		super("Home Screen");
 		testField = new JTextField();
 		//this.firstPage = firstPage;
+		setBackground(FirstPageGUI.color);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
 
@@ -139,13 +140,14 @@ public class LoggedInDriverGUI extends JFrame{
 	private void initializeComponents()
 	{
 		currentJpanel = 0;
-		fg = new FeedGUI(this);
 		myColor = FirstPageGUI.color;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		fg = new FeedGUI(this, new Dimension(dim.width/3, dim.height));
 		testField.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
 		testField.setEditable(true);
 		mainPanel = new JPanel();
 		mainPanel.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
+		mainPanel.setBackground(FirstPageGUI.color);
 		trgButton = new JButton();
 		tlgButton = new JButton();
 		mpgButton = new JButton();
@@ -205,6 +207,7 @@ public class LoggedInDriverGUI extends JFrame{
 		trgScroll = new JScrollPane(trg);
 		tlgScroll = new JScrollPane(tlg);
 		fgScroll = new JScrollPane(fg);
+		fgScroll.setBackground(FirstPageGUI.darkGrey);
 		//notifications = new JLabel("notifications");
 		trgScroll.setPreferredSize(new Dimension(18*dim.width/192, 35*dim.height/40));
 		tlgScroll.setPreferredSize(new Dimension(18*dim.width/192, 35*dim.height/40));
