@@ -41,6 +41,7 @@ public class LoggedInDriverGUI extends JFrame{
 	private Boolean hasIndpFrame;
 	private SearchGUI searchGUI;
 	private JButton logout;
+	private Thread currentSongThread;
 	//private JLabel notifications;
 	private JScrollPane trgScroll;
 	private JScrollPane tlgScroll;
@@ -118,10 +119,6 @@ public class LoggedInDriverGUI extends JFrame{
 		hasIndpFrame = false;
 		testButton = new JButton("Search");
 		this.userID=userID;
-		Connection conn; 
-		String dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
-		String userName = "cs201";
-		String passWord = "manishhostage";
 		try{
 			sharedMusicLibrary = new MusicLibrary();
 		}catch(Exception e){
@@ -186,7 +183,7 @@ public class LoggedInDriverGUI extends JFrame{
 		
 		logout = new JButton("Logout");
 		buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(dim.width/3, 3*dim.height/40));
+
 		buttonPanel.setBackground(myColor);
 		buttonPanel.add(feedButton);
 		buttonPanel.add(mpgButton);

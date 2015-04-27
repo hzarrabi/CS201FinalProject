@@ -31,6 +31,7 @@ public class TopRatedGUI extends TopGUI{
 	public TopRatedGUI( Dimension d, Dimension playerDim)
 	{
 		super();
+		this.d = d;
 		this.setPreferredSize(d);
 		this.setBackground(FirstPageGUI.darkGrey);
 		dimPlayer = playerDim;

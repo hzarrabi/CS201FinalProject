@@ -79,6 +79,7 @@ public class MusicPlayer extends JPanel{
 	private ImageIcon fullHeart;
 	private JLabel listens;
 	private JPanel ratingPanel;
+	JPanel mainPanel;
 	
 	private boolean beingPlayed = false;
 	
@@ -221,7 +222,7 @@ public class MusicPlayer extends JPanel{
 		bottomPanel.add(pauseButton);
 		bottomPanel.add(forwardButton);
 		
-		JPanel mainPanel = new JPanel();
+		mainPanel = new JPanel();
 		mainPanel.setBackground(FirstPageGUI.white);
 		mainPanel.setPreferredSize(new Dimension(dim.width, 50*dim.height/93));
 		mainPanel.add(album);
@@ -856,6 +857,8 @@ public class MusicPlayer extends JPanel{
 		int listens1 = musicObject.getnumberOfPlayCounts();
 		listens.setText("#Listens: "+listens1);
 		setRating(rate);
+		mainPanel.revalidate();
+		mainPanel.repaint();
 		
 	}
 	
@@ -912,5 +915,10 @@ public class MusicPlayer extends JPanel{
 			{
 				tabPanelMain.remove(favoritePanel);
 			}
+	}
+	
+	public Thread getCurrentThread()
+	{
+		return myThread;
 	}
 }
