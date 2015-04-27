@@ -74,34 +74,17 @@ public class IndpMusicPlayer extends JPanel{
 	private ImageIcon fullStar;
 	protected int myRating;
 	
-	public IndpMusicPlayer(String songTitle)
-	{
-		songName = songTitle;
-		musicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(songName);
-		//backPageButton = new JButton();
-		initializeComponents();
-		createUserGUI();
-		setEventHandlers();
-		setBounds(0,0,dim.width/4, dim.height);
-		setVisible(true);
-	}
-	
-	//constructor that will be called from searchGUI, profileGUI and feedGUI
 	public IndpMusicPlayer(MusicModel model, Dimension d)
 	{
 		dim = d;
 		musicObject = model;
 		songName = musicObject.getSongName();
-		//passed in to be the actionlistener for the back button, which will remove this
-		//music player from the loggedindrivergui and go back to the previous panel
-	//	this.forBackButton = forBackButton;
-		//backPageButton = new JButton("back");
 		initializeComponents();
 		createUserGUI();
 		setEventHandlers();
 		setBounds(0,0,dim.width/4, dim.height);		
 		setVisible(true);
-
+		setPreferredSize(dim);
 	}
 	
 	public void startThread()
@@ -166,8 +149,8 @@ public class IndpMusicPlayer extends JPanel{
 		commentButton.setOpaque(false);
 		commentButton.setContentAreaFilled(false);
 		commentButton.setBorderPainted(false);
-		commentButton.setIcon(new ImageIcon("data/comments1.png"));
-		commentButton.setPreferredSize(new Dimension(dim.width/5, dim.height/14));
+		commentButton.setIcon(new ImageIcon("data/comments.png"));
+		commentButton.setPreferredSize(new Dimension(dim.width/5, dim.height/15));
 		
 		rateButton.setOpaque(false);
 		rateButton.setContentAreaFilled(false);
@@ -207,7 +190,7 @@ public class IndpMusicPlayer extends JPanel{
 		
 		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(FirstPageGUI.white);
-		mainPanel.setPreferredSize(new Dimension(dim.width, 56*dim.height/93));
+		mainPanel.setPreferredSize(new Dimension(dim.width, 54*dim.height/93));
 		mainPanel.add(album);
 		mainPanel.add(artist);
 		artist.setBackground(FirstPageGUI.white);
@@ -311,9 +294,9 @@ public class IndpMusicPlayer extends JPanel{
 		commentPanel.add(other, BorderLayout.SOUTH);
 
 		JPanel tabPanel = new JPanel();
+		//mainPanel.setBackground(FirstPageGUI.darkGrey);
 		
-		
-		tabPanel.setPreferredSize(new Dimension(dim.width, 11*dim.height/24));
+		tabPanel.setPreferredSize(new Dimension(dim.width, 39*dim.height/93));
 		tabPanel.setBackground(FirstPageGUI.white);
 		tabPanelMain = new JPanel();
 		tabPanelMain.setPreferredSize(new Dimension(dim.width, 7*dim.height/25));
