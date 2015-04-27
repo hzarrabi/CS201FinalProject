@@ -523,6 +523,17 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+1);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+1);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
 				} 
 				catch (SQLException e1)
 				{
@@ -555,6 +566,17 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+2);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+2);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
 				} 
 				catch (SQLException e1)
 				{
@@ -587,6 +609,17 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+3);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+3);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
 				} 
 				catch (SQLException e1)
 				{
@@ -619,6 +652,17 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+4);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+4);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
 				} 
 				catch (SQLException e1)
 				{
@@ -651,6 +695,17 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+5);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+5);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
 				} 
 				catch (SQLException e1)
 				{
