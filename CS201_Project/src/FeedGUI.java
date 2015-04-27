@@ -91,7 +91,7 @@ public class FeedGUI extends JPanel{
 		newActivity.setPreferredSize(new Dimension(dim.width, dim.width));
 		timeAndUser.setPreferredSize(new Dimension(dim.width, dim.width/10));
 		songAndInfo.setPreferredSize(new Dimension(dim.width, dim.width/10));
-		rateAndFavorite.setPreferredSize(new Dimension(dim.width, dim.width/10));
+		rateAndFavorite.setPreferredSize(new Dimension(5*dim.width/6, dim.width/10));
 		
 		
 		JButton userButton = new JButton("");
@@ -255,14 +255,20 @@ public class FeedGUI extends JPanel{
 		fourStar.setBorderPainted(false);
 		fourStar.setIcon(emptyStar);
 		fourStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
-		
+		JLabel empty = new JLabel();
+		JLabel empty2 = new JLabel();
+		empty.setPreferredSize(new Dimension(dim.width/10, dim.height/13));
+		empty2.setPreferredSize(new Dimension(dim.width/10, dim.height/13));
 		rateAndFavorite.setLayout(new BoxLayout(rateAndFavorite, BoxLayout.X_AXIS));
+		//Box.crea
+		rateAndFavorite.add(empty);
 		rateAndFavorite.add(oneStar);
 		rateAndFavorite.add(twoStar);
 		rateAndFavorite.add(threeStar);
 		rateAndFavorite.add(fourStar);
 		rateAndFavorite.add(fiveStar);
-		Box.createGlue();
+		rateAndFavorite.add(empty2);
+		//Box.createGlue();
 		rateAndFavorite.add(favoriteButton);
 		favoriteButton.addActionListener(new FavoriteActionListener(model, favoriteButton));
 		
