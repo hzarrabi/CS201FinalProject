@@ -122,7 +122,7 @@ public class ProfileGUI extends JPanel{
 
 		//picturePic.setBorder(new RoundedBorder());
 		picturePic.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
-		picturePic.setBorder(new RoundedBorder());
+		//picturePic.setBorder(new RoundedBorder());
 		picturePic.setIcon(profilePic);
 		//buttons depending on user
 		edit = new JButton("Edit Profile");
