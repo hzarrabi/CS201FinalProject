@@ -84,7 +84,7 @@ public class ProfileGUI extends JPanel{
 	private Socket s;
 	private ObjectOutputStream oos;
 	private ObjectInputStream ois;
-	
+	private String username;
 //	public ProfileGUI(Dimension d, String key, int userID)
 //	{
 //		dim = d;
@@ -323,6 +323,7 @@ public class ProfileGUI extends JPanel{
 				email.setText(rs.getString("email"));
 				System.out.println(rs.getString("bio"));
 				bio.setText(rs.getString("bio"));
+				username = rs.getString("username");
 				rs.close();
 				stat.close();
             }
@@ -953,6 +954,10 @@ public class ProfileGUI extends JPanel{
 		
 	}
 	
+	public String getName()
+	{
+		return username;
+	}
 	public void refresh()
 	{
 		System.out.println("In refresh for profile");
