@@ -174,7 +174,7 @@ public class FeedGUI extends JPanel{
 		userButton.setOpaque(false);
 		userButton.setContentAreaFilled(false);
 		userButton.setBorderPainted(false);
-		userButton.addActionListener(new ActionListenerProfile(LoggedInDriverGUI.userID, "friends"));
+		userButton.addActionListener(new ActionListenerProfile(act.getUserID(), "friends"));
 		//timeAndUser = new JPanel();
 		//songAndInfo = new JPanel();
 		//rateAndFavorite = new JPanel();
@@ -528,6 +528,11 @@ class StarActionListener implements ActionListener{
 			}
 			
 		}
+		
+	}
+	
+	public void refresh()
+	{
 		
 	}
 }
