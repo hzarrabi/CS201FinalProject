@@ -88,6 +88,7 @@ public class MusicPlayer extends JPanel{
 	JPanel mainPanel;
 	
 	private boolean beingPlayed = false;
+	private boolean getComments = false;
 	
 	public MusicPlayer(Dimension d, ArrayList<JButton> buttons, ArrayList<MusicModel> songs, int currentSong)
 	{
@@ -149,7 +150,9 @@ public class MusicPlayer extends JPanel{
 		comments.setBackground(Color.BLACK);
 		comment = new JTextField("comment");
 		enter = new JButton("Enter");
-		jspComments = new JScrollPane(comments);
+		jspComments = new JScrollPane(comments, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		
 		ratingButtons = new ArrayList<JButton>();
 		setPreferredSize(new Dimension(dim.width, dim.height));
 		
@@ -300,35 +303,34 @@ public class MusicPlayer extends JPanel{
 			Statement st = ConnectionClass.conn.createStatement();
 			ResultSet rs = st.executeQuery(query);
 			int columns = rs.getMetaData().getColumnCount();
-			Vector<Integer> userIDVector = new Vector<Integer> ();
-			Vector<String> commentVector = new Vector<String> ();
+//			Vector<Integer> userIDVector = new Vector<Integer> ();
+//			Vector<String> commentVector = new Vector<String> ();
 			while (rs.next())
 			{
 				int ID = 0;
-				for (int i = 1; i <= columns; i++)
-				{
-					if (i == 1)
-					{
-						userIDVector.add(rs.getInt(i));
-						//System.out.println("ID: " + rs.getInt(i));
-						ID = rs.getInt(i);
-					}
-					if (i == 2)
-					{
-						commentVector.add(rs.getString(i));
-						//System.out.println("Comment: " + rs.getString(i));
-					}
-				}
+				String comment1;
+				
+				ID = rs.getInt(1);
+				comment1 = rs.getString(3);
+				System.out.println("Comment: "+comment1);
+				
 				String query1 = "Select username from user_table where iduser_table = " + Integer.toString(ID);
 				Statement st1 = ConnectionClass.conn.createStatement();
 				ResultSet rs1 = st1.executeQuery(query1);
 				int columns1 = rs1.getMetaData().getColumnCount();
-				while (rs1.next())
-				{
-					for (int i = 1;i <=columns1; i++)
-					{
-						System.out.println("Username: " + rs1.getString(i));
-					}
+				while (rs1.next()){
+					JPanel outer = new JPanel();
+					outer.setLayout(new FlowLayout(FlowLayout.LEFT));
+					outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
+					JLabel name = new JLabel();
+					name.setPreferredSize(new Dimension(dim.width/4, 9*dim.height/200));
+					name.setText("@"+rs1.getString(1)+":");
+					JLabel commentLabel = new JLabel();
+					commentLabel.setPreferredSize(new Dimension(2*dim.width/3, 9*dim.height/200));
+					commentLabel.setText(comment1);
+					outer.add(name);
+					outer.add(commentLabel);
+					comments.add(outer);
 				}
 			}
 		} catch (SQLException e) {
