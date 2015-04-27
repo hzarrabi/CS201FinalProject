@@ -419,7 +419,7 @@ class StarActionListener implements ActionListener{
 			two.setIcon(fullStar);
 			three.setIcon(fullStar);
 			four.setIcon(fullStar);
-			five.setIcon(emptyStar);
+			five.setIcon(fullStar);
 			myRating = 5;
 		}
 		
