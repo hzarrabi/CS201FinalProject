@@ -453,6 +453,8 @@ public class MusicPlayer extends JPanel{
 					outer.add(name);
 					outer.add(commentLabel);
 					comments.add(outer);
+					comments.revalidate();
+					comments.repaint();
                 }       
 			}
 		});
@@ -1001,6 +1003,8 @@ public class MusicPlayer extends JPanel{
 				outer.add(name);
 				outer.add(commentLabel);
 				comments.add(outer);
+				comments.revalidate();
+				comments.repaint();
 			}
 		});
 	}
