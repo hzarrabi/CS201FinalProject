@@ -143,7 +143,7 @@ public class ProfileGUI extends JPanel{
 		picturePic.setIcon(profilePic);
 		//buttons depending on user
 		edit = new JButton("Edit Profile");
-		unFollow = new JButton("UnFollow");
+		unFollow = new JButton("Unfollow");
 		follow = new JButton("Follow");
 		saveButton = new JButton("Save");
 		cancelButton = new JButton("Cancel");
@@ -816,6 +816,26 @@ public class ProfileGUI extends JPanel{
 					ps.close();
 					buttonP.remove(follow);
 					buttonP.add(unFollow);
+					buttonP.revalidate();
+					buttonP.repaint();
+				} catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
+		unFollow.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("DELETE FROM friend_relationship WHERE " + "user = ?" + " and " + "user_being_followed = ?");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setInt(2, userId);
+					ps.executeUpdate();
+					ps.close();
+					buttonP.remove(unFollow);
+					buttonP.add(follow);
 					buttonP.revalidate();
 					buttonP.repaint();
 				} catch (SQLException e1)
