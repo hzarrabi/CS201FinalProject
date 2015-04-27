@@ -203,7 +203,7 @@ public class FeedGUI extends JPanel{
 			
 			Statement st = ConnectionClass.conn.createStatement();
 			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-			String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) + " AND song_id = " + Integer.toString(model.getMusicID());
+			String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) + " AND song_id = " + act.getSongID();
 			ResultSet rs = st.executeQuery(queryCheck);
 			int columns = rs.getMetaData().getColumnCount();
 			if (rs.next())
@@ -223,7 +223,7 @@ public class FeedGUI extends JPanel{
 		favoriteButton.setOpaque(false);
 		favoriteButton.setContentAreaFilled(false);
 		favoriteButton.setBorderPainted(false);
-		favoriteButton.setIcon(emptyHeart);
+		//favoriteButton.setIcon(emptyHeart);
 		favoriteButton.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
 		
 		oneStar.setOpaque(false);
