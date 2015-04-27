@@ -1,4 +1,5 @@
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -8,38 +9,49 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+import com.mysql.jdbc.PreparedStatement;
 
 
 public class FeedGUI extends JPanel{
 	private Dimension dim;
 	private ArrayList<Activity> activities;
 	private LoggedInDriverGUI mainPage;
-	public FeedGUI(LoggedInDriverGUI lidg)
+	private ImageIcon fullHeart;
+	private ImageIcon emptyHeart;
+	private ImageIcon fullStar;
+	private ImageIcon emptyStar;
+	private ImageIcon clockIcon;
+	public FeedGUI(LoggedInDriverGUI lidg, Dimension d)
 	{
 		mainPage = lidg;
-		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		dim = d;
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		activities = new ArrayList<Activity>();
 		//setSize(dim);
 		setSize(dim.width/3, dim.height*10);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		dim = new Dimension(dim.width/3, dim.height);
+	//	dim = new Dimension(dim.width/3, dim.height);
 		//this.setPreferredSize(dim);
 		setBounds(0,0,dim.width/3, dim.height);
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setVisible(true);
+		setBackground(FirstPageGUI.darkGrey);
 		makeActivities();
 		makeGUI();
 		//setResizable(false);
@@ -47,6 +59,11 @@ public class FeedGUI extends JPanel{
 	
 	public void makeGUI()
 	{
+		emptyHeart = new ImageIcon("data/heartOutlineWhite.png");
+		fullHeart = new ImageIcon("data/fullHeartWhite.png");
+		emptyStar = new ImageIcon("data/starOutlineWhite.png");
+		fullStar = new ImageIcon("data/star1.png");
+		clockIcon = new ImageIcon("data/clock.png");
 		Collections.sort(activities);
 		System.out.println("Size of activities array " + activities.size());
 		for (int i = activities.size()-1; i > -1; i--)
@@ -60,12 +77,35 @@ public class FeedGUI extends JPanel{
 	public void addActivity(Activity act)
 	{
 		JPanel newActivity = new JPanel();
-		JButton userButton = new JButton();
+		newActivity.setBackground(FirstPageGUI.darkGrey);
+		newActivity.setLayout(new FlowLayout(FlowLayout.CENTER));
+		JPanel timeAndUser = new JPanel();
+		timeAndUser.setBackground(FirstPageGUI.darkGrey);
+		timeAndUser.setLayout(new FlowLayout(FlowLayout.LEFT));
+		JPanel songAndInfo = new JPanel();
+		songAndInfo.setBackground(FirstPageGUI.darkGrey);
+		songAndInfo.setLayout(new FlowLayout(FlowLayout.CENTER));
+		JPanel rateAndFavorite = new JPanel();
+		rateAndFavorite.setBackground(FirstPageGUI.darkGrey);
+		rateAndFavorite.setLayout(new FlowLayout(FlowLayout.CENTER));
+		newActivity.setPreferredSize(new Dimension(dim.width, dim.width));
+		timeAndUser.setPreferredSize(new Dimension(dim.width, dim.width/10));
+		songAndInfo.setPreferredSize(new Dimension(dim.width, dim.width/10));
+		rateAndFavorite.setPreferredSize(new Dimension(dim.width, dim.width/10));
+		
+		
+		JButton userButton = new JButton("");
 		JButton songButton = new JButton();
-		//JLabel userName = new JLabel();
 		JLabel timeStamp = new JLabel("");
+		timeStamp.setPreferredSize(new Dimension(dim.width/4, dim.width/10));
+		timeStamp.setFont(FirstPageGUI.smallFont);
+		timeStamp.setForeground(FirstPageGUI.white);
 		JLabel description = new JLabel("");
-		description.setPreferredSize(new Dimension(dim.width/3, dim.height/10));
+		description.setFont(FirstPageGUI.smallFont);
+		description.setPreferredSize(new Dimension(dim.width, dim.width/10));
+		description.setHorizontalAlignment(SwingConstants.CENTER);
+		//description.setFont(FirstPageGUI.smallerFont);
+		description.setForeground(FirstPageGUI.white);
 		MusicModel model = null;
 		String username = "";
 		
@@ -77,7 +117,7 @@ public class FeedGUI extends JPanel{
 			String queryCheck = "SELECT first_name, last_name FROM user_table WHERE iduser_table = " + act.getUserID();
 			System.out.println(act.getUserID());
 			ResultSet rs = st.executeQuery(queryCheck);
-			int columns = rs.getMetaData().getColumnCount();
+			//int columns = rs.getMetaData().getColumnCount();
 			while (rs.next())
 			{
 				System.out.println("is this one working?");
@@ -89,7 +129,7 @@ public class FeedGUI extends JPanel{
 			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
 			String queryCheck1 = "SELECT song_name FROM music_table WHERE idmusic_table = " + act.getSongID();
 			ResultSet rs1 = st1.executeQuery(queryCheck1);
-			int columns1 = rs1.getMetaData().getColumnCount();
+		//	int columns1 = rs1.getMetaData().getColumnCount();
 			while (rs1.next())
 			{
 				System.out.println("here");
@@ -119,28 +159,118 @@ public class FeedGUI extends JPanel{
 			URL imageurl = new URL(model.getAlbumPath());
 			BufferedImage img = ImageIO.read(imageurl);
 			ImageIcon icon = new ImageIcon(img);
-			Image ResizedImage = icon.getImage().getScaledInstance(dim.width/3, dim.width/3, Image.SCALE_SMOOTH);
+			Image ResizedImage = icon.getImage().getScaledInstance(dim.width/2, dim.width/2, Image.SCALE_SMOOTH);
 			songButton.setIcon(new ImageIcon(ResizedImage));
+			songButton.setOpaque(false);
+			songButton.setContentAreaFilled(false);
+			songButton.setBorderPainted(false);
 		} catch (IOException e1)
 		{
 			
 		}
 		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
-		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/10, dim.width/20, Image.SCALE_SMOOTH);
+		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/15, dim.width/15, Image.SCALE_SMOOTH);
 		userButton.setIcon(new ImageIcon(img2));
+		userButton.setOpaque(false);
+		userButton.setContentAreaFilled(false);
+		userButton.setBorderPainted(false);
 		userButton.addActionListener(new ActionListenerProfile(LoggedInDriverGUI.userID, "friends"));
+		//timeAndUser = new JPanel();
+		//songAndInfo = new JPanel();
+		//rateAndFavorite = new JPanel();
+		JLabel clock = new JLabel("");
+		clock.setPreferredSize(new Dimension(dim.width/20, dim.width/20));
+		clock.setIcon(clockIcon);
+		newActivity.add(timeAndUser);
+		newActivity.add(songButton);
+		newActivity.add(songAndInfo);
+		newActivity.add(rateAndFavorite);
+		timeAndUser.add(userButton);
+		timeAndUser.add(clock);
+		timeAndUser.add(timeStamp);
+		songAndInfo.add(description);
 		
-		JPanel song = new JPanel();
-		song.setPreferredSize(new Dimension(dim.width/3, dim.height/3));
-		song.add(songButton);
-		song.add(description);
-		JPanel user = new JPanel();
-		user.setPreferredSize(new Dimension(dim.width/5, dim.height/4));
-		user.add(userButton);
-		user.add(timeStamp);
-		newActivity.add(user);
-		newActivity.add(song);
-		System.out.println("adding activity to GUI");
+		JButton oneStar = new JButton();
+		JButton twoStar = new JButton();
+		JButton threeStar = new JButton();
+		JButton fourStar = new JButton();
+		JButton fiveStar = new JButton();
+		JButton favoriteButton = new JButton();
+		
+		try
+		{
+			//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+			
+			Statement st = ConnectionClass.conn.createStatement();
+			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+			String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) + " AND song_id = " + Integer.toString(model.getMusicID());
+			ResultSet rs = st.executeQuery(queryCheck);
+			int columns = rs.getMetaData().getColumnCount();
+			if (rs.next())
+			{
+				favoriteButton.setIcon(fullHeart);
+			}
+			else
+			{
+				favoriteButton.setIcon(emptyHeart);
+			}
+		}
+		catch (SQLException e1)
+		{
+			e1.printStackTrace();
+		}
+		
+		favoriteButton.setOpaque(false);
+		favoriteButton.setContentAreaFilled(false);
+		favoriteButton.setBorderPainted(false);
+		favoriteButton.setIcon(emptyHeart);
+		favoriteButton.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		oneStar.setOpaque(false);
+		oneStar.setContentAreaFilled(false);
+		oneStar.setBorderPainted(false);
+		oneStar.setIcon(emptyStar);
+		oneStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		fiveStar.setOpaque(false);
+		fiveStar.setContentAreaFilled(false);
+		fiveStar.setBorderPainted(false);
+		fiveStar.setIcon(emptyStar);
+		fiveStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		twoStar.setOpaque(false);
+		twoStar.setContentAreaFilled(false);
+		twoStar.setBorderPainted(false);
+		twoStar.setIcon(emptyStar);
+		twoStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		threeStar.setOpaque(false);
+		threeStar.setContentAreaFilled(false);
+		threeStar.setBorderPainted(false);
+		threeStar.setIcon(emptyStar);
+		threeStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		fourStar.setOpaque(false);
+		fourStar.setContentAreaFilled(false);
+		fourStar.setBorderPainted(false);
+		fourStar.setIcon(emptyStar);
+		fourStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
+		
+		rateAndFavorite.setLayout(new BoxLayout(rateAndFavorite, BoxLayout.X_AXIS));
+		rateAndFavorite.add(oneStar);
+		rateAndFavorite.add(twoStar);
+		rateAndFavorite.add(threeStar);
+		rateAndFavorite.add(fourStar);
+		rateAndFavorite.add(fiveStar);
+		Box.createGlue();
+		rateAndFavorite.add(favoriteButton);
+		favoriteButton.addActionListener(new FavoriteActionListener(model, favoriteButton));
+		
+		oneStar.addActionListener(new StarActionListener(oneStar, twoStar, threeStar, fourStar, fiveStar, 1, model));
+		twoStar.addActionListener(new StarActionListener(oneStar, twoStar, threeStar, fourStar, fiveStar, 2, model));
+		threeStar.addActionListener(new StarActionListener(oneStar, twoStar, threeStar, fourStar, fiveStar, 3, model));
+		fourStar.addActionListener(new StarActionListener(oneStar, twoStar, threeStar, fourStar, fiveStar, 4, model));
+		fiveStar.addActionListener(new StarActionListener(oneStar, twoStar, threeStar, fourStar, fiveStar, 5, model));
 		add(newActivity);
 		
 	}
@@ -225,5 +355,180 @@ public class FeedGUI extends JPanel{
 		
 	}
 
+
+class StarActionListener implements ActionListener{
+	private JButton one;
+	private JButton two;
+	private JButton three;
+	private JButton four;
+	private JButton five;
+	private int key;
+	private MusicModel musicObject;
+	
+	 StarActionListener(JButton oneStar, JButton twoStar, JButton threeStar, JButton fourStar, JButton fiveStar, int key, MusicModel musicObject)
+	{
+		one = oneStar;
+		two = twoStar;
+		three = threeStar;
+		four = fourStar;
+		five = fiveStar;
+		this.key = key;
+		this.musicObject = musicObject;
+	}
+	public void actionPerformed(ActionEvent e) {
+		int myRating = 0;
+		if (key == 4)
+		{
+			one.setIcon(fullStar);
+			two.setIcon(fullStar);
+			three.setIcon(fullStar);
+			four.setIcon(fullStar);
+			five.setIcon(emptyStar);
+			myRating = 4;
+		}
+		else if (key == 1)
+		{
+			one.setIcon(fullStar);
+			two.setIcon(emptyStar);
+			three.setIcon(emptyStar);
+			four.setIcon(emptyStar);
+			five.setIcon(emptyStar);
+			myRating = 1;
+		}
+		else if (key == 2)
+		{
+			one.setIcon(fullStar);
+			two.setIcon(fullStar);
+			three.setIcon(emptyStar);
+			four.setIcon(emptyStar);
+			five.setIcon(emptyStar);
+			myRating = 2;
+		}
+		else if (key == 3)
+		{
+			one.setIcon(fullStar);
+			two.setIcon(fullStar);
+			three.setIcon(fullStar);
+			four.setIcon(emptyStar);
+			five.setIcon(emptyStar);
+			myRating = 3;
+		}
+		else if (key == 5)
+		{
+			one.setIcon(fullStar);
+			two.setIcon(fullStar);
+			three.setIcon(fullStar);
+			four.setIcon(fullStar);
+			five.setIcon(emptyStar);
+			myRating = 5;
+		}
+		
+		try
+		{
+			PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+			ps.setInt(1, LoggedInDriverGUI.userID);
+			ps.setString(2, "rate "+myRating);
+			java.util.Date utilDate = new java.util.Date();
+		    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+		    ps.setInt(3, musicObject.getMusicID());
+		    ps.setTimestamp(4, sqlDate);
+			ps.executeUpdate();
+			ps.close();
+			//beingPlayed = true;
+		} 
+		catch (SQLException e1)
+		{
+			e1.printStackTrace();
+		}
+	}
+
+}
+
+	class FavoriteActionListener implements ActionListener{
+
+		JButton favoriteLabel;
+		MusicModel model;
+		public FavoriteActionListener(MusicModel musicObject, JButton favoriteButton)
+		{
+			favoriteLabel = favoriteButton;
+			model = musicObject;
+					
+		}
+		public void actionPerformed(ActionEvent e) {
+			try
+			{
+			//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+			
+			Statement st = ConnectionClass.conn.createStatement();
+			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+			String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) +" AND song_id = " + Integer.toString(model.getMusicID());
+			ResultSet rs = st.executeQuery(queryCheck);
+			int columns = rs.getMetaData().getColumnCount();
+			
+			if (favoriteLabel.getIcon() == emptyHeart)
+			{
+				//System.out.println("should be here");
+				favoriteLabel.setIcon(fullHeart);
+		//		if (!musicObject.getFavoritedBool())
+		//		{
+
+						if (!rs.next()) 
+						{
+							try
+							{
+								//inserting into favorited_songs table
+								PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO favorite_songs (user_id, song_id)" + "VALUES (?, ?)");
+								ps.setInt(1, LoggedInDriverGUI.userID);
+								ps.setInt(2, model.getMusicID());
+								ps.executeUpdate();
+								ps.close();
+								//inserting into activity_feed table
+								PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+								ps1.setInt(1, LoggedInDriverGUI.userID);
+								ps1.setString(2, "favorite");
+								java.util.Date utilDate = new java.util.Date();
+							    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+							    ps1.setInt(3, model.getMusicID());
+							    ps1.setTimestamp(4, sqlDate);
+								ps1.executeUpdate();
+								ps1.close();
+							} 
+							catch (SQLException e1)
+							{
+								e1.printStackTrace();
+							}
+						}			
+			//		musicObject.setFavoritedBool(true);
+			//	}
+			}
+			else
+			{
+				favoriteLabel.setIcon(emptyHeart);
+						if (rs.next()) 
+						{
+							try
+							{
+								PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("DELETE FROM favorite_songs WHERE " + "user_id = ?" + " and " + "song_id = ?");
+								ps.setInt(1, LoggedInDriverGUI.userID);
+								ps.setInt(2, model.getMusicID());
+								ps.executeUpdate();
+								ps.close();
+							} 
+							catch (SQLException e1)
+							{
+								e1.printStackTrace();
+							}
+							
+						}
+			}
+			}
+			catch (SQLException e1)
+			{
+				e1.printStackTrace();
+			}
+			
+		}
+		
+	}
 }
 

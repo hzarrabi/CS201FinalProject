@@ -1041,7 +1041,7 @@ public class MusicPlayer extends JPanel{
 		rateButton.setOpaque(false);
 		rateButton.setContentAreaFilled(false);
 		rateButton.setBorderPainted(false);
-		rateButton.setIcon(new ImageIcon("data/ratingSmall.png"));
+		rateButton.setIcon(new ImageIcon("data/starOutlineSmall.png"));
 		rateButton.setPreferredSize(new Dimension(dim.width/5, 5*dim.height/93));
 		
 		favoriteButton.setOpaque(false);
