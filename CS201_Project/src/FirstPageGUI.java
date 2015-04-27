@@ -197,7 +197,7 @@ public class FirstPageGUI extends JFrame{
 		});
 		guest.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
-				new GuestGUI();
+				new GuestGUI(new Dimension(dim.width/3, dim.height));
 			}
 		});
 		login.addActionListener(new ActionListener(){

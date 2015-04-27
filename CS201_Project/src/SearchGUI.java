@@ -206,9 +206,28 @@ public class SearchGUI extends JPanel {
 					String userFirstName = rs.getString(2);
 					String userLastName = rs.getString(3);
 					JButton name = new JButton(userFirstName + " "+userLastName);
-					ProfileGUI newProfile;
-					newProfile = new ProfileGUI(mainPage, dim, "not friends", userId2);
-					name.addActionListener(new ActionListenerNewPage(newProfile));
+					Statement st1 = ConnectionClass.conn.createStatement();
+					String queryCheck1 = "SELECT user FROM friend_relationship WHERE user_being_followed = " + userId2 + " AND user = "+ LoggedInDriverGUI.userID;
+					ResultSet rs1 = st1.executeQuery(queryCheck1);
+					//columns = rs.getMetaData().getColumnCount();
+					//JButton button = buttonVector.get(i);
+					if (rs1.next())
+					{
+						//System.out.println("friends");
+						//ProfileGUI newProfile;
+						//newProfile = new ProfileGUI(mainPage, dim, "friends", userIDVector.get(i));
+						name.addActionListener(new ActionListenerProfile(userId2, "friends"));
+					}
+					else
+					{
+						//System.out.println("not friends");
+					//	ProfileGUI newProfile;
+						//newProfile = new ProfileGUI(mainPage, dim, "not friends", userIDVector.get(i));
+						name.addActionListener(new ActionListenerProfile(userId2, "not friends"));
+					}
+				//	ProfileGUI newProfile;
+					
+					//name.addActionListener(new ActionListenerNewPage(newProfile));
 					JLabel profileImage = new JLabel("");
 					ImageIcon icon = new ImageIcon("data/MomAndMoose.jpg");
 					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
@@ -424,6 +443,23 @@ public class SearchGUI extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 				//IndpMusicPlayer player = new IndpMusicPlayer
 				mainPage.addCurrent(myModel);
+			
+		}
+		
+	}
+	
+	class ActionListenerProfile implements ActionListener{
+		private int id;
+		private String relation;
+		public ActionListenerProfile(int id, String relationship)
+		{
+			this.id = id;
+			this.relation = relationship;
+		}
+		public void actionPerformed(ActionEvent e) {
+			ProfileGUI newProfile = new ProfileGUI(mainPage, dim, relation, id);
+				//IndpMusicPlayer player = new IndpMusicPlayer
+			mainPage.addCurrent(newProfile);
 			
 		}
 		

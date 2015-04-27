@@ -42,8 +42,9 @@ public class GuestGUI extends JFrame{
 	private JScrollPane trgScroll;
 	private JScrollPane tlgScroll;
 	
-	public GuestGUI()
+	public GuestGUI(Dimension d)
 	{
+		dim = d;
 //this.firstPage = firstPage;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
@@ -57,21 +58,15 @@ public class GuestGUI extends JFrame{
 			}
 
 		});
-		//testButton = new JButton("Search");
-		//this.userID=userID;
-		
 		try{
 			sharedMusicLibrary = new MusicLibrary();
 		}catch(Exception e){
 			
 		}
-
-		//connect();
 		initializeComponents();
 		createGUI();
 		setEventHandlers();
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0,0,dim.width/3, dim.height);
+		setBounds(0,0,dim.width, dim.height);
 		setVisible(true);
 		setResizable(false);
 	}
@@ -79,28 +74,15 @@ public class GuestGUI extends JFrame{
 	private void initializeComponents()
 	{
 		currentJpanel = 0;
-		//fg = new FeedGUI();
 		myColor = FirstPageGUI.color;
-		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		//testField.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
-		//testField.setEditable(true);
 		mainPanel = new JPanel();
-		mainPanel.setPreferredSize(new Dimension(dim.width/3, 15*dim.height/20));
+		mainPanel.setPreferredSize(new Dimension(dim.width, 35*dim.height/40));
 		trgButton = new JButton();
 		tlgButton = new JButton();
-		//mpgButton = new JButton();
-		//feedButton = new JButton();
-		//searchButton = new JButton();
 		trgButton.setIcon(new ImageIcon("data/star1.png"));
-		tlgButton.setIcon(new ImageIcon("data/headphones1.png"));
-		//mpgButton.setIcon(new ImageIcon("data/profile.png"));
-		//feedButton.setIcon(new ImageIcon("data/home.png"));
-		//searchButton.setIcon(new ImageIcon("data/search.png"));
-		trgButton.setPreferredSize(new Dimension(dim.width/18, dim.height/16));
-		tlgButton.setPreferredSize(new Dimension(dim.width/18, dim.height/16));
-		//mpgButton.setPreferredSize(new Dimension(dim.width/18, dim.height/16));
-		//searchButton.setPreferredSize(new Dimension(dim.width/18, dim.height/16));
-		//feedButton.setPreferredSize(new Dimension(dim.width/18, dim.height/16));
+		tlgButton.setIcon(new ImageIcon("data/head1.png"));
+		trgButton.setPreferredSize(new Dimension(dim.width/6, dim.height/16));
+		tlgButton.setPreferredSize(new Dimension(dim.width/6, dim.height/16));
 		tlgButton.setBackground(myColor);
 		tlgButton.setOpaque(false);
 		tlgButton.setContentAreaFilled(false);
@@ -112,39 +94,31 @@ public class GuestGUI extends JFrame{
 		
 		logout = new JButton("Logout");
 		buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(dim.width/3, dim.height/15));
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width/4, dim.height/90));
+		buttonPanel.setPreferredSize(new Dimension(dim.width, 3*dim.height/40));
 		buttonPanel.setBackground(myColor);
-		//buttonPanel.add(feedButton);
-		//buttonPanel.add(mpgButton);
 		buttonPanel.add(tlgButton);
+		
 		buttonPanel.add(trgButton);
-		//buttonPanel.add(searchButton);
 
-
-
-		trg = new TopRatedGUI(new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20));
-		tlg = new TopListenedGUI(new Dimension(3*dim.width/24, 15*dim.height/20), new Dimension(11*dim.width/48, 15*dim.height/20));
-		//mpg = new ProfileGUI(new Dimension(dim.width/3, 15*dim.height/20), "current user", userID,ConnectionClass.conn);
+		trg = new TopRatedGUI(new Dimension(6*dim.width/32, 25*dim.height/40), new Dimension(11*dim.width/16, 25*dim.height/40));
+		tlg = new TopListenedGUI(new Dimension(6*dim.width/32, 25*dim.height/40), new Dimension(11*dim.width/16, 25*dim.height/40));
 
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
 
 		trgScroll = new JScrollPane(trg);
 		tlgScroll = new JScrollPane(tlg);
-		//fgScroll = new JScrollPane(fg);
-		//notifications = new JLabel("notifications");
-		trgScroll.setPreferredSize(new Dimension(dim.width/12, 15*dim.height/20));
-		tlgScroll.setPreferredSize(new Dimension(dim.width/12, 15*dim.height/20));
-		//fgScroll.setPreferredSize(new Dimension(dim.width/15, 15*dim.height/20));
+		trgScroll.setPreferredSize(new Dimension(18*dim.width/64, 25*dim.height/40));
+		tlgScroll.setPreferredSize(new Dimension(18*dim.width/64, 25*dim.height/40));
 		trgScroll.setBorder(null);
 		tlgScroll.setBorder(null);
 		mainPanel.add(tlgScroll, BorderLayout.WEST);
 		mainPanel.add(musicPlayerTopListened, BorderLayout.CENTER);
 		bottomColor = new JPanel();
-		bottomColor.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
+		bottomColor.setPreferredSize(new Dimension(dim.width, dim.height/20));
 		bottomColor.setBackground(myColor);
 		bottomColor.add(logout);
-		//bottomColor.add(notifications);
 		mainPanel.setBackground(FirstPageGUI.white);
 	}
 	
@@ -183,9 +157,6 @@ public class GuestGUI extends JFrame{
 				removePanel();
 				mainPanel.add(tlgScroll, BorderLayout.WEST);
 				mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
-
-				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
-				//mainPanel.add(new MusicPlayer("Headlines"), BorderLayout.CENTER);
 				currentJpanel = 0;
 	            mainPanel.revalidate();
 	            mainPanel.repaint();
