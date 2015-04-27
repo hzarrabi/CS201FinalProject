@@ -44,7 +44,7 @@ public class MusicPlayer extends JPanel{
 	private JTextArea lyrics;
 	private String songName;
 	private MusicModel musicObject;
-	private Thread myThread;
+	private static Thread myThread;
 	private JButton rateButton;
 	private JButton commentButton;
 	private JButton favoriteButton;
@@ -101,7 +101,7 @@ public class MusicPlayer extends JPanel{
 
 	}
 	
-	public void stopThread()
+	public static void stopThread()
 	{
 		if (myThread != null)
 			myThread.suspend();
@@ -683,6 +683,14 @@ public class MusicPlayer extends JPanel{
 							ps.executeUpdate();
 							ps.close();
 							beingPlayed = true;
+							//update number of listens
+							PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_playe_count= ? " + "WHERE idmusic_table = ?");
+							ps1.setInt(1, musicObject.getnumberOfPlayCounts()+1);
+							ps1.setInt(2, musicObject.getMusicID());
+							ps1.executeUpdate();
+							ps1.close();
+							musicObject.setnumberOfPlayCounts(musicObject.getnumberOfPlayCounts()+1);
+							listens.setText("Listens: "+musicObject.getnumberOfPlayCounts());
 						} 
 						catch (SQLException e1)
 						{
@@ -734,6 +742,14 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update number of listens
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_playe_count= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getnumberOfPlayCounts()+1);
+					ps1.setInt(2, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setnumberOfPlayCounts(musicObject.getnumberOfPlayCounts()+1);
+					listens.setText("Listens: "+musicObject.getnumberOfPlayCounts());
 				} 
 				catch (SQLException e1)
 				{
@@ -773,6 +789,14 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update number of listens
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_playe_count= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getnumberOfPlayCounts()+1);
+					ps1.setInt(2, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setnumberOfPlayCounts(musicObject.getnumberOfPlayCounts()+1);
+					listens.setText("Listens: "+musicObject.getnumberOfPlayCounts());
 				} 
 				catch (SQLException e1)
 				{
@@ -802,6 +826,14 @@ public class MusicPlayer extends JPanel{
 			ps.executeUpdate();
 			ps.close();
 			beingPlayed = true;
+			//update number of listens
+			PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_playe_count= ? " + "WHERE idmusic_table = ?");
+			ps1.setInt(1, musicObject.getnumberOfPlayCounts()+1);
+			ps1.setInt(2, musicObject.getMusicID());
+			ps1.executeUpdate();
+			ps1.close();
+			musicObject.setnumberOfPlayCounts(musicObject.getnumberOfPlayCounts()+1);
+			listens.setText("Listens: "+musicObject.getnumberOfPlayCounts());
 		} 
 		catch (SQLException e1)
 		{

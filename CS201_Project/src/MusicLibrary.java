@@ -81,6 +81,7 @@ public class MusicLibrary extends JFrame {
 				MusicObject.setRatingSum(rs.getInt(4));
 				MusicObject.setNumberOfRatings(rs.getInt(5));
 				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
+				System.out.println(rs.getInt(6));
 				MusicObject.setSongPath(rs.getString(7));
 				MusicObject.setAlbumPath(rs.getString(8));
 				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));

@@ -109,6 +109,7 @@ public class LoggedInDriverGUI extends JFrame{
 			    options,
 			    options[0]);
 				if (n==0) {
+					MusicPlayer.stopThread();
 					new FirstPageGUI();
 					LoggedInDriverGUI.this.dispose();
 				}
@@ -138,7 +139,7 @@ public class LoggedInDriverGUI extends JFrame{
 	private void initializeComponents()
 	{
 		currentJpanel = 0;
-		fg = new FeedGUI();
+		fg = new FeedGUI(this);
 		myColor = FirstPageGUI.color;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		testField.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
@@ -394,6 +395,7 @@ public class LoggedInDriverGUI extends JFrame{
 			    options,
 			    options[0]);
 				if (n==0) {
+					MusicPlayer.stopThread();
 					dispose();
 					new FirstPageGUI();	
 				}
