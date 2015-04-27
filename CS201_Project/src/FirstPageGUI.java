@@ -5,8 +5,10 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
@@ -19,6 +21,10 @@ import java.awt.event.KeyListener;
 import java.awt.geom.Area;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -53,6 +59,7 @@ public class FirstPageGUI extends JFrame{
 	private JPanel bottomColor;
 	private JPanel topColor;
 	private JLabel incorrectInput;
+	private Font newfont;
 	private JPanel main = new JPanel();
 	final static Color color = new Color(0x0AB2D8);
 	final static Color white = new Color(0xf7f7f7);
@@ -88,6 +95,22 @@ public class FirstPageGUI extends JFrame{
 		topColor = new JPanel();
 		topColor.setPreferredSize(new Dimension(dim.width/3, 2*dim.height/20));
 		topColor.setBackground(color);
+		URL fontUrl;
+		try {
+			fontUrl = new URL("http://www.WebpagePublicity.com/free-fonts/a/Airmole%20Stripe.ttf");
+			newfont = Font.createFont(Font.TRUETYPE_FONT, fontUrl.openStream());
+			newfont = newfont.deriveFont(Font.PLAIN,26);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FontFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//logo.setFont(newfont);
 	}
 	
 	private void createGUI(){
@@ -134,7 +157,7 @@ public class FirstPageGUI extends JFrame{
 	}
 	
 	private void makePretty(){
-		logo.setFont(fontTitle);
+		logo.setFont(newfont);
 		
 		main.setBackground(white);
 		password.setBorder(new RoundedBorder());
