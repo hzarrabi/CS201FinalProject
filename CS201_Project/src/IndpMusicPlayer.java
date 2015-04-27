@@ -332,21 +332,31 @@ public class IndpMusicPlayer extends JPanel{
 		playButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("yessssss"); 
-				myThread.resume();
 				System.out.println("yessssss");
+				if (myThread != null)
+					myThread.resume();
+				else
+					myThread = musicObject.playTheSong();
 				try
 				{
-					System.out.println("helloooooo");
-					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO avtivity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
 					ps.setInt(1, LoggedInDriverGUI.userID);
 					ps.setString(2, "listen");
 					java.util.Date utilDate = new java.util.Date();
-				    java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-				    System.out.println("utilDate:" + utilDate);
-				    System.out.println("sqlDate:" + sqlDate);
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
 					ps.executeUpdate();
 					ps.close();
+					//beingPlayed = true;
+					//update number of listens
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_playe_count= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getnumberOfPlayCounts()+1);
+					ps1.setInt(2, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setnumberOfPlayCounts(musicObject.getnumberOfPlayCounts()+1);
+					listens.setText("Listens: "+musicObject.getnumberOfPlayCounts());
 				} 
 				catch (SQLException e1)
 				{
@@ -359,7 +369,8 @@ public class IndpMusicPlayer extends JPanel{
 		pauseButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
-				myThread.suspend();
+				if (myThread != null)
+					myThread.suspend();
 			}
 		});
 
