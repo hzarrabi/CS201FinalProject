@@ -466,9 +466,9 @@ public class CreateUserGUI extends JFrame{
 		Boolean Password = true;
 		Boolean Password2 = true;
 		
-		if(FirstNameField.getText().length()>11 || FirstNameField.getText().length()<5) FirstNameEmpty=false;
-		if(LastNameField.getText().length()>11 || LastNameField.getText().length()<5) LastNameEmpty=false;
-		if(UserNameField.getText().length()>11 || UserNameField.getText().length()<5) UserNameEmpty=false;
+		if(FirstNameField.getText().length()>20 || FirstNameField.getText().length()<2) FirstNameEmpty=false;
+		if(LastNameField.getText().length()>20 || LastNameField.getText().length()<2) LastNameEmpty=false;
+		if(UserNameField.getText().length()>15 || UserNameField.getText().length()<5) UserNameEmpty=false;
 		if(EmailField.getText().length()>30 || EmailField.getText().length()<5) EmailEmpty=false;
 		if(passwordField.getPassword().length>15 || passwordField2.getPassword().length<5) Password=false;
 		if(passwordField2.getPassword().length>15 || passwordField2.getPassword().length<5) Password2=false;
