@@ -7,8 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -20,6 +23,7 @@ import java.util.Set;
 import java.util.Vector;
 import java.sql.Statement;
 
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -73,26 +77,29 @@ public class ProfileGUI extends JPanel{
 	private Integer userId;
 	//private Connection conn;
 	private LoggedInDriverGUI mainPage;
+	//socket for server
+	private Socket s;
+	private ObjectOutputStream oos;
 	
-	public ProfileGUI(Dimension d, String key, int userID)
-	{
-		dim = d;
-	//	this.mainPage = mainPage;
-		this.key = key;
-		this.userId=userID;
-		//this.conn=conn;
-		//backButton = new JButton("Back");
-		//this.forBackButton = forBackButton;
-		//backButton.addActionListener(forBackButton);
-		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
-		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
-		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
-		profilePic = new ImageIcon(img2);
-		this.setPreferredSize(dim);
-		initializeComponents();
-		setEventHandlers();
-		setVisible(true);
-	}
+//	public ProfileGUI(Dimension d, String key, int userID)
+//	{
+//		dim = d;
+//	//	this.mainPage = mainPage;
+//		this.key = key;
+//		this.userId=userID;
+//		//this.conn=conn;
+//		//backButton = new JButton("Back");
+//		//this.forBackButton = forBackButton;
+//		//backButton.addActionListener(forBackButton);
+//		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
+//		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
+//		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+//		profilePic = new ImageIcon(img2);
+//		this.setPreferredSize(dim);
+//		initializeComponents();
+//		setEventHandlers();
+//		setVisible(true);
+//	}
 	
 	public ProfileGUI(LoggedInDriverGUI mainPage, Dimension d, String key, int userID)
 	{
@@ -104,13 +111,22 @@ public class ProfileGUI extends JPanel{
 		//this.forBackButton = forBackButton;
 		//backButton.addActionListener(forBackButton);
 		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
-		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
+		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
 		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
 		profilePic = new ImageIcon(img2);
 		this.setPreferredSize(dim);
 		initializeComponents();
 		setEventHandlers();
 		setVisible(true);
+		
+		//Server Side Profile Picture Upload
+		try{
+			s = new Socket("104.236.176.180",5000);
+			oos = new ObjectOutputStream(s.getOutputStream());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
 	}
 	
 	private void initializeComponents()
@@ -141,7 +157,7 @@ public class ProfileGUI extends JPanel{
 		//jfl = new JFileChooser();
 	    jfl.setCurrentDirectory(new File("."));
 	    FileNameExtensionFilter filter = new FileNameExtensionFilter(
-	            "jpg", "jpeg", "png");
+	            "jpg", "jpeg");
 	     	jfl.setFileFilter(filter);
 	    
 	    editEmail.setPreferredSize(new Dimension(dim.width/3, dim.height/16));
@@ -568,10 +584,26 @@ public class ProfileGUI extends JPanel{
 				{
 					//get the file
 					pictureFile = jfl.getSelectedFile();
+					try{
+						BufferedImage buffImage = ImageIO.read(pictureFile);
+						
+						UserPicture thePictureObject = new UserPicture(buffImage, userId);
+						oos.writeObject(thePictureObject);
+						oos.flush();
+						System.out.println("SENT THE FILE");
+						
+					}catch(Exception e1){
+						e1.printStackTrace();
+					}
+					
+					
+					
+					
 					ImageIcon newIcon2 = new ImageIcon(pictureFile.getPath());
 					Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
 					pictureButton.setIcon(new ImageIcon(img2));
 					//profilePic = new ImageIcon(img2);
+					
 				}
 			}
 			
