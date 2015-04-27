@@ -149,7 +149,7 @@ public class ProfileGUI extends JPanel{
 		cancelButton = new JButton("Cancel");
 		pictureButton = new JButton("");
 		pictureButton.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
-		pictureButton.setBorder(new RoundedBorder());
+		//pictureButton.setBorder(new RoundedBorder());
 		pictureButton.setIcon(profilePic);
 		editFirstName = new JTextField();
 		editLastName = new JTextField();
