@@ -100,7 +100,7 @@ public class FirstPageGUI extends JFrame{
 		try {
 			fontUrl = new URL("http://www.WebpagePublicity.com/free-fonts/a/Airmole%20Stripe.ttf");
 			newfont = Font.createFont(Font.TRUETYPE_FONT, fontUrl.openStream());
-			newfont = newfont.deriveFont(Font.PLAIN,26);
+			newfont = newfont.deriveFont(Font.PLAIN,33);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
