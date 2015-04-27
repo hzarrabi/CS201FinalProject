@@ -5,6 +5,10 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -16,6 +20,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -63,6 +68,7 @@ public class IndpMusicPlayer extends JPanel{
 	private JScrollPane jspComments;
 	private JButton enter;
 	private JButton fiveStar;
+	JPanel mainPanel = new JPanel();
 	private JButton fourStar;
 	private JButton threeStar;
 	private JButton twoStar;
@@ -73,6 +79,7 @@ public class IndpMusicPlayer extends JPanel{
 	private ImageIcon emptyStar;
 	private ImageIcon fullStar;
 	protected int myRating;
+	private boolean beingPlayed = false;
 	
 	public IndpMusicPlayer(MusicModel model, Dimension d)
 	{
@@ -107,6 +114,17 @@ public class IndpMusicPlayer extends JPanel{
 		album.setPreferredSize(new Dimension(dim.width/2, dim.width/2));
 		favoritePanel = new JPanel();
 		commentPanel = new JPanel();
+		
+
+		try {
+            URL imageurl = new URL(musicObject.getAlbumPath());
+            BufferedImage img = ImageIO.read(imageurl);
+            ImageIcon icon = new ImageIcon(img);
+            Image ResizedImage = icon.getImage().getScaledInstance(dim.width/2, dim.width/2, Image.SCALE_SMOOTH);
+            album.setIcon(new ImageIcon(ResizedImage));
+         } catch (IOException e) {
+            e.printStackTrace();
+         }
 		
 		ratePanel = new JPanel();
 		comments = new JPanel();
@@ -188,7 +206,6 @@ public class IndpMusicPlayer extends JPanel{
 		bottomPanel.add(pauseButton);
 		//bottomPanel.add(backPageButton);
 		
-		JPanel mainPanel = new JPanel();
 		mainPanel.setBackground(FirstPageGUI.white);
 		mainPanel.setPreferredSize(new Dimension(dim.width, 54*dim.height/93));
 		mainPanel.add(album);
@@ -229,7 +246,46 @@ public class IndpMusicPlayer extends JPanel{
 		comments.setBackground(FirstPageGUI.white);
 		ratePanel.setBackground(FirstPageGUI.white);
 		enter.setPreferredSize(new Dimension(dim.width/5, dim.height/24));
-		
+		String query = "SELECT * from comments_table";
+		try {
+			Statement st = ConnectionClass.conn.createStatement();
+			ResultSet rs = st.executeQuery(query);
+			int columns = rs.getMetaData().getColumnCount();
+			Vector<Integer> userIDVector = new Vector<Integer> ();
+			Vector<String> commentVector = new Vector<String> ();
+			while (rs.next())
+			{
+				int ID = 0;
+				for (int i = 1; i <= columns; i++)
+				{
+					if (i == 1)
+					{
+						userIDVector.add(rs.getInt(i));
+						//System.out.println("ID: " + rs.getInt(i));
+						ID = rs.getInt(i);
+					}
+					if (i == 2)
+					{
+						commentVector.add(rs.getString(i));
+						//System.out.println("Comment: " + rs.getString(i));
+					}
+				}
+				String query1 = "Select username from user_table where iduser_table = " + Integer.toString(ID);
+				Statement st1 = ConnectionClass.conn.createStatement();
+				ResultSet rs1 = st1.executeQuery(query1);
+				int columns1 = rs1.getMetaData().getColumnCount();
+				while (rs1.next())
+				{
+					for (int i = 1;i <=columns1; i++)
+					{
+						System.out.println("Username: " + rs1.getString(i));
+					}
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		enter.setBorder(new RoundedBorder());
 		enter.setBackground(FirstPageGUI.darkGrey);
 		enter.setForeground(FirstPageGUI.white);
@@ -310,63 +366,64 @@ public class IndpMusicPlayer extends JPanel{
 	}
 	
 	private void setEventHandlers(){
-		
-		//plays music
-		playButton.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("yessssss");
-				if (myThread != null)
-					myThread.resume();
-				else
-					myThread = musicObject.playTheSong();
-				try
-				{
-					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
-					ps.setInt(1, LoggedInDriverGUI.userID);
-					ps.setString(2, "listen");
-					java.util.Date utilDate = new java.util.Date();
-				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
-				    ps.setInt(3, musicObject.getMusicID());
-				    ps.setTimestamp(4, sqlDate);
-					ps.executeUpdate();
-					ps.close();
-					//beingPlayed = true;
-					//update number of listens
-					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_playe_count= ? " + "WHERE idmusic_table = ?");
-					ps1.setInt(1, musicObject.getnumberOfPlayCounts()+1);
-					ps1.setInt(2, musicObject.getMusicID());
-					ps1.executeUpdate();
-					ps1.close();
-					musicObject.setnumberOfPlayCounts(musicObject.getnumberOfPlayCounts()+1);
-					listens.setText("Listens: "+musicObject.getnumberOfPlayCounts());
-				} 
-				catch (SQLException e1)
-				{
-					e1.printStackTrace();
-				}
-			}
-		});
-		
-		//pauses music
-		pauseButton.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e){
-				if (myThread != null)
-					myThread.suspend();
-			}
-		});
+		comment.addFocusListener(new FocusListener()
+		{
 
-		//backPageButton.addActionListener(forBackButton);
-		
-		//this sets the favoriting icon appropriately and changes the database depending on whether the 
-		//user favorited or unfavorited the song
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				if(comment.getText().equals("comment"))
+				{
+					//editFirstName.setEchoChar(('*'));
+					comment.setText("");
+				}
+				comment.setForeground(FirstPageGUI.darkGrey);
+			}
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(comment.getText().equals(""))
+				{
+					comment.setText("comment");
+					//editFirstName.setEchoChar((char)0);
+					comment.setForeground(FirstPageGUI.lightGrey);
+				}
+				
+			}
+		});
+		comment.addKeyListener(new KeyListener()
+		{
+			public void keyPressed(KeyEvent e){}
+			public void keyReleased(KeyEvent e){}
+			
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				if(e.getKeyChar() == KeyEvent.VK_ENTER)
+				{
+					try
+					{
+						PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,song_id,comment)" + "VALUES (?, ?, ?)");
+						ps.setInt(1, LoggedInDriverGUI.userID);
+						ps.setInt(2, musicObject.getMusicID());
+						ps.setString(3, comment.getText());
+						ps.executeUpdate();
+						ps.close();
+					}
+					catch (Exception E)
+					{
+						
+					}
+                }       
+			}
+		});
 		favoriteLabel.addActionListener(new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) 
 			{
-				//String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(this.userID);
+
 				try
 				{
 				//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
@@ -379,33 +436,46 @@ public class IndpMusicPlayer extends JPanel{
 				
 				if (favoriteLabel.getIcon() == emptyHeart)
 				{
+					//System.out.println("should be here");
 					favoriteLabel.setIcon(fullHeart);
-					if (!musicObject.getFavoritedBool())
-					{
+			//		if (!musicObject.getFavoritedBool())
+			//		{
 
 							if (!rs.next()) 
 							{
 								try
 								{
+									//inserting into favorited_songs table
 									PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO favorite_songs (user_id, song_id)" + "VALUES (?, ?)");
 									ps.setInt(1, LoggedInDriverGUI.userID);
 									ps.setInt(2, musicObject.getMusicID());
 									ps.executeUpdate();
 									ps.close();
+									//inserting into activity_feed table
+									PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+									ps1.setInt(1, LoggedInDriverGUI.userID);
+									ps1.setString(2, "favorite");
+									java.util.Date utilDate = new java.util.Date();
+								    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+								    ps1.setInt(3, musicObject.getMusicID());
+								    ps1.setTimestamp(4, sqlDate);
+									ps1.executeUpdate();
+									ps1.close();
 								} 
 								catch (SQLException e1)
 								{
 									e1.printStackTrace();
 								}
 							}			
-						musicObject.setFavoritedBool(true);
-					}
+				//		musicObject.setFavoritedBool(true);
+				//	}
 				}
 				else
 				{
+					//System.out.println("should not be here");
 					favoriteLabel.setIcon(emptyHeart);
-					if (musicObject.getFavoritedBool())
-					{
+			//		if (musicObject.getFavoritedBool())
+			//		{
 							if (rs.next()) 
 							{
 								try
@@ -422,8 +492,8 @@ public class IndpMusicPlayer extends JPanel{
 								}
 								
 							}
-						musicObject.setFavoritedBool(false);
-					}
+				//		musicObject.setFavoritedBool(false);
+				//	}
 				}
 				}
 				catch (SQLException e1)
@@ -433,8 +503,6 @@ public class IndpMusicPlayer extends JPanel{
 			}
 			
 		});
-		
-		//favoriteButton is on my custom tabbedPane. for switching to the favorite panel
 		favoriteButton.addActionListener(new ActionListener(){
 
 			@Override
@@ -447,11 +515,11 @@ public class IndpMusicPlayer extends JPanel{
 	            tabPanelMain.repaint();
 	            try
 				{
-					ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+					//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
 					
 					Statement st = ConnectionClass.conn.createStatement();
 					//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-					String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID);
+					String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) + " AND song_id = " + Integer.toString(musicObject.getMusicID());
 					ResultSet rs = st.executeQuery(queryCheck);
 					int columns = rs.getMetaData().getColumnCount();
 					if (rs.next())
@@ -471,7 +539,6 @@ public class IndpMusicPlayer extends JPanel{
 			}
 		});
 		
-		//rateButton is on my custom tabbedPane. for switching to the rate panel
 		rateButton.addActionListener(new ActionListener(){
 
 			@Override
@@ -479,13 +546,13 @@ public class IndpMusicPlayer extends JPanel{
 				removePanel();
 				currentPanel = 1;
 				tabPanelMain.add(ratePanel, BorderLayout.SOUTH);
+				//mainPanel.add(musicPlayerTopListened);
 				tabPanelMain.revalidate();
 	            tabPanelMain.repaint();
 				
 			}
 		});
 		
-		//commentButton is on my custom tabbedPane. for switching to the comment panel
 		commentButton.addActionListener(new ActionListener(){
 
 			@Override
@@ -493,14 +560,13 @@ public class IndpMusicPlayer extends JPanel{
 				removePanel();
 				currentPanel = 0;
 				tabPanelMain.add(commentPanel);
+				//mainPanel.add(musicPlayerTopListened);
 				tabPanelMain.revalidate();
 	            tabPanelMain.repaint();
 				
 			}
 		});
 		
-		//the following actionlisteners are for setting the rating icons appropriately determined
-		//by the rating the user gives the song
 		oneStar.addActionListener(new ActionListener(){
 
 			@Override
@@ -511,6 +577,35 @@ public class IndpMusicPlayer extends JPanel{
 				fourStar.setIcon(emptyStar);
 				fiveStar.setIcon(emptyStar);
 				myRating = 1;
+				
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "rate 1");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+1);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+1);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -525,12 +620,40 @@ public class IndpMusicPlayer extends JPanel{
 				fourStar.setIcon(emptyStar);
 				fiveStar.setIcon(emptyStar);
 				myRating = 2;
+				
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "rate 2");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+2);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+2);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
 		
 		threeStar.addActionListener(new ActionListener(){
-
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -540,6 +663,35 @@ public class IndpMusicPlayer extends JPanel{
 				fourStar.setIcon(emptyStar);
 				fiveStar.setIcon(emptyStar);
 				myRating = 3;
+				
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "rate 3");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+3);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+3);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -554,6 +706,35 @@ public class IndpMusicPlayer extends JPanel{
 				fourStar.setIcon(fullStar);
 				fiveStar.setIcon(emptyStar);
 				myRating = 4;
+				
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "rate 4");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+4);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+4);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -568,12 +749,111 @@ public class IndpMusicPlayer extends JPanel{
 				fourStar.setIcon(fullStar);
 				fiveStar.setIcon(fullStar);
 				myRating = 5;
+				
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, "rate 5");
+					java.util.Date utilDate = new java.util.Date();
+				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+				    ps.setInt(3, musicObject.getMusicID());
+				    ps.setTimestamp(4, sqlDate);
+					ps.executeUpdate();
+					ps.close();
+					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+5);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+5);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 			
 		});
 		
+		playButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//musicObject.resumeSong();
+				if (myThread == null){
+					//LEAP MOTION!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+					myThread = musicObject.playTheSong();
+					Sample leap = new Sample();
+					leap.start();
+					if (beingPlayed) {}
+					else {
+						try
+						{
+							PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+							ps.setInt(1, LoggedInDriverGUI.userID);
+							ps.setString(2, "listen");
+							java.util.Date utilDate = new java.util.Date();
+						    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+						    ps.setInt(3, musicObject.getMusicID());
+						    ps.setTimestamp(4, sqlDate);
+							ps.executeUpdate();
+							ps.close();
+							beingPlayed = true;
+							//update number of listens
+							PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_playe_count= ? " + "WHERE idmusic_table = ?");
+							ps1.setInt(1, musicObject.getnumberOfPlayCounts()+1);
+							ps1.setInt(2, musicObject.getMusicID());
+							ps1.executeUpdate();
+							ps1.close();
+							musicObject.setnumberOfPlayCounts(musicObject.getnumberOfPlayCounts()+1);
+							listens.setText("Listens: "+musicObject.getnumberOfPlayCounts());
+						} 
+						catch (SQLException e1)
+						{
+							e1.printStackTrace();
+						}
+					}
+				}
+				else
+					myThread.resume();
+			}
+		});
+		
+		pauseButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				if (myThread != null)
+					myThread.suspend();
+			}
+		});
+		
+		
+		
+		enter.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,song_id,comment)" + "VALUES (?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setInt(2, musicObject.getMusicID());
+					ps.setString(3, comment.getText());
+					ps.executeUpdate();
+					ps.close();
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
-	
 	//when a song is changed, this function resets all the information to display the info
 	//of this new song
 	private void resetStuff()
@@ -584,7 +864,7 @@ public class IndpMusicPlayer extends JPanel{
 			URL imageurl = new URL(musicObject.getAlbumPath());
 			BufferedImage img = ImageIO.read(imageurl);
 			ImageIcon icon = new ImageIcon(img);
-			Image ResizedImage = icon.getImage().getScaledInstance(dim.width/2, dim.width/2, Image.SCALE_SMOOTH);
+			Image ResizedImage = icon.getImage().getScaledInstance(3*dim.width/4, 3*dim.width/4, Image.SCALE_SMOOTH);
 			album.setIcon(new ImageIcon(ResizedImage));
 		} catch (IOException e1)
 		{
@@ -595,14 +875,39 @@ public class IndpMusicPlayer extends JPanel{
 		threeStar.setIcon(emptyStar);
 		fourStar.setIcon(emptyStar);
 		fiveStar.setIcon(emptyStar);
-		favoriteLabel.setIcon(emptyHeart);
+		//favoriteLabel.setIcon(emptyHeart);
+		
+		try
+		{
+			//ConnectionClass.conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
+			
+			Statement st = ConnectionClass.conn.createStatement();
+			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+			String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) + " AND song_id = " + Integer.toString(musicObject.getMusicID());
+			ResultSet rs = st.executeQuery(queryCheck);
+			int columns = rs.getMetaData().getColumnCount();
+			if (rs.next())
+			{
+				favoriteLabel.setIcon(fullHeart);
+			}
+			else
+			{
+				favoriteLabel.setIcon(emptyHeart);
+			}
+		}
+		catch (SQLException e1)
+		{
+			e1.printStackTrace();
+		}
+		
 		double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
 		int listens1 = musicObject.getnumberOfPlayCounts();
 		listens.setText("#Listens: "+listens1);
 		setRating(rate);
+		mainPanel.revalidate();
+		mainPanel.repaint();
 		
 	}
-	
 	//sets the star icons for the overall rating of the song
 	private void setRating(double rate)
 	{
