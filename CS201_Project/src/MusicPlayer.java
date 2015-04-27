@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -14,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -135,9 +137,10 @@ public class MusicPlayer extends JPanel{
 		
 		ratePanel = new JPanel();
 		comments = new JPanel();
+		comments.setBackground(Color.BLACK);
 		comment = new JTextField("comment");
 		enter = new JButton("Enter");
-		jspComments = new JScrollPane(comment);
+		jspComments = new JScrollPane(comments);
 		ratingButtons = new ArrayList<JButton>();
 		setPreferredSize(new Dimension(dim.width, dim.height));
 		
@@ -283,6 +286,39 @@ public class MusicPlayer extends JPanel{
 		favoritePanel.setBackground(FirstPageGUI.white);
 		commentPanel.setBackground(FirstPageGUI.white);
 		comments.setBackground(FirstPageGUI.white);
+		String query = "SELECT * from comments_table";
+		try {
+			Statement st = ConnectionClass.conn.createStatement();
+			ResultSet rs = st.executeQuery(query);
+			int columns = rs.getMetaData().getColumnCount();
+			Vector<Integer> userIDVector = new Vector<Integer> ();
+			Vector<String> commentVector = new Vector<String> ();
+			while (rs.next())
+			{
+				for (int i = 1; i <= columns; i++)
+				{
+					if (i == 1)
+					{
+						userIDVector.add(rs.getInt(i));
+						System.out.println("ID: " + rs.getInt(i));
+					}
+					if (i == 2)
+					{
+						commentVector.add(rs.getString(i));
+						System.out.println("Comment: " + rs.getString(i));
+					}
+				}
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+		
+		
+		
+		
 		ratePanel.setBackground(FirstPageGUI.white);
 		enter.setPreferredSize(new Dimension(dim.width/5, 3*dim.height/93));
 		
@@ -542,6 +578,17 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+1);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+1);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
 				} 
 				catch (SQLException e1)
 				{
@@ -574,6 +621,17 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+2);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+2);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
 				} 
 				catch (SQLException e1)
 				{
@@ -606,6 +664,17 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+3);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+3);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
 				} 
 				catch (SQLException e1)
 				{
@@ -638,6 +707,17 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+4);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+4);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
 				} 
 				catch (SQLException e1)
 				{
@@ -670,6 +750,17 @@ public class MusicPlayer extends JPanel{
 					ps.executeUpdate();
 					ps.close();
 					beingPlayed = true;
+					//update ratings
+					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_of_ratings= ?, rating_sum= ? " + "WHERE idmusic_table = ?");
+					ps1.setInt(1, musicObject.getNumberOfRatings()+1);
+					ps1.setInt(2, musicObject.getRatingSum()+5);
+					ps1.setInt(3, musicObject.getMusicID());
+					ps1.executeUpdate();
+					ps1.close();
+					musicObject.setNumberOfRatings(musicObject.getNumberOfRatings()+1);
+					musicObject.setRatingSum(musicObject.getRatingSum()+5);
+					double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
+					setRating(rate);
 				} 
 				catch (SQLException e1)
 				{
@@ -822,6 +913,24 @@ public class MusicPlayer extends JPanel{
 				}
 			}
 		});	
+		enter.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,song_id,comment)" + "VALUES (?, ?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setInt(2, musicObject.getMusicID());
+					ps.setString(3, comment.getText());
+					ps.executeUpdate();
+					ps.close();
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 	
 	public void changeSong(MusicModel m, int currentSg)
@@ -985,7 +1094,7 @@ public class MusicPlayer extends JPanel{
 		comments = new JPanel();
 		comment = new JTextField("comment");
 		enter = new JButton("Enter");
-		jspComments = new JScrollPane(comment);
+		jspComments = new JScrollPane(comments);
 		ratingButtons = new ArrayList<JButton>();
 		setPreferredSize(new Dimension(dim.width, dim.height));
 		

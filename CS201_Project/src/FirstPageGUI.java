@@ -98,9 +98,9 @@ public class FirstPageGUI extends JFrame{
 		topColor.setBackground(color);
 		URL fontUrl;
 		try {
-			fontUrl = new URL("http://www.WebpagePublicity.com/free-fonts/a/Airmole%20Stripe.ttf");
+			fontUrl = new URL("http://www.webpagepublicity.com/free-fonts/a/Anagram.ttf");
 			newfont = Font.createFont(Font.TRUETYPE_FONT, fontUrl.openStream());
-			newfont = newfont.deriveFont(Font.PLAIN,33);
+			newfont = newfont.deriveFont(Font.PLAIN,36);
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
