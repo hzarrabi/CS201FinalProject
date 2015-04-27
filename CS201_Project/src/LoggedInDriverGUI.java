@@ -142,12 +142,12 @@ public class LoggedInDriverGUI extends JFrame{
 		currentJpanel = 0;
 		myColor = FirstPageGUI.color;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		fg = new FeedGUI(this, new Dimension(dim.width/3, dim.height));
+		fg = new FeedGUI(this, new Dimension(dim.width/3, dim.height), new Dimension(dim.width/3, 31*dim.height/40));
 		testField.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
 		testField.setEditable(true);
 		mainPanel = new JPanel();
 		mainPanel.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
-		mainPanel.setBackground(FirstPageGUI.color);
+		//mainPanel.setBackground(FirstPageGUI.color);
 		trgButton = new JButton();
 		tlgButton = new JButton();
 		mpgButton = new JButton();
@@ -225,7 +225,7 @@ public class LoggedInDriverGUI extends JFrame{
 		bottomColor.add(logout);
 		logout.setOpaque(true);
 		//bottomColor.add(notifications);
-		mainPanel.setBackground(FirstPageGUI.white);
+		mainPanel.setBackground(FirstPageGUI.color);
 	}
 	
 	public void addCurrent(JPanel currentP)

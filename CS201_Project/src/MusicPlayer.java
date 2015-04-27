@@ -304,20 +304,32 @@ public class MusicPlayer extends JPanel{
 			Vector<String> commentVector = new Vector<String> ();
 			while (rs.next())
 			{
+				int ID = 0;
 				for (int i = 1; i <= columns; i++)
 				{
 					if (i == 1)
 					{
 						userIDVector.add(rs.getInt(i));
-						System.out.println("ID: " + rs.getInt(i));
+						//System.out.println("ID: " + rs.getInt(i));
+						ID = rs.getInt(i);
 					}
 					if (i == 2)
 					{
 						commentVector.add(rs.getString(i));
-						System.out.println("Comment: " + rs.getString(i));
+						//System.out.println("Comment: " + rs.getString(i));
 					}
 				}
-				
+				String query1 = "Select username from user_table where iduser_table = " + Integer.toString(ID);
+				Statement st1 = ConnectionClass.conn.createStatement();
+				ResultSet rs1 = st1.executeQuery(query1);
+				int columns1 = rs1.getMetaData().getColumnCount();
+				while (rs1.next())
+				{
+					for (int i = 1;i <=columns1; i++)
+					{
+						System.out.println("Username: " + rs1.getString(i));
+					}
+				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
