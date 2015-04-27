@@ -6,6 +6,10 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -289,7 +293,7 @@ public class MusicPlayer extends JPanel{
 		commentPanel = new JPanel();
 		commentPanel.setPreferredSize(new Dimension(dim.width, 21*dim.height/93));
 		ratePanel.setPreferredSize(new Dimension(dim.width,21*dim.height/93));
-		comments.setPreferredSize(new Dimension(dim.width, 15*dim.height/93));
+		comments.setPreferredSize(new Dimension(dim.width, dim.height*5));
 		comment.setPreferredSize(new Dimension(3*dim.width/5, 3*dim.height/93));
 		jspComments.setPreferredSize(new Dimension(dim.width, 15*dim.height/93));
 		//comments.setBackground(FirstPageGUI.darkGrey);
@@ -429,6 +433,71 @@ public class MusicPlayer extends JPanel{
 		add(tabPanel, BorderLayout.SOUTH);
 	}
 	private void setEventHandlers(){
+		comment.addFocusListener(new FocusListener()
+		{
+
+			@Override
+			public void focusGained(FocusEvent e)
+			{
+				if(comment.getText().equals("comment"))
+				{
+					//editFirstName.setEchoChar(('*'));
+					comment.setText("");
+				}
+				comment.setForeground(FirstPageGUI.darkGrey);
+			}
+
+			@Override
+			public void focusLost(FocusEvent e)
+			{
+				if(comment.getText().equals(""))
+				{
+					comment.setText("comment");
+					//editFirstName.setEchoChar((char)0);
+					comment.setForeground(FirstPageGUI.lightGrey);
+				}
+				
+			}
+		});
+		
+		comment.addKeyListener(new KeyListener()
+		{
+			public void keyPressed(KeyEvent e){}
+			public void keyReleased(KeyEvent e){}
+			
+			@Override
+			public void keyTyped(KeyEvent e)
+			{
+				if(e.getKeyChar() == KeyEvent.VK_ENTER)
+				{
+					try
+					{
+						PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,song_id,comment)" + "VALUES (?, ?, ?)");
+						ps.setInt(1, LoggedInDriverGUI.userID);
+						ps.setInt(2, musicObject.getMusicID());
+						ps.setString(3, comment.getText());
+						ps.executeUpdate();
+						ps.close();	
+					}
+					catch (Exception E)
+					{
+						
+					}
+					JPanel outer = new JPanel();
+					outer.setLayout(new FlowLayout(FlowLayout.LEFT));
+					outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
+					JLabel name = new JLabel();
+					name.setPreferredSize(new Dimension(dim.width/4, 9*dim.height/200));
+					name.setText(LoggedInDriverGUI.username);
+					JLabel commentLabel = new JLabel();
+					commentLabel.setPreferredSize(new Dimension(2*dim.width/3, 9*dim.height/200));
+					commentLabel.setText(comment.getText());
+					outer.add(name);
+					outer.add(commentLabel);
+					comments.add(outer);
+                }       
+			}
+		});
 		favoriteLabel.addActionListener(new ActionListener(){
 
 			@Override
@@ -953,6 +1022,19 @@ public class MusicPlayer extends JPanel{
 				{
 					e1.printStackTrace();
 				}
+				
+				JPanel outer = new JPanel();
+				outer.setLayout(new FlowLayout(FlowLayout.LEFT));
+				outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
+				JLabel name = new JLabel();
+				name.setPreferredSize(new Dimension(dim.width/4, 9*dim.height/200));
+				name.setText(LoggedInDriverGUI.username);
+				JLabel commentLabel = new JLabel();
+				commentLabel.setPreferredSize(new Dimension(2*dim.width/3, 9*dim.height/200));
+				commentLabel.setText(comment.getText());
+				outer.add(name);
+				outer.add(commentLabel);
+				comments.add(outer);
 			}
 		});
 	}
