@@ -147,7 +147,7 @@ public class LoggedInDriverGUI extends JFrame{
 		testField.setEditable(true);
 		mainPanel = new JPanel();
 		mainPanel.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
-		mainPanel.setBackground(FirstPageGUI.color);
+		//mainPanel.setBackground(FirstPageGUI.color);
 		trgButton = new JButton();
 		tlgButton = new JButton();
 		mpgButton = new JButton();
@@ -225,7 +225,7 @@ public class LoggedInDriverGUI extends JFrame{
 		bottomColor.add(logout);
 		logout.setOpaque(true);
 		//bottomColor.add(notifications);
-		mainPanel.setBackground(FirstPageGUI.white);
+		mainPanel.setBackground(FirstPageGUI.color);
 	}
 	
 	public void addCurrent(JPanel currentP)
