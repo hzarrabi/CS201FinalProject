@@ -514,7 +514,7 @@ public class CreateUserGUI extends JFrame{
 							System.out.println("the id is "+rs1.getInt("iduser_table"));
 							new LoggedInDriverGUI(rs1.getInt("iduser_table"));
 							stat.close();
-							conn.close();
+							//conn.close();
 							System.out.println("new user added!");
 							dispose();
 			            }						 
