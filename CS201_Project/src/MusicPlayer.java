@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
@@ -285,6 +286,36 @@ public class MusicPlayer extends JPanel{
 		favoritePanel.setBackground(FirstPageGUI.white);
 		commentPanel.setBackground(FirstPageGUI.white);
 		comments.setBackground(FirstPageGUI.white);
+		String query = "SELECT * from comments_table";
+		try {
+			Statement st = ConnectionClass.conn.createStatement();
+			ResultSet rs = st.executeQuery(query);
+			int columns = rs.getMetaData().getColumnCount();
+			Vector<Integer> userIDVector = new Vector<Integer> ();
+			Vector<String> commentVector = new Vector<String> ();
+			while (rs.next())
+			{
+				for (int i = 1; i <= columns; i++)
+				{
+					if (i == 1)
+					{
+						userIDVector.add(rs.getInt(i));
+						System.out.println("ID: " + rs.getInt(i));
+					}
+					if (i == 2)
+					{
+						commentVector.add(rs.getString(i));
+						System.out.println("Comment: " + rs.getString(i));
+					}
+				}
+				
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
+		
 		
 		
 		
@@ -887,9 +918,10 @@ public class MusicPlayer extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				try
 				{
-					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,comment)" + "VALUES (?, ?)");
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,song_id,comment)" + "VALUES (?, ?, ?)");
 					ps.setInt(1, LoggedInDriverGUI.userID);
-					ps.setString(2, comment.getText());
+					ps.setInt(2, musicObject.getMusicID());
+					ps.setString(3, comment.getText());
 					ps.executeUpdate();
 					ps.close();
 				} 
