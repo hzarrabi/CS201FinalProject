@@ -56,7 +56,7 @@ public class LoggedInDriverGUI extends JFrame{
 	private JButton searchButton;
 	private int currentJpanel;
 	private Color myColor;
-	
+	static String username;
 	private JPanel currentGUI;
 	private JPanel previousGUI;
 	
@@ -200,7 +200,7 @@ public class LoggedInDriverGUI extends JFrame{
 		tlg = new TopListenedGUI(this, new Dimension(6*dim.width/96, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40));
 		mpg = new ProfileGUI(this, new Dimension(dim.width/3, 31*dim.height/40), "current user", userID);
 		searchGUI = new SearchGUI(new Dimension(dim.width/3, 31*dim.height/40), userID, ConnectionClass.conn, this);
-
+		username = mpg.getName();
 		musicPlayerTopRated = trg.initPlayer();
 		musicPlayerTopListened = tlg.initPlayer();
 
