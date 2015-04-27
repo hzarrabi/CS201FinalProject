@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -205,6 +206,7 @@ public class SearchGUI extends JPanel {
 					Integer userId2 = rs.getInt(1);
 					String userFirstName = rs.getString(2);
 					String userLastName = rs.getString(3);
+					String profilePath = rs.getString(8);
 					JButton name = new JButton(userFirstName + " "+userLastName);
 					Statement st1 = ConnectionClass.conn.createStatement();
 					String queryCheck1 = "SELECT user FROM friend_relationship WHERE user_being_followed = " + userId2 + " AND user = "+ LoggedInDriverGUI.userID;
@@ -229,9 +231,30 @@ public class SearchGUI extends JPanel {
 					
 					//name.addActionListener(new ActionListenerNewPage(newProfile));
 					JLabel profileImage = new JLabel("");
-					ImageIcon icon = new ImageIcon("data/MomAndMoose.jpg");
-					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
-					profileImage.setIcon(new ImageIcon(ResizedImage));
+					if (profilePath == null)
+					{
+						//System.out.println("here");
+						ImageIcon icon = new ImageIcon("data/headphone_default.jpg");
+						Image ResizedImage = icon.getImage().getScaledInstance(dim.width/15, dim.width/15, Image.SCALE_SMOOTH);
+						profileImage.setIcon(new ImageIcon(ResizedImage));
+					}
+					else
+					{
+						try
+						{
+							URL imageurl = new URL(profilePath);
+							BufferedImage img = ImageIO.read(imageurl);
+							ImageIcon icon = new ImageIcon(img);
+							Image ResizedImage = icon.getImage().getScaledInstance(dim.width/15, dim.width/15, Image.SCALE_SMOOTH);
+							profileImage.setIcon(new ImageIcon(ResizedImage));
+						} catch (IOException e1)
+						{
+							
+						}
+					}
+//					ImageIcon icon = new ImageIcon("data/MomAndMoose.jpg");
+//					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
+//					profileImage.setIcon(new ImageIcon(ResizedImage));
 					JPanel temp = new JPanel();
 					temp.setPreferredSize(new Dimension(dim.width, dim.height/13));
 					temp.add(profileImage);
@@ -279,8 +302,7 @@ public class SearchGUI extends JPanel {
 //				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
 				
 				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
-				IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, dim);
-				name.addActionListener(new ActionListenerNewPage(player));
+				name.addActionListener(new ActionListenerNewPage(MusicObject, dim));
 				JLabel profileImage = new JLabel("");
 				try
 				{
@@ -336,8 +358,7 @@ public class SearchGUI extends JPanel {
 //				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
 //				
 				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
-				IndpMusicPlayer player = new IndpMusicPlayer(MusicObject, dim);
-				name.addActionListener(new ActionListenerNewPage(player));
+				name.addActionListener(new ActionListenerNewPage(MusicObject, dim));
 				JLabel profileImage = new JLabel("");
 				try
 				{
@@ -435,14 +456,17 @@ public class SearchGUI extends JPanel {
 //	}
 	
 	class ActionListenerNewPage implements ActionListener{
-		private JPanel myModel;
-		public ActionListenerNewPage(JPanel player)
+		private MusicModel model;
+		private Dimension dim;
+		public ActionListenerNewPage(MusicModel model, Dimension dim)
 		{
-			myModel = player;
+			this.model = model;
+			this.dim = dim;
 		}
 		public void actionPerformed(ActionEvent e) {
 				//IndpMusicPlayer player = new IndpMusicPlayer
-				mainPage.addCurrent(myModel);
+			IndpMusicPlayer player = new IndpMusicPlayer(model, dim);
+				mainPage.addCurrent(player);
 			
 		}
 		

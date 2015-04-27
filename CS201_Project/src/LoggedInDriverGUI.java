@@ -142,7 +142,7 @@ public class LoggedInDriverGUI extends JFrame{
 		currentJpanel = 0;
 		myColor = FirstPageGUI.color;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		fg = new FeedGUI(this, new Dimension(dim.width/3, dim.height));
+		fg = new FeedGUI(this, new Dimension(dim.width/3, dim.height), new Dimension(dim.width/3, 31*dim.height/40));
 		testField.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
 		testField.setEditable(true);
 		mainPanel = new JPanel();

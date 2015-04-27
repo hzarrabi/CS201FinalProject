@@ -37,10 +37,12 @@ public class FeedGUI extends JPanel{
 	private ImageIcon fullStar;
 	private ImageIcon emptyStar;
 	private ImageIcon clockIcon;
-	public FeedGUI(LoggedInDriverGUI lidg, Dimension d)
+	private Dimension forProfile;
+	public FeedGUI(LoggedInDriverGUI lidg, Dimension d, Dimension forProfile)
 	{
 		mainPage = lidg;
 		dim = d;
+		this.forProfile = forProfile;
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		activities = new ArrayList<Activity>();
 		//setSize(dim);
@@ -108,13 +110,13 @@ public class FeedGUI extends JPanel{
 		description.setForeground(FirstPageGUI.white);
 		MusicModel model = null;
 		String username = "";
-		
+		String profilePath = "";
 		//System.out.println(act.getSongID());
 		try
 		{
 			Statement st = ConnectionClass.conn.createStatement();
 			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-			String queryCheck = "SELECT first_name, last_name FROM user_table WHERE iduser_table = " + act.getUserID();
+			String queryCheck = "SELECT first_name, last_name, profile_picture FROM user_table WHERE iduser_table = " + act.getUserID();
 			System.out.println(act.getUserID());
 			ResultSet rs = st.executeQuery(queryCheck);
 			//int columns = rs.getMetaData().getColumnCount();
@@ -122,6 +124,7 @@ public class FeedGUI extends JPanel{
 			{
 				System.out.println("is this one working?");
 				username = rs.getString(1) + " " + rs.getString(2);
+				profilePath = rs.getString(3);
 			}
 			st.close();
 			
@@ -168,12 +171,34 @@ public class FeedGUI extends JPanel{
 		{
 			
 		}
-		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
-		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/15, dim.width/15, Image.SCALE_SMOOTH);
-		userButton.setIcon(new ImageIcon(img2));
-		userButton.setOpaque(false);
-		userButton.setContentAreaFilled(false);
-		userButton.setBorderPainted(false);
+		
+		if (profilePath == null)
+		{
+			//System.out.println("here");
+			ImageIcon icon = new ImageIcon("data/headphone_default.jpg");
+			Image ResizedImage = icon.getImage().getScaledInstance(dim.width/15, dim.width/15, Image.SCALE_SMOOTH);
+			userButton.setIcon(new ImageIcon(ResizedImage));
+			userButton.setOpaque(false);
+			userButton.setContentAreaFilled(false);
+			userButton.setBorderPainted(false);
+		}
+		else
+		{
+			try
+			{
+				URL imageurl = new URL(profilePath);
+				BufferedImage img = ImageIO.read(imageurl);
+				ImageIcon icon = new ImageIcon(img);
+				Image ResizedImage = icon.getImage().getScaledInstance(dim.width/15, dim.width/15, Image.SCALE_SMOOTH);
+				userButton.setIcon(new ImageIcon(ResizedImage));
+				userButton.setOpaque(false);
+				userButton.setContentAreaFilled(false);
+				userButton.setBorderPainted(false);
+			} catch (IOException e1)
+			{
+				
+			}
+		}
 		userButton.addActionListener(new ActionListenerProfile(act.getUserID(), "friends"));
 		//timeAndUser = new JPanel();
 		//songAndInfo = new JPanel();
@@ -271,7 +296,7 @@ public class FeedGUI extends JPanel{
 		//Box.createGlue();
 		rateAndFavorite.add(favoriteButton);
 		favoriteButton.addActionListener(new FavoriteActionListener(model, favoriteButton));
-		
+		songButton.addActionListener(new ActionListenerSong(model, forProfile));
 		oneStar.addActionListener(new StarActionListener(oneStar, twoStar, threeStar, fourStar, fiveStar, 1, model));
 		twoStar.addActionListener(new StarActionListener(oneStar, twoStar, threeStar, fourStar, fiveStar, 2, model));
 		threeStar.addActionListener(new StarActionListener(oneStar, twoStar, threeStar, fourStar, fiveStar, 3, model));
@@ -355,7 +380,7 @@ public class FeedGUI extends JPanel{
 			//System.out.println("in actionlistener");
 			//String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ id+" AND user_being_followed = "+id+")";
 			
-			ProfileGUI newProfile = new ProfileGUI(mainPage, dim, relation, id);
+			ProfileGUI newProfile = new ProfileGUI(mainPage,forProfile, relation, id);
 			mainPage.addCurrent(newProfile);
 		}
 		
@@ -532,6 +557,23 @@ class StarActionListener implements ActionListener{
 			{
 				e1.printStackTrace();
 			}
+			
+		}
+		
+	}
+	
+	class ActionListenerSong implements ActionListener{
+		private MusicModel model;
+		private Dimension dim;
+		public ActionListenerSong(MusicModel model, Dimension dim)
+		{
+			this.model = model;
+			this.dim = dim;
+		}
+		public void actionPerformed(ActionEvent e) {
+				//IndpMusicPlayer player = new IndpMusicPlayer
+			IndpMusicPlayer player = new IndpMusicPlayer(model, dim);
+				mainPage.addCurrent(player);
 			
 		}
 		

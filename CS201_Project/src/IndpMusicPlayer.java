@@ -74,17 +74,17 @@ public class IndpMusicPlayer extends JPanel{
 	private ImageIcon fullStar;
 	protected int myRating;
 	
-	public IndpMusicPlayer(String songTitle)
-	{
-		songName = songTitle;
-		musicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(songName);
-		//backPageButton = new JButton();
-		initializeComponents();
-		createUserGUI();
-		setEventHandlers();
-		setBounds(0,0,dim.width/4, dim.height);
-		setVisible(true);
-	}
+//	public IndpMusicPlayer(String songTitle)
+//	{
+//		songName = songTitle;
+//		musicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(songName);
+//		//backPageButton = new JButton();
+//		initializeComponents();
+//		createUserGUI();
+//		setEventHandlers();
+//		setBounds(0,0,dim.width/4, dim.height);
+//		setVisible(true);
+//	}
 	
 	//constructor that will be called from searchGUI, profileGUI and feedGUI
 	public IndpMusicPlayer(MusicModel model, Dimension d)
