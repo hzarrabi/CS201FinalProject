@@ -1,6 +1,8 @@
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -23,9 +25,10 @@ import javax.swing.JPanel;
 public class FeedGUI extends JPanel{
 	private Dimension dim;
 	private ArrayList<Activity> activities;
-	public FeedGUI()
+	private LoggedInDriverGUI mainPage;
+	public FeedGUI(LoggedInDriverGUI lidg)
 	{
-		
+		mainPage = lidg;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		activities = new ArrayList<Activity>();
@@ -125,6 +128,7 @@ public class FeedGUI extends JPanel{
 		ImageIcon newIcon2 = new ImageIcon("data/MomAndMoose.jpg");
 		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/10, dim.width/20, Image.SCALE_SMOOTH);
 		userButton.setIcon(new ImageIcon(img2));
+		userButton.addActionListener(new ActionListenerProfile(LoggedInDriverGUI.userID, "friends"));
 		
 		JPanel song = new JPanel();
 		song.setPreferredSize(new Dimension(dim.width/3, dim.height/3));
@@ -201,5 +205,25 @@ public class FeedGUI extends JPanel{
 		}
 		catch (Exception e) {}
 	}
+	
+	class ActionListenerProfile implements ActionListener{
+		private int id;
+		private String relation;
+		public ActionListenerProfile(int ID, String relationship)
+		{
+			relation = relationship;
+			id = ID;
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//System.out.println("in actionlistener");
+			//String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ id+" AND user_being_followed = "+id+")";
+			
+			ProfileGUI newProfile = new ProfileGUI(mainPage, dim, relation, id);
+			mainPage.addCurrent(newProfile);
+		}
+		
+	}
 
 }
+
