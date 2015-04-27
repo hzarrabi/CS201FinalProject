@@ -10,8 +10,10 @@ import java.awt.event.FocusListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -81,6 +83,7 @@ public class ProfileGUI extends JPanel{
 	//socket for server
 	private Socket s;
 	private ObjectOutputStream oos;
+	private ObjectInputStream ois;
 	
 //	public ProfileGUI(Dimension d, String key, int userID)
 //	{
@@ -112,9 +115,51 @@ public class ProfileGUI extends JPanel{
 		//this.forBackButton = forBackButton;
 		//backButton.addActionListener(forBackButton);
 		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
-		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
-		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
-		profilePic = new ImageIcon(img2);
+		
+		try{
+	        String sql="select profile_picture from user_table where iduser_table=?";
+	        PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement(sql);
+	        ps.setInt(1,userId);
+	        //ps.setInt(2,userId);
+	        ResultSet RS = ps.executeQuery();
+	        int columns = RS.getMetaData().getColumnCount();
+	        String finalPathToPicture = null;
+	        while (RS.next())
+	        {
+	    
+	        	for (int i = 1; i <= columns; i++)
+	        	{
+	        		//System.out.println(RS.getString(i) + "GOOZ");
+	        		finalPathToPicture = RS.getString(i);
+	        	}
+	        }
+	        if(!finalPathToPicture.equals(null)){
+	        	URL imageurl = new URL(finalPathToPicture);
+	            BufferedImage img = ImageIO.read(imageurl);
+	    		ImageIcon newIcon2 = new ImageIcon(img);
+	    		System.out.println(finalPathToPicture+"GOOOOOOOOZE");
+	    		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+	    		profilePic = new ImageIcon(img2);
+	        }
+	        
+	        else{
+	    		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
+	    		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+	    		profilePic = new ImageIcon(img2);
+	        }
+	        
+
+		}
+		catch(Exception e4){
+			//e4.printStackTrace();
+    		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
+    		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+    		profilePic = new ImageIcon(img2);
+
+		}
+		
+		
+
 		this.setPreferredSize(dim);
 		initializeComponents();
 		setEventHandlers();
@@ -594,8 +639,17 @@ public class ProfileGUI extends JPanel{
 						UserPicture thePictureObject = new UserPicture(buffImage, userId);
 						oos.writeObject(thePictureObject);
 						oos.flush();
+						ois = new ObjectInputStream(s.getInputStream());
+						String AnswerFromServer = (String)ois.readObject();
+						System.out.println(AnswerFromServer);
 						System.out.println("SENT THE FILE");
-						
+						if(AnswerFromServer.equals("Yes")){
+		                    String sql="update user_table set profile_picture=? where iduser_table=?";
+		                    PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement(sql);
+		                    ps.setString(1,"http://104.236.176.180/CS201/profile_pictures/"+userId+".jpg");
+		                    ps.setInt(2,userId);
+		                    ps.execute();
+						}
 					}catch(Exception e1){
 						e1.printStackTrace();
 					}
