@@ -108,6 +108,7 @@ public class LoggedInDriverGUI extends JFrame{
 			    options,
 			    options[0]);
 				if (n==0) {
+					MusicPlayer.stopThread();
 					new FirstPageGUI();
 					LoggedInDriverGUI.this.dispose();
 				}
@@ -397,6 +398,7 @@ public class LoggedInDriverGUI extends JFrame{
 			    options,
 			    options[0]);
 				if (n==0) {
+					MusicPlayer.stopThread();
 					dispose();
 					new FirstPageGUI();	
 				}

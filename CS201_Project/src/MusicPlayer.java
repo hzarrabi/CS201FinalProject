@@ -44,7 +44,7 @@ public class MusicPlayer extends JPanel{
 	private JTextArea lyrics;
 	private String songName;
 	private MusicModel musicObject;
-	private Thread myThread;
+	private static Thread myThread;
 	private JButton rateButton;
 	private JButton commentButton;
 	private JButton favoriteButton;
@@ -100,7 +100,7 @@ public class MusicPlayer extends JPanel{
 
 	}
 	
-	public void stopThread()
+	public static void stopThread()
 	{
 		if (myThread != null)
 			myThread.suspend();
