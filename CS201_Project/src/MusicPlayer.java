@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
@@ -135,9 +136,10 @@ public class MusicPlayer extends JPanel{
 		
 		ratePanel = new JPanel();
 		comments = new JPanel();
+		comments.setBackground(Color.BLACK);
 		comment = new JTextField("comment");
 		enter = new JButton("Enter");
-		jspComments = new JScrollPane(comment);
+		jspComments = new JScrollPane(comments);
 		ratingButtons = new ArrayList<JButton>();
 		setPreferredSize(new Dimension(dim.width, dim.height));
 		
@@ -283,6 +285,9 @@ public class MusicPlayer extends JPanel{
 		favoritePanel.setBackground(FirstPageGUI.white);
 		commentPanel.setBackground(FirstPageGUI.white);
 		comments.setBackground(FirstPageGUI.white);
+		
+		
+		
 		ratePanel.setBackground(FirstPageGUI.white);
 		enter.setPreferredSize(new Dimension(dim.width/5, 3*dim.height/93));
 		
@@ -877,6 +882,23 @@ public class MusicPlayer extends JPanel{
 				}
 			}
 		});	
+		enter.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try
+				{
+					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,comment)" + "VALUES (?, ?)");
+					ps.setInt(1, LoggedInDriverGUI.userID);
+					ps.setString(2, comment.getText());
+					ps.executeUpdate();
+					ps.close();
+				} 
+				catch (SQLException e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+		});
 	}
 	
 	public void changeSong(MusicModel m, int currentSg)
@@ -1040,7 +1062,7 @@ public class MusicPlayer extends JPanel{
 		comments = new JPanel();
 		comment = new JTextField("comment");
 		enter = new JButton("Enter");
-		jspComments = new JScrollPane(comment);
+		jspComments = new JScrollPane(comments);
 		ratingButtons = new ArrayList<JButton>();
 		setPreferredSize(new Dimension(dim.width, dim.height));
 		
