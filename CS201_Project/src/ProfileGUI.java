@@ -151,7 +151,11 @@ public class ProfileGUI extends JPanel{
 
 		}
 		catch(Exception e4){
-			e4.printStackTrace();
+			//e4.printStackTrace();
+    		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
+    		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+    		profilePic = new ImageIcon(img2);
+
 		}
 		
 		
