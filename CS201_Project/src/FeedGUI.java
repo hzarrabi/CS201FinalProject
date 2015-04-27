@@ -151,8 +151,10 @@ public class FeedGUI extends JPanel{
 			String queryCheck = "SELECT user_being_followed FROM friend_relationship WHERE user = " + Integer.toString(LoggedInDriverGUI.userID);
 			ResultSet rs = st.executeQuery(queryCheck);
 			int columns = rs.getMetaData().getColumnCount();
-			while (rs.next())
+			int j = 0;
+			while (rs.next() && j < 11)
 			{
+				j++;
 				System.out.println("getting activity of follwing");
 				Statement st2 = ConnectionClass.conn.createStatement();
 				System.out.println(Integer.toString(rs.getInt(1)));
@@ -180,8 +182,10 @@ public class FeedGUI extends JPanel{
 			String queryCheck3 = "SELECT activity_id, user_id, song_id, description, time_stamp FROM activity_feed WHERE user_id = " + LoggedInDriverGUI.userID;
 			ResultSet rs3 = st3.executeQuery(queryCheck3);
 			//int columns3 = rs3.getMetaData().getColumnCount();
-			while (rs3.next())
+			int i = 0;
+			while (rs3.next() && i<9)
 			{
+				i++;
 				int activity_id = rs3.getInt(1);
 				int user_id = rs3.getInt(2);
 				int song_id = rs3.getInt(3);

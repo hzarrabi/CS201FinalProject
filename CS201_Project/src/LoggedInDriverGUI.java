@@ -41,7 +41,7 @@ public class LoggedInDriverGUI extends JFrame{
 	private Boolean hasIndpFrame;
 	private SearchGUI searchGUI;
 	private JButton logout;
-	private JLabel notifications;
+	//private JLabel notifications;
 	private JScrollPane trgScroll;
 	private JScrollPane tlgScroll;
 	private JScrollPane mpgScroll;
@@ -196,8 +196,8 @@ public class LoggedInDriverGUI extends JFrame{
 
 		currentPanelNum = 0;
 
-		trg = new TopRatedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
-		tlg = new TopListenedGUI(this, new Dimension(3*dim.width/24, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40), new Dimension(dim.width/3, 31*dim.height/40));
+		trg = new TopRatedGUI(this, new Dimension(6*dim.width/96, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40));
+		tlg = new TopListenedGUI(this, new Dimension(6*dim.width/96, 35*dim.height/40), new Dimension(11*dim.width/48, 35*dim.height/40));
 		mpg = new ProfileGUI(this, new Dimension(dim.width/3, 31*dim.height/40), "current user", userID);
 		searchGUI = new SearchGUI(new Dimension(dim.width/3, 31*dim.height/40), userID, ConnectionClass.conn, this);
 
@@ -207,9 +207,9 @@ public class LoggedInDriverGUI extends JFrame{
 		trgScroll = new JScrollPane(trg);
 		tlgScroll = new JScrollPane(tlg);
 		fgScroll = new JScrollPane(fg);
-		notifications = new JLabel("notifications");
-		trgScroll.setPreferredSize(new Dimension(dim.width/12, 35*dim.height/40));
-		tlgScroll.setPreferredSize(new Dimension(dim.width/12, 35*dim.height/40));
+		//notifications = new JLabel("notifications");
+		trgScroll.setPreferredSize(new Dimension(18*dim.width/192, 35*dim.height/40));
+		tlgScroll.setPreferredSize(new Dimension(18*dim.width/192, 35*dim.height/40));
 		fgScroll.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
 		trgScroll.setBorder(null);
 		tlgScroll.setBorder(null);
@@ -217,51 +217,15 @@ public class LoggedInDriverGUI extends JFrame{
 		bottomColor = new JPanel();
 		bottomColor.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
 		bottomColor.setBackground(myColor);
+		logout.setBorder(new RoundedBorder());
+		logout.setBackground(FirstPageGUI.darkGrey);
+		logout.setForeground(FirstPageGUI.white);
+		logout.setFont(FirstPageGUI.smallFont);
 		bottomColor.add(logout);
-		bottomColor.add(notifications);
+		logout.setOpaque(true);
+		//bottomColor.add(notifications);
 		mainPanel.setBackground(FirstPageGUI.white);
 	}
-	
-//	public void changeListenedFrame(IndpMusicPlayer player)
-//	{
-//		currentPlayer = player;
-//		tlg.stopSong();
-//		mainPanel.remove(tlgScroll);
-//		mainPanel.remove(musicPlayerTopListened);
-//		mainPanel.add(player);
-//		 mainPanel.revalidate();
-//	        mainPanel.repaint();
-//	}
-//	
-//	public void changeRatedFrame(IndpMusicPlayer player)
-//	{
-//		currentPlayer = player;
-//		trg.stopSong();
-//		mainPanel.remove(trgScroll);
-//		mainPanel.remove(musicPlayerTopRated);
-//		mainPanel.add(player);
-//		 mainPanel.revalidate();
-//	        mainPanel.repaint();
-//	}
-//	
-//	public void changeBackListenedFrame()
-//	{
-//		mainPanel.remove(currentPlayer);
-//		mainPanel.add(tlgScroll, BorderLayout.WEST);
-//		mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
-//        mainPanel.revalidate();
-//        mainPanel.repaint();
-//	}
-//	
-//	public void changeBackRatedFrame()
-//	{
-//		mainPanel.remove(currentPlayer);
-//		mainPanel.add(trgScroll, BorderLayout.WEST);
-//		mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
-//		//trg.startSong();
-//        mainPanel.revalidate();
-//        mainPanel.repaint();
-//	}
 	
 	public void addCurrent(JPanel currentP)
 	{
@@ -297,6 +261,7 @@ public class LoggedInDriverGUI extends JFrame{
 				if (hasIndpFrame)
 				{
 					mainPanel.remove(currentGUI);
+					musicPlayerTopRated = trg.refresh();
 					mainPanel.add(trgScroll, BorderLayout.WEST);
 					mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
 					currentJpanel = 3;
@@ -308,6 +273,7 @@ public class LoggedInDriverGUI extends JFrame{
 				else
 				{
 					removePanel();
+					musicPlayerTopRated = trg.refresh();
 					mainPanel.add(trgScroll, BorderLayout.WEST);
 					mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
 					currentJpanel = 3;
@@ -324,6 +290,7 @@ public class LoggedInDriverGUI extends JFrame{
 				if (hasIndpFrame)
 				{
 					mainPanel.remove(currentGUI);
+					musicPlayerTopListened = tlg.refresh();
 					mainPanel.add(tlgScroll, BorderLayout.WEST);
 					mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
 					currentJpanel = 4;
@@ -334,6 +301,7 @@ public class LoggedInDriverGUI extends JFrame{
 				}
 				else
 				{
+					musicPlayerTopListened = tlg.refresh();
 					mainPanel.add(tlgScroll, BorderLayout.WEST);
 					mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
 					currentJpanel = 4;
@@ -415,65 +383,7 @@ public class LoggedInDriverGUI extends JFrame{
 			}
 			
 		});
-		testButton.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e) {
-				searchText = testField.getText();
-				Connection conn; 
-				String dburl = "jdbc:mysql://104.236.176.180:3306/cs201";
-				String userName = "cs201";
-				String passWord = "manishhostage";
-				try {
-					Class.forName("com.mysql.jdbc.Driver");
-					conn = DriverManager.getConnection("jdbc:mysql://104.236.176.180/cs201", "cs201", "manishhostage");
-					Statement st = conn.createStatement();
-					String queryCheck = "";
-					boolean check_found = false;
-
-					//check for users
-					queryCheck = sql_queries[0];
-					PreparedStatement ps = (PreparedStatement) conn.prepareStatement(queryCheck);
-					ps.setString(1, searchText);
-					ResultSet rs = ps.executeQuery();
-					if(rs.absolute(1))
-					{	
-						System.out.println("Username " + searchText +" exists!");
-						check_found = true;
-					}
-					//check for songs
-					queryCheck = sql_queries[1];
-					ps= (PreparedStatement) conn.prepareStatement(queryCheck);
-					ps.setString(1, searchText);
-					rs = ps.executeQuery();
-					if(rs.absolute(1))
-					{	
-						System.out.println("Song " + searchText + " exists!");
-						check_found = true;
-					}
-					//check for artists
-					queryCheck = sql_queries[2];
-					ps= (PreparedStatement) conn.prepareStatement(queryCheck);
-					ps.setString(1, searchText);
-					rs = ps.executeQuery();
-					if(rs.absolute(1))
-					{	
-						System.out.println("Artist " + searchText + " exists!");
-						check_found = true;
-					}
-				
-					if (!check_found)
-					{
-						System.out.println("Not found");
-					}
-				} catch (SQLException e1)
-				{
-					e1.printStackTrace();
-				} catch (ClassNotFoundException e1) {
-					e1.printStackTrace();
-				}			}
-
-		});
-		
+	
 		logout.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				Object[] options = {"Yes",
@@ -521,92 +431,5 @@ public class LoggedInDriverGUI extends JFrame{
 			}
 	}
 	
-	//these two functions are called from the searchGUI in order to change the panel on the searchGUI 
-	//when a user clicks one of the buttons from the results
-//	public void removeGUIForSearch()
-//	{
-//		mainPanel.remove(tempGUI);
-//		mainPanel.add(searchGUI);
-//		mainPanel.revalidate();
-//		mainPanel.repaint();
-//	}
-//	
-//	public void addGUIForSearch(JPanel temp)
-//	{
-//		tempGUI = temp;
-//		mainPanel.remove(searchGUI);
-//		mainPanel.add(temp);
-//		mainPanel.revalidate();
-//		mainPanel.repaint();
-//	}
-//	
-//	public void removeGUIForProfile()
-//	{
-//		mainPanel.remove(tempGUI);
-//		mainPanel.add(mpg);
-//		mainPanel.revalidate();
-//		mainPanel.repaint();
-//	}
-//	
-//	public void addGUIForProfile(JPanel temp)
-//	{
-//		tempGUI = temp;
-//		mainPanel.remove(mpg);
-//		mainPanel.add(temp);
-//		mainPanel.revalidate();
-//		mainPanel.repaint();
-//	}
-//		
-//	public void removePrevious()
-//	{
-//		if (currentPanelNum == 1)
-//		{
-//			mainPanel.remove(currentGUI);
-//			mainPanel.add(mpg);
-//			//previousGUI = currentGUI;
-//			currentGUI = mpg;
-//			mainPanel.revalidate();
-//			mainPanel.repaint();
-//		}
-//		else
-//		{
-//			mainPanel.remove(currentGUI);
-//			mainPanel.add(previousGUI);
-//			previousGUI = currentGUI;
-//			mainPanel.revalidate();
-//			mainPanel.repaint();
-//		}
-//		currentPanelNum--;
-//	}
-//	
-//	public void addNext(JPanel temp)
-//	{
-//		if (currentPanelNum ==0)
-//		{
-//			currentPanelNum++;
-//			previousGUI = mpg;
-//			currentGUI = temp;
-//			mainPanel.remove(mpg);
-//			mainPanel.add(currentGUI);
-//			mainPanel.revalidate();
-//			mainPanel.repaint();
-//		}
-//		else
-//		{
-//			currentPanelNum++;
-//			previousGUI = currentGUI;
-//			currentGUI = temp;
-//			mainPanel.remove(previousGUI);
-//			mainPanel.add(currentGUI);
-//			mainPanel.revalidate();
-//			mainPanel.repaint();
-//		}
-//	}
-//		
-//	public void setTemp(JPanel p)
-//	{
-//		tempGUI = p;
-//	}
-		
 }
 

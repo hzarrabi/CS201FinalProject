@@ -70,6 +70,7 @@ public class FirstPageGUI extends JFrame{
 	final static Font font = new Font("Helvetica Neue", Font.PLAIN, 18);
 	final static Font smallFont = new Font("Helvetica Neue", Font.PLAIN, 14);
 	final static Font fontTitle = new Font("Helvetica Neue", Font.PLAIN, 24);
+	final static Font smallerFont = new Font("Helvetica Neue", Font.PLAIN, 12);
 	
 	public FirstPageGUI()
 	{

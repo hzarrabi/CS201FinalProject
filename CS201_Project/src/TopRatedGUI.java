@@ -8,17 +8,22 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 
 public class TopRatedGUI extends TopGUI{
-
-	public TopRatedGUI(LoggedInDriverGUI main, Dimension d, Dimension playerDim, Dimension playerBigDim)
+	private JButton currentButton;
+	private Dimension d;
+	public TopRatedGUI(LoggedInDriverGUI main, Dimension d, Dimension playerDim)
 	{
 		super();
 		this.setPreferredSize(d);
-		this.playerBigDim = playerBigDim;
+		this.d = d;
 		this.setBackground(FirstPageGUI.darkGrey);
 		dimPlayer = playerDim;
 		this.mainPage = main;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtons();
+		JButton firstButton = buttons.get(0);
+		currentButton = firstButton;
+		currentButton.setForeground(FirstPageGUI.darkGrey);
+		currentButton.setBackground(FirstPageGUI.white);
 		//addEventHandlers();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
@@ -31,6 +36,10 @@ public class TopRatedGUI extends TopGUI{
 		dimPlayer = playerDim;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtonsGuest();
+		JButton firstButton = buttons.get(0);
+		currentButton = firstButton;
+		currentButton.setForeground(FirstPageGUI.darkGrey);
+		currentButton.setBackground(FirstPageGUI.white);
 		//addEventHandlers();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
@@ -42,10 +51,11 @@ public class TopRatedGUI extends TopGUI{
 		for (int j = 0; j< topSongs.size(); j++){
 			MusicModel entry = topSongs.get(j);
 			JButton newButton = new JButton(entry.getSongName());
-			newButton.setFont(FirstPageGUI.smallFont);
+			newButton.setFont(FirstPageGUI.smallerFont);
 			newButton.setBorder(new RoundedBorder());
 			newButton.setBackground(FirstPageGUI.darkGrey);
 			newButton.setForeground(FirstPageGUI.white);
+			newButton.setPreferredSize(new Dimension(4*d.width/5, d.height/30));
 			newButton.setOpaque(true);
 			buttons.add(newButton);	
 			//songs.add(entry);
@@ -63,13 +73,14 @@ public class TopRatedGUI extends TopGUI{
 		for (int j = 0; j< topSongs.size(); j++){
 			MusicModel entry = topSongs.get(j);
 			JButton newButton = new JButton(entry.getSongName());
-			newButton.setFont(FirstPageGUI.smallFont);
+			newButton.setFont(FirstPageGUI.smallerFont);
 			newButton.setBorder(new RoundedBorder());
 			newButton.setBackground(FirstPageGUI.darkGrey);
 			newButton.setForeground(FirstPageGUI.white);
+			newButton.setPreferredSize(new Dimension(4*d.width/5, d.height/30));
 			newButton.setOpaque(true);
-			newButton.setEnabled(false);
-			newButton.addActionListener(new ActionListenerButtons( entry, j));
+			newButton.setEnabled(true);
+			newButton.addActionListener(new ActionListenerButtons( entry, j, newButton));
 			buttons.add(newButton);	
 			//songs.add(entry);
 		}
@@ -89,15 +100,29 @@ public class TopRatedGUI extends TopGUI{
 
 		private int current_song;
 		private MusicModel song;
-		public ActionListenerButtons(MusicModel j, int i)
+		private JButton thisButton;
+		public ActionListenerButtons(MusicModel j, int i, JButton button)
 		{
 			song = j;
 			current_song = i;
+			thisButton = button;
 		}
 		public void actionPerformed(ActionEvent e) {
 			myPlayer.changeSong(song, current_song);
+			currentButton.setForeground(FirstPageGUI.white);
+			currentButton.setBackground(FirstPageGUI.darkGrey);
+			currentButton = thisButton;
+			currentButton.setForeground(FirstPageGUI.darkGrey);
+			currentButton.setBackground(FirstPageGUI.white);
 		}
 		
+	}
+	
+	public MusicPlayer refresh()
+	{
+		this.removeAll();
+		fillButtons();
+		return initPlayer();
 	}
 
 }
