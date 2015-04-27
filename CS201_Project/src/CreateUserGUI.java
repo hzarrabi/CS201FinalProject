@@ -447,16 +447,13 @@ public class CreateUserGUI extends JFrame{
 			});
 			
 			
-			cancel.addKeyListener(new KeyListener()
+			cancel.addActionListener(new ActionListener()
 			{
 				@Override
-				public void keyTyped(KeyEvent e){}
-				@Override
-				public void keyReleased(KeyEvent e){}
-				@Override
-				public void keyPressed(KeyEvent e)
+				public void actionPerformed(ActionEvent e)
 				{
-					if(e.getKeyChar() == KeyEvent.VK_ENTER) newUserAction();	
+					new FirstPageGUI();
+					CreateUserGUI.this.dispose();
 				}
 			});
 		}
