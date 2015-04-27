@@ -117,5 +117,12 @@ public class TopRatedGUI extends TopGUI{
 		}
 		
 	}
+	
+	public MusicPlayer refresh()
+	{
+		this.removeAll();
+		fillButtons();
+		return initPlayer();
+	}
 
 }

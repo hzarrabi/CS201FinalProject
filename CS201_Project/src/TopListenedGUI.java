@@ -128,6 +128,12 @@ public class TopListenedGUI extends TopGUI{
 		return myPlayer;
 	}
 
+	public MusicPlayer refresh()
+	{
+		this.removeAll();
+		fillButtons();
+		return initPlayer();
+	}
 //	@Override
 //	public void addEventHandlers() {
 //		for (int j = 0; j < buttons.size(); j++)

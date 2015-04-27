@@ -67,6 +67,7 @@ public class ProfileGUI extends JPanel{
 	private JFileChooser jfl;
 	private JLabel picturePic;
 	private JButton pictureButton;
+	private String previousBioText;
 	//private JButton backButton;
 	//private ActionListener forBackButton;
 	private String key;
@@ -259,6 +260,8 @@ public class ProfileGUI extends JPanel{
             {
 				name.setText(rs.getString("first_name")+" "+rs.getString("last_name"));
 				email.setText(rs.getString("email"));
+				System.out.println(rs.getString("bio"));
+				bio.setText(rs.getString("bio"));
 				rs.close();
 				stat.close();
             }
@@ -538,6 +541,7 @@ public class ProfileGUI extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				bio.setEditable(true);
 				namePanel.remove(name);
+				previousBioText = bio.getText();
 				name.setVisible(false);
 				emailPanel.remove(email);
 				email.setVisible(false);
@@ -592,6 +596,7 @@ public class ProfileGUI extends JPanel{
 				saveButton.setVisible(false);
 				buttonP.remove(cancelButton);
 				cancelButton.setVisible(false);
+				bio.setText(previousBioText);
 				buttonP.add(edit);
 				edit.setVisible(true);
 				emailPanel.add(email);
@@ -631,11 +636,12 @@ public class ProfileGUI extends JPanel{
 					
 					try
 					{
-						PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE user_table SET first_name= ?, last_name=?, email=?" + "WHERE iduser_table = ?");
+						PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE user_table SET first_name= ?, last_name=?, email=?, bio=?" + "WHERE iduser_table = ?");
 						ps.setString(1, newFirstName);
 						ps.setString(2, newLastName);
 						ps.setString(3, newEmail);
-						ps.setInt(4, userId);
+						ps.setString(4, bio.getText());
+						ps.setInt(5, userId);
 						ps.execute();
 						ps.close();
 					} catch (SQLException e1)
