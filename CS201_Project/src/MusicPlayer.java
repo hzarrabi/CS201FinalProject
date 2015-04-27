@@ -23,6 +23,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -298,49 +299,6 @@ public class MusicPlayer extends JPanel{
 		favoritePanel.setBackground(FirstPageGUI.white);
 		commentPanel.setBackground(FirstPageGUI.white);
 		comments.setBackground(FirstPageGUI.white);
-		String query = "SELECT * from comments_table";
-		try {
-			Statement st = ConnectionClass.conn.createStatement();
-			ResultSet rs = st.executeQuery(query);
-			int columns = rs.getMetaData().getColumnCount();
-//			Vector<Integer> userIDVector = new Vector<Integer> ();
-//			Vector<String> commentVector = new Vector<String> ();
-			while (rs.next())
-			{
-				int ID = 0;
-				String comment1;
-				
-				ID = rs.getInt(1);
-				comment1 = rs.getString(3);
-				System.out.println("Comment: "+comment1);
-				
-				String query1 = "Select username from user_table where iduser_table = " + Integer.toString(ID);
-				Statement st1 = ConnectionClass.conn.createStatement();
-				ResultSet rs1 = st1.executeQuery(query1);
-				int columns1 = rs1.getMetaData().getColumnCount();
-				while (rs1.next()){
-					JPanel outer = new JPanel();
-					outer.setLayout(new FlowLayout(FlowLayout.LEFT));
-					outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
-					JLabel name = new JLabel();
-					name.setPreferredSize(new Dimension(dim.width/4, 9*dim.height/200));
-					name.setText("@"+rs1.getString(1)+":");
-					JLabel commentLabel = new JLabel();
-					commentLabel.setPreferredSize(new Dimension(2*dim.width/3, 9*dim.height/200));
-					commentLabel.setText(comment1);
-					outer.add(name);
-					outer.add(commentLabel);
-					comments.add(outer);
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-		
-		
-		
 		
 		ratePanel.setBackground(FirstPageGUI.white);
 		enter.setPreferredSize(new Dimension(dim.width/5, 3*dim.height/93));
@@ -940,18 +898,26 @@ public class MusicPlayer extends JPanel{
 		enter.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try
-				{
-					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,song_id,comment)" + "VALUES (?, ?, ?)");
-					ps.setInt(1, LoggedInDriverGUI.userID);
-					ps.setInt(2, musicObject.getMusicID());
-					ps.setString(3, comment.getText());
-					ps.executeUpdate();
-					ps.close();
-				} 
-				catch (SQLException e1)
-				{
-					e1.printStackTrace();
+				if (comment.getText().length() > 20) {
+					JOptionPane.showMessageDialog(MusicPlayer.this,
+							"Number of character has to be 20 or less!",
+							"Oh No!",
+							JOptionPane.ERROR_MESSAGE);
+				}
+				else {
+					try
+					{
+						PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,song_id,comment)" + "VALUES (?, ?, ?)");
+						ps.setInt(1, LoggedInDriverGUI.userID);
+						ps.setInt(2, musicObject.getMusicID());
+						ps.setString(3, comment.getText());
+						ps.executeUpdate();
+						ps.close();
+					} 
+					catch (SQLException e1)
+					{
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -1035,6 +1001,48 @@ public class MusicPlayer extends JPanel{
 		{
 			e1.printStackTrace();
 		}
+		comments.removeAll();
+		String query = "SELECT * from comments_table WHERE user_id= " + Integer.toString(musicObject.getMusicID());
+		try {
+			Statement st = ConnectionClass.conn.createStatement();
+			ResultSet rs = st.executeQuery(query);
+			int columns = rs.getMetaData().getColumnCount();
+//			Vector<Integer> userIDVector = new Vector<Integer> ();
+//			Vector<String> commentVector = new Vector<String> ();
+			while (rs.next())
+			{
+				int ID = 0;
+				String comment1;
+				
+				ID = rs.getInt(1);
+				comment1 = rs.getString(3);
+				System.out.println("Comment: "+comment1);
+				
+				String query1 = "Select username from user_table where iduser_table = " + Integer.toString(ID);
+				Statement st1 = ConnectionClass.conn.createStatement();
+				ResultSet rs1 = st1.executeQuery(query1);
+				int columns1 = rs1.getMetaData().getColumnCount();
+				while (rs1.next()){
+					JPanel outer = new JPanel();
+					outer.setLayout(new FlowLayout(FlowLayout.LEFT));
+					outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
+					JLabel name = new JLabel();
+					name.setPreferredSize(new Dimension(8*dim.width/24, 9*dim.height/200));
+					name.setText("@"+rs1.getString(1)+":");
+					JLabel commentLabel = new JLabel();
+					commentLabel.setPreferredSize(new Dimension(4*dim.width/12, 9*dim.height/200));
+					commentLabel.setText(comment1);
+					outer.add(name);
+					outer.add(commentLabel);
+					comments.add(outer);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		comments.revalidate();
+		comments.repaint();
 		
 		double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
 		int listens1 = musicObject.getnumberOfPlayCounts();
