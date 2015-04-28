@@ -1088,7 +1088,7 @@ public class MusicPlayer extends JPanel{
 			e1.printStackTrace();
 		}
 		comments.removeAll();
-		String query = "SELECT * from comments_table WHERE user_id= " + Integer.toString(musicObject.getMusicID());
+		String query = "SELECT * from comments_table WHERE song_id= " + Integer.toString(musicObject.getMusicID());
 		try {
 			Statement st = ConnectionClass.conn.createStatement();
 			ResultSet rs = st.executeQuery(query);
