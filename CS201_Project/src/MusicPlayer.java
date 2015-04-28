@@ -1392,6 +1392,7 @@ public class MusicPlayer extends JPanel{
 	                    if (circle.pointable().direction().angleTo(circle.normal()) <= Math.PI/4) {
 	                        // Clockwise if angle is less than 90 degrees
 	                        clockwiseness = "clockwise";
+	                        System.out.println(clockwiseness);
 	                        if (myThread != null)
 	        					myThread.suspend();
 	        				if (currentSong == allSongs.size()-1)
@@ -1434,6 +1435,7 @@ public class MusicPlayer extends JPanel{
 	        				}
 	                    } else {
 	                        clockwiseness = "counterclockwise";
+	                        System.out.println(clockwiseness);
 	                        
 	                        
 	                        
