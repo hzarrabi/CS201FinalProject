@@ -452,6 +452,7 @@ public class MusicPlayer extends JPanel{
 					commentLabel.setText(comment.getText());
 					outer.add(name);
 					outer.add(commentLabel);
+					comment.setText("");
 					comments.add(outer);
 					comments.revalidate();
 					comments.repaint();
@@ -1022,6 +1023,7 @@ public class MusicPlayer extends JPanel{
 				commentLabel.setText(comment.getText());
 				outer.add(name);
 				outer.add(commentLabel);
+				comment.setText("");
 				comments.add(outer);
 				comments.revalidate();
 				comments.repaint();
