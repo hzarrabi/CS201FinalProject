@@ -461,11 +461,11 @@ public class LoggedInDriverGUI extends JFrame{
 			}
 		});
 		
-		refreshButton.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
+//		refreshButton.addActionListener(new ActionListener(){
+//			public void actionPerformed(ActionEvent e) {
+//				
+//			}
+//		});
 	}
 	
 	private void removePanel()
