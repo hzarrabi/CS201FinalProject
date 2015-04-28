@@ -108,10 +108,12 @@ public class LoggedInDriverGUI extends JFrame{
 		dim = new Dimension(dim.width, dim.height-100);
 //		testField = new JTextField();
 		//this.firstPage = firstPage;
+
 		loading = new JLabel("");
 		loading.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
 		loading.setIcon(new ImageIcon("data/LOADFEEDSLOW.gif"));
 	mainPanel = new JPanel();
+
 		mainPanel.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
 		myColor = FirstPageGUI.color;
 //		mainPanel.setBackground(FirstPageGUI.darkGrey);
