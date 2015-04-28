@@ -30,9 +30,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -60,6 +62,7 @@ public class FirstPageGUI extends JFrame{
 	private JPanel topColor;
 	private JLabel incorrectInput;
 	private Font newfont;
+	private JLayeredPane pane;
 	private JPanel main = new JPanel();
 	final static Color color = new Color(0x0AB2D8);
 	final static Color white = new Color(0xf7f7f7);
@@ -79,11 +82,40 @@ public class FirstPageGUI extends JFrame{
 		initializeComponents();
 		createGUI();
 		makePretty();
+		//loading = new JLabel();
+
+	    //loading.setIcon(new ImageIcon("data/loading.gif"));
+	    //add(loading, BorderLayout.CENTER);
+	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    dim = Toolkit.getDefaultToolkit().getScreenSize();
+		//loading.setPreferredSize(new Dimension(dim.width/3, dim.height));
+	   // loading = new JLabel();
+	    //loading.setIcon(new ImageIcon("data/loading.gif"));
+		setBounds(0,0,dim.width/3, dim.height-80);
+	   // startLoading();
+		setResizable(false);
+		setVisible(true);
 		setEventHandlers();
 	}
+	
+//	private void startLoading(){
+//	    final Component glassPane = getGlassPane();
+//	    final JPanel panel = new JPanel();
+//	    panel.setLayout(new BorderLayout());
+//	    panel.add(loading, BorderLayout.CENTER);
+//	    setGlassPane(panel);
+//	    panel.setVisible(true);
+//	    panel.setOpaque(false);
+//	}
 
 	private void initializeComponents(){
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		//loading = new JLabel();
+		//loading.setPreferredSize(new Dimension(dim.width/3, dim.height));
+		//loading.setOpaque(false);
+		//loading.setContentAreaFilled(false);
+		//loading.setBorderPainted(false);
+		//loading.setIcon(new ImageIcon("data/loading.gif"));
 		userName = new JTextField("Username");
 		password = new JPasswordField("Password");
 		logo = new JLabel("201Tunes");
@@ -158,6 +190,14 @@ public class FirstPageGUI extends JFrame{
 		setVisible(true);
 	}
 	
+//	class MyThread extends Thread
+//	{
+//		public void run()
+//		{
+//			startLoading();
+//		}
+//	}
+	
 	private void makePretty(){
 		logo.setFont(newfont);
 		
@@ -203,6 +243,7 @@ public class FirstPageGUI extends JFrame{
 		});
 		login.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
+				//startLoading();
 				loginAction();
 			}
 		});
@@ -239,6 +280,18 @@ public class FirstPageGUI extends JFrame{
 			{
 				if(e.getKeyChar() == KeyEvent.VK_ENTER)
 				{
+					
+					//FirstPageGUI.this.removeAll();
+//					bottomColor.setBackground(FirstPageGUI.grey);
+//					topColor.setBackground(FirstPageGUI.grey);
+					//setBackground(FirstPageGUI.grey);
+//					login.setBackground(FirstPageGUI.grey);
+//					newUser.setBackground(FirstPageGUI.grey);
+//					guest.setBackground(FirstPageGUI.grey);
+				//FirstPageGUI.this.add(loading);
+				//topColor.setBackground(FirstPageGUI.grey);
+				//FirstPageGUI.this.revalidate();
+				//FirstPageGUI.this.repaint();
 					loginAction();	
                 }       
 			}
@@ -280,6 +333,7 @@ public class FirstPageGUI extends JFrame{
 			{
 				if(e.getKeyChar() == KeyEvent.VK_ENTER)
 				{
+					//new MyThread().start();
 					loginAction();
                 }       
 			}
@@ -288,6 +342,8 @@ public class FirstPageGUI extends JFrame{
 	
 	//this is the function that logs us in
 	public void loginAction() {
+		//FirstPageGUI.this.removeAll();
+		//startLoading();
 		String theUserName=userName.getText();
 		String thePassword=PasswordHash.hash(password.getText());//returning the password hashed
 		try

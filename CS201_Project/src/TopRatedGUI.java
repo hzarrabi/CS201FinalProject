@@ -19,11 +19,7 @@ public class TopRatedGUI extends TopGUI{
 		dimPlayer = playerDim;
 		this.mainPage = main;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		fillButtons();
-		JButton firstButton = buttons.get(0);
-		currentButton = firstButton;
-		currentButton.setForeground(FirstPageGUI.darkGrey);
-		currentButton.setBackground(FirstPageGUI.white);
+		//fillButtons();
 		//addEventHandlers();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
@@ -37,10 +33,6 @@ public class TopRatedGUI extends TopGUI{
 		dimPlayer = playerDim;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtonsGuest();
-		JButton firstButton = buttons.get(0);
-		currentButton = firstButton;
-		currentButton.setForeground(FirstPageGUI.darkGrey);
-		currentButton.setBackground(FirstPageGUI.white);
 		//addEventHandlers();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
@@ -65,6 +57,10 @@ public class TopRatedGUI extends TopGUI{
 			this.add(buttons.get(i));	
 			//System.out.println(i);
 		}
+		JButton firstButton = buttons.get(0);
+		currentButton = firstButton;
+		currentButton.setForeground(FirstPageGUI.darkGrey);
+		currentButton.setBackground(FirstPageGUI.white);
 	}
 	
 	public void fillButtons() {
@@ -89,6 +85,10 @@ public class TopRatedGUI extends TopGUI{
 			this.add(buttons.get(i));	
 			//System.out.println(i);
 		}
+		JButton firstButton = buttons.get(0);
+		currentButton = firstButton;
+		currentButton.setForeground(FirstPageGUI.darkGrey);
+		currentButton.setBackground(FirstPageGUI.white);
 	}
 	@Override
 	public MusicPlayer initPlayer() {
