@@ -55,6 +55,7 @@ public class SearchGUI extends JPanel {
 		dim = d;
 		this.userID = userID;
 		this.setPreferredSize(dim);
+		setBackground(FirstPageGUI.darkGrey);
 		//this.conn = conn;
 		this.mainPage = mainPage;
 		inputField = new JTextField();

@@ -373,7 +373,7 @@ public class MusicPlayer extends JPanel{
 		JPanel tabPanel = new JPanel();
 		
 		
-		tabPanel.setPreferredSize(new Dimension(dim.width, 80*dim.height/186));
+		tabPanel.setPreferredSize(new Dimension(dim.width, 70*dim.height/186));
 		tabPanel.setBackground(FirstPageGUI.white);
 		tabPanelMain = new JPanel();
 		tabPanelMain.setPreferredSize(new Dimension(dim.width, 50*dim.height/186));
