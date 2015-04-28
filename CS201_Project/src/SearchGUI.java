@@ -42,7 +42,6 @@ public class SearchGUI extends JPanel {
 	private JPanel artistPanel;
 	private JPanel songPanel;
 	private JPanel userPanel;
-	private JButton add;
 	private int userID;
 	private LoggedInDriverGUI mainPage;
 	//private Connection conn;
@@ -58,7 +57,6 @@ public class SearchGUI extends JPanel {
 		this.setPreferredSize(dim);
 		//this.conn = conn;
 		this.mainPage = mainPage;
-		add = new JButton("Follow");
 		inputField = new JTextField();
 		searchButton = new JButton();
 		inputField.setPreferredSize(new Dimension(4*dim.width/5, dim.height/15));
@@ -138,12 +136,6 @@ public class SearchGUI extends JPanel {
 		add(three);
 		add(four);
 		
-		
-		//inputField.setEditable(true);
-		//jp1 = new JPanel();
-		//jp1.add(inputField, BorderLayout.NORTH);
-		//jp1.add(searchButton, BorderLayout.SOUTH);
-		//add(jp1, BorderLayout.CENTER);
 		setEventHandlers();
 		setVisible(true);
 	}
@@ -211,25 +203,14 @@ public class SearchGUI extends JPanel {
 					Statement st1 = ConnectionClass.conn.createStatement();
 					String queryCheck1 = "SELECT user FROM friend_relationship WHERE user_being_followed = " + userId2 + " AND user = "+ LoggedInDriverGUI.userID;
 					ResultSet rs1 = st1.executeQuery(queryCheck1);
-					//columns = rs.getMetaData().getColumnCount();
-					//JButton button = buttonVector.get(i);
 					if (rs1.next())
 					{
-						//System.out.println("friends");
-						//ProfileGUI newProfile;
-						//newProfile = new ProfileGUI(mainPage, dim, "friends", userIDVector.get(i));
 						name.addActionListener(new ActionListenerProfile(userId2, "friends"));
 					}
 					else
 					{
-						//System.out.println("not friends");
-					//	ProfileGUI newProfile;
-						//newProfile = new ProfileGUI(mainPage, dim, "not friends", userIDVector.get(i));
 						name.addActionListener(new ActionListenerProfile(userId2, "not friends"));
 					}
-				//	ProfileGUI newProfile;
-					
-					//name.addActionListener(new ActionListenerNewPage(newProfile));
 					JLabel profileImage = new JLabel("");
 					if (profilePath == null)
 					{
@@ -252,9 +233,7 @@ public class SearchGUI extends JPanel {
 							
 						}
 					}
-//					ImageIcon icon = new ImageIcon("data/MomAndMoose.jpg");
-//					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
-//					profileImage.setIcon(new ImageIcon(ResizedImage));
+
 					JPanel temp = new JPanel();
 					temp.setPreferredSize(new Dimension(dim.width, dim.height/13));
 					temp.add(profileImage);
@@ -289,17 +268,6 @@ public class SearchGUI extends JPanel {
 			if(rs.absolute(1))
 			{	
 				MusicModel MusicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(rs.getString(2));
-				
-//				//adding all of the values from the database to the object
-//				MusicObject.setMusicID(rs.getInt(1));
-//				MusicObject.setSongName(rs.getString(2));
-//				MusicObject.setArtistName(rs.getString(3));
-//				MusicObject.setRatingSum(rs.getInt(4));
-//				MusicObject.setNumberOfRatings(rs.getInt(5));
-//				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
-//				MusicObject.setSongPath(rs.getString(7));
-//				MusicObject.setAlbumPath(rs.getString(8));
-//				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
 				
 				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
 				name.addActionListener(new ActionListenerNewPage(MusicObject, dim));
@@ -345,18 +313,7 @@ public class SearchGUI extends JPanel {
 			if(rs.absolute(1))
 			{	
 				MusicModel MusicObject = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(rs.getString(2));
-				
-				//adding all of the values from the database to the object
-//				MusicObject.setMusicID(rs.getInt(1));
-//				MusicObject.setSongName(rs.getString(2));
-//				MusicObject.setArtistName(rs.getString(3));
-//				MusicObject.setRatingSum(rs.getInt(4));
-//				MusicObject.setNumberOfRatings(rs.getInt(5));
-//				MusicObject.setnumberOfPlayCounts(rs.getInt(6));
-//				MusicObject.setSongPath(rs.getString(7));
-//				MusicObject.setAlbumPath(rs.getString(8));
-//				MusicObject.setPlayButtonThatLeadsToMusicPlayer(rs.getString(2));
-//				
+					
 				JButton name = new JButton(MusicObject.getSongName() + " "+MusicObject.getArtistName());
 				name.addActionListener(new ActionListenerNewPage(MusicObject, dim));
 				JLabel profileImage = new JLabel("");
@@ -405,56 +362,6 @@ public class SearchGUI extends JPanel {
 			e1.printStackTrace();
 		} 
 	}
-	private void addFollowButton() {
-		add(add, BorderLayout.SOUTH);
-		revalidate();
-		repaint();
-	}
-	
-	//ActionListener that I'm going to pass to the ProfileGUI for the back button to add
-	//this will allow to back button to remove the profile page and go back to the search results
-	
-//	class ActionListenerProfile implements ActionListener{
-//		private int id;
-//		public ActionListenerProfile(int id)
-//		{
-//			this.id = id;
-//		}
-//		@Override
-//		public void actionPerformed(ActionEvent e) {
-//			System.out.println("in actionlistener");
-//			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ LoggedInDriverGUI.userID+" AND user_being_followed = "+id+")";
-//			ProfileGUI newProfile;
-//			/*try{
-//				System.out.println("in try");
-//				PreparedStatement ps = (PreparedStatement) conn.prepareStatement(sqlQuery);
-//				ResultSet rs = ps.executeQuery();
-//				//ResultSet rs = ps.executeQuery();
-//				System.out.println("after rs");
-//				
-//				if (rs.getRow() == 0)
-//				{*/
-//					System.out.println("in if"); 
-//					newProfile = new ProfileGUI(dim, "friends", id);
-//					//mainPage.addGUI(newProfile);
-//				/*}
-//				else
-//				{
-//					System.out.println("in else");
-//					newProfile = new ProfileGUI(dim, "not friends", userID, ConnectionClass.conn, new ActionListenerComplicated());
-//					//mainPage.addGUI(newProfile);
-//				}*/
-//				mainPage.addCurrent(newProfile);
-//				//ps.close();
-//			//}
-////			catch (Exception p){
-////				
-////			}
-//			
-//		}
-//		
-//	}
-	
 	class ActionListenerNewPage implements ActionListener{
 		private MusicModel model;
 		private Dimension dim;
