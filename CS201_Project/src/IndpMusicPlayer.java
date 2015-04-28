@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -899,6 +900,48 @@ public class IndpMusicPlayer extends JPanel{
 		{
 			e1.printStackTrace();
 		}
+		comments.removeAll();
+		String query = "SELECT * from comments_table WHERE song_id= " + Integer.toString(musicObject.getMusicID());
+		try {
+			Statement st = ConnectionClass.conn.createStatement();
+			ResultSet rs = st.executeQuery(query);
+			int columns = rs.getMetaData().getColumnCount();
+//			Vector<Integer> userIDVector = new Vector<Integer> ();
+//			Vector<String> commentVector = new Vector<String> ();
+			while (rs.next())
+			{
+				int ID = 0;
+				String comment1;
+				
+				ID = rs.getInt(1);
+				comment1 = rs.getString(3);
+				System.out.println("Comment: "+comment1);
+				
+				String query1 = "Select username from user_table where iduser_table = " + Integer.toString(ID);
+				Statement st1 = ConnectionClass.conn.createStatement();
+				ResultSet rs1 = st1.executeQuery(query1);
+				int columns1 = rs1.getMetaData().getColumnCount();
+				while (rs1.next()){
+					JPanel outer = new JPanel();
+					outer.setLayout(new FlowLayout(FlowLayout.LEFT));
+					outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
+					JLabel name = new JLabel();
+					name.setPreferredSize(new Dimension(8*dim.width/24, 9*dim.height/200));
+					name.setText("@"+rs1.getString(1)+":");
+					JLabel commentLabel = new JLabel();
+					commentLabel.setPreferredSize(new Dimension(4*dim.width/12, 9*dim.height/200));
+					commentLabel.setText(comment1);
+					outer.add(name);
+					outer.add(commentLabel);
+					comments.add(outer);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		comments.revalidate();
+		comments.repaint();
 		
 		double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
 		int listens1 = musicObject.getnumberOfPlayCounts();
@@ -906,7 +949,6 @@ public class IndpMusicPlayer extends JPanel{
 		setRating(rate);
 		mainPanel.revalidate();
 		mainPanel.repaint();
-		
 	}
 	//sets the star icons for the overall rating of the song
 	private void setRating(double rate)
