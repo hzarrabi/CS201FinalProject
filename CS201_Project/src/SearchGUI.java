@@ -74,19 +74,19 @@ public class SearchGUI extends JPanel {
 		searchButton.setBorderPainted(false);
 		
 		artistPanel = new JPanel();
-		artistPanel.setPreferredSize(new Dimension(dim.width, dim.height/4));
+		artistPanel.setPreferredSize(new Dimension(dim.width, dim.height*2));
 		artistPanel.setLayout(new BoxLayout(artistPanel, BoxLayout.Y_AXIS));
 		artistPanel.setBackground(FirstPageGUI.darkGrey);
 		//fgScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
 		//artistPanel.setBackground(FirstPageGUI.white);
 		userPanel = new JPanel();
-		userPanel.setPreferredSize(new Dimension(dim.width, dim.height/4));
+		userPanel.setPreferredSize(new Dimension(dim.width, dim.height*2));
 		userPanel.setLayout(new BoxLayout(userPanel, BoxLayout.Y_AXIS));
 		userPanel.setBackground(FirstPageGUI.white);
 		userPanel.setBackground(FirstPageGUI.darkGrey);
 		//fgScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
 		songPanel = new JPanel();
-		songPanel.setPreferredSize(new Dimension(dim.width, dim.height/4));
+		songPanel.setPreferredSize(new Dimension(dim.width, dim.height*2));
 		songPanel.setLayout(new BoxLayout(songPanel, BoxLayout.Y_AXIS));
 		songPanel.setBackground(FirstPageGUI.white);
 		songPanel.setBackground(FirstPageGUI.darkGrey);
@@ -204,6 +204,9 @@ public class SearchGUI extends JPanel {
 		userPanel.revalidate();
 		userPanel.repaint();
 		try {
+			Boolean userFound = false;
+			Boolean userFound1 = false;
+			Boolean userFound2 = false;
 			Statement st = ConnectionClass.conn.createStatement();
 			String queryCheck = "";
 			boolean check_found = false;
@@ -278,12 +281,180 @@ public class SearchGUI extends JPanel {
 				}
 				
 				
-				if (rs.next() && searchText.equals(rs.getString("username"))) {
-					userFollowID = rs.getInt("iduser_table");
-				}
+//				if (rs.next() && searchText.equals(rs.getString("username"))) {
+//					userFollowID = rs.getInt("iduser_table");
+//				}
 				//addFollowButton();
 			}
 			else
+			{
+				userFound = false;
+//				JLabel nonFound = new JLabel("no users found");
+//				nonFound.setFont(FirstPageGUI.font);
+//				nonFound.setForeground(FirstPageGUI.white);
+//				userPanel.add(nonFound);
+//				userPanel.revalidate();
+//				userPanel.repaint();
+			}
+			String queryCheck1 = "SELECT * from user_table WHERE first_name = ?";
+			PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement(queryCheck1);
+			ps1.setString(1, searchText);
+			ResultSet rs1 = ps1.executeQuery();
+			if(rs1.absolute(1))
+			{	
+				while (rs1.next())
+				{
+					Integer userId2 = rs1.getInt(1);
+					String userFirstName = rs1.getString(2);
+					String userLastName = rs1.getString(3);
+					String profilePath = rs1.getString(8);
+					JButton name = new JButton(userFirstName + " "+userLastName);
+					Statement st2 = ConnectionClass.conn.createStatement();
+					String queryCheck2 = "SELECT user FROM friend_relationship WHERE user_being_followed = " + userId2 + " AND user = "+ LoggedInDriverGUI.userID;
+					ResultSet rs2 = st2.executeQuery(queryCheck2);
+					if (rs2.next())
+					{
+						name.addActionListener(new ActionListenerProfile(userId2, "friends"));
+					}
+					else
+					{
+						name.addActionListener(new ActionListenerProfile(userId2, "not friends"));
+					}
+					JLabel profileImage = new JLabel("");
+					if (profilePath == null)
+					{
+						//System.out.println("here");
+						ImageIcon icon = new ImageIcon("data/headphone_default.jpg");
+						Image ResizedImage = icon.getImage().getScaledInstance(dim.width/10, dim.width/10, Image.SCALE_SMOOTH);
+						profileImage.setIcon(new ImageIcon(ResizedImage));
+					}
+					else
+					{
+						try
+						{
+							URL imageurl = new URL(profilePath);
+							BufferedImage img = ImageIO.read(imageurl);
+							ImageIcon icon = new ImageIcon(img);
+							Image ResizedImage = icon.getImage().getScaledInstance(dim.width/10, dim.width/10, Image.SCALE_SMOOTH);
+							profileImage.setIcon(new ImageIcon(ResizedImage));
+						} catch (IOException e1)
+						{
+							
+						}
+					}
+
+					JPanel temp = new JPanel();
+					temp.setPreferredSize(new Dimension(dim.width, dim.height/13));
+					profileImage.setBorder(null);
+					name.setBorder(null);
+					name.setBackground(FirstPageGUI.darkGrey);
+					name.setFont(FirstPageGUI.font);
+					name.setForeground(FirstPageGUI.white);
+					temp.add(profileImage);
+					temp.add(name, BorderLayout.WEST);
+					temp.setBackground(FirstPageGUI.darkGrey);
+					userPanel.add(temp, BorderLayout.WEST);
+					userPanel.revalidate();
+					userPanel.repaint();
+					//String profilePicPath
+				}
+				
+				
+//				if (rs.next() && searchText.equals(rs.getString("username"))) {
+//					userFollowID = rs.getInt("iduser_table");
+//				}
+				//addFollowButton();
+			}
+			else
+			{
+				userFound1 = false;
+//				JLabel nonFound = new JLabel("no users found");
+//				nonFound.setFont(FirstPageGUI.font);
+//				nonFound.setForeground(FirstPageGUI.white);
+//				userPanel.add(nonFound);
+//				userPanel.revalidate();
+//				userPanel.repaint();
+			}
+			String queryCheck2 = "SELECT * from user_table WHERE last_name = ?";
+			PreparedStatement ps2 = (PreparedStatement) ConnectionClass.conn.prepareStatement(queryCheck2);
+			ps2.setString(1, searchText);
+			ResultSet rs2 = ps2.executeQuery();
+			if(rs2.absolute(1))
+			{	
+				while (rs2.next())
+				{
+					Integer userId2 = rs2.getInt(1);
+					String userFirstName = rs2.getString(2);
+					String userLastName = rs2.getString(3);
+					String profilePath = rs2.getString(8);
+					JButton name = new JButton(userFirstName + " "+userLastName);
+					Statement st3 = ConnectionClass.conn.createStatement();
+					String queryCheck3 = "SELECT user FROM friend_relationship WHERE user_being_followed = " + userId2 + " AND user = "+ LoggedInDriverGUI.userID;
+					ResultSet rs3 = st3.executeQuery(queryCheck3);
+					if (rs3.next())
+					{
+						name.addActionListener(new ActionListenerProfile(userId2, "friends"));
+					}
+					else
+					{
+						name.addActionListener(new ActionListenerProfile(userId2, "not friends"));
+					}
+					JLabel profileImage = new JLabel("");
+					if (profilePath == null)
+					{
+						//System.out.println("here");
+						ImageIcon icon = new ImageIcon("data/headphone_default.jpg");
+						Image ResizedImage = icon.getImage().getScaledInstance(dim.width/10, dim.width/10, Image.SCALE_SMOOTH);
+						profileImage.setIcon(new ImageIcon(ResizedImage));
+					}
+					else
+					{
+						try
+						{
+							URL imageurl = new URL(profilePath);
+							BufferedImage img = ImageIO.read(imageurl);
+							ImageIcon icon = new ImageIcon(img);
+							Image ResizedImage = icon.getImage().getScaledInstance(dim.width/10, dim.width/10, Image.SCALE_SMOOTH);
+							profileImage.setIcon(new ImageIcon(ResizedImage));
+						} catch (IOException e1)
+						{
+							
+						}
+					}
+
+					JPanel temp = new JPanel();
+					temp.setPreferredSize(new Dimension(dim.width, dim.height/13));
+					profileImage.setBorder(null);
+					name.setBorder(null);
+					name.setBackground(FirstPageGUI.darkGrey);
+					name.setFont(FirstPageGUI.font);
+					name.setForeground(FirstPageGUI.white);
+					temp.add(profileImage);
+					temp.add(name, BorderLayout.WEST);
+					temp.setBackground(FirstPageGUI.darkGrey);
+					userPanel.add(temp, BorderLayout.WEST);
+					userPanel.revalidate();
+					userPanel.repaint();
+					//String profilePicPath
+				}
+				
+				
+//				if (rs.next() && searchText.equals(rs.getString("username"))) {
+//					userFollowID = rs.getInt("iduser_table");
+//				}
+				//addFollowButton();
+			}
+			else
+			{
+				userFound2 = false;
+//				JLabel nonFound = new JLabel("no users found");
+//				nonFound.setFont(FirstPageGUI.font);
+//				nonFound.setForeground(FirstPageGUI.white);
+//				userPanel.add(nonFound);
+//				userPanel.revalidate();
+//				userPanel.repaint();
+			}
+			if (!userFound2 && !userFound1 && !userFound)
 			{
 				JLabel nonFound = new JLabel("no users found");
 				nonFound.setFont(FirstPageGUI.font);
