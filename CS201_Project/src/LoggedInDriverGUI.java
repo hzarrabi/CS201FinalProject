@@ -92,7 +92,7 @@ public class LoggedInDriverGUI extends JFrame{
 	{		
 		super("Home Screen");
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		dim = new Dimension(dim.width, dim.height-80);
+		dim = new Dimension(dim.width, dim.height-100);
 		testField = new JTextField();
 		//this.firstPage = firstPage;
 		loading = new JLabel("");
@@ -107,7 +107,7 @@ public class LoggedInDriverGUI extends JFrame{
 		setBackground(FirstPageGUI.darkGrey);
 		setBounds(0,0,dim.width/3, dim.height);
 		setResizable(false);
-		setSize(dim.width/3, dim.height-20);
+		setSize(dim.width/3, dim.height);
 		setVisible(true);
 		this.userID=userID;
 		try{
