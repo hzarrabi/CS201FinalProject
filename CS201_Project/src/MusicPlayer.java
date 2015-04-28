@@ -445,10 +445,10 @@ public class MusicPlayer extends JPanel{
 					outer.setLayout(new FlowLayout(FlowLayout.LEFT));
 					outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
 					JLabel name = new JLabel();
-					name.setPreferredSize(new Dimension(dim.width/4, 9*dim.height/200));
+					name.setPreferredSize(new Dimension(8*dim.width/24, 9*dim.height/200));
 					name.setText(LoggedInDriverGUI.username);
 					JLabel commentLabel = new JLabel();
-					commentLabel.setPreferredSize(new Dimension(2*dim.width/3, 9*dim.height/200));
+					commentLabel.setPreferredSize(new Dimension(4*dim.width/12, 9*dim.height/200));
 					commentLabel.setText(comment.getText());
 					outer.add(name);
 					outer.add(commentLabel);
@@ -995,10 +995,10 @@ public class MusicPlayer extends JPanel{
 				outer.setLayout(new FlowLayout(FlowLayout.LEFT));
 				outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
 				JLabel name = new JLabel();
-				name.setPreferredSize(new Dimension(dim.width/4, 9*dim.height/200));
+				name.setPreferredSize(new Dimension(8*dim.width/24, 9*dim.height/200));
 				name.setText(LoggedInDriverGUI.username);
 				JLabel commentLabel = new JLabel();
-				commentLabel.setPreferredSize(new Dimension(2*dim.width/3, 9*dim.height/200));
+				commentLabel.setPreferredSize(new Dimension(4*dim.width/12, 9*dim.height/200));
 				commentLabel.setText(comment.getText());
 				outer.add(name);
 				outer.add(commentLabel);

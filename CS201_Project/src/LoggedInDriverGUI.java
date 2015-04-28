@@ -162,7 +162,9 @@ public class LoggedInDriverGUI extends JFrame{
 		feedButton = new JButton();
 		searchButton = new JButton();
 		fg = new FeedGUI(this, new Dimension(dim.width/3, dim.height), new Dimension(dim.width/3, 31*dim.height/40));
-		fgScroll = new JScrollPane(fg);
+		fgScroll = new JScrollPane(fg, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		fgScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
 		fgScroll.setBackground(FirstPageGUI.darkGrey);
 		fgScroll.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
 		
@@ -225,7 +227,9 @@ public class LoggedInDriverGUI extends JFrame{
 		username = mpg.getName();
 
 		trgScroll = new JScrollPane(trg);
+		trgScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
 		tlgScroll = new JScrollPane(tlg);
+		tlgScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
 		//fgScroll = new JScrollPane(fg);
 		//fgScroll.setBackground(FirstPageGUI.darkGrey);
 		//notifications = new JLabel("notifications");
