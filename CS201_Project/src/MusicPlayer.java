@@ -1392,38 +1392,46 @@ public class MusicPlayer extends JPanel{
 	                    if (circle.pointable().direction().angleTo(circle.normal()) <= Math.PI/4) {
 	                        // Clockwise if angle is less than 90 degrees
 	                        clockwiseness = "clockwise";
-	                        if (myThread == null){
-	        					if (beingPlayed) {}
-	        					else {
-	        						try
-	        						{
-	        							PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
-	        							ps.setInt(1, LoggedInDriverGUI.userID);
-	        							ps.setString(2, "listen");
-	        							java.util.Date utilDate = new java.util.Date();
-	        						    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
-	        						    ps.setInt(3, musicObject.getMusicID());
-	        						    ps.setTimestamp(4, sqlDate);
-	        							ps.executeUpdate();
-	        							ps.close();
-	        							beingPlayed = true;
-	        							//update number of listens
-	        							PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_playe_count= ? " + "WHERE idmusic_table = ?");
-	        							ps1.setInt(1, musicObject.getnumberOfPlayCounts()+1);
-	        							ps1.setInt(2, musicObject.getMusicID());
-	        							ps1.executeUpdate();
-	        							ps1.close();
-	        							musicObject.setnumberOfPlayCounts(musicObject.getnumberOfPlayCounts()+1);
-	        							listens.setText("Listens: "+musicObject.getnumberOfPlayCounts());
-	        						} 
-	        						catch (SQLException e1)
-	        						{
-	        							e1.printStackTrace();
-	        						}
-	        					}
+	                        if (myThread != null)
+	        					myThread.suspend();
+	        				if (currentSong == allSongs.size()-1)
+	        				{
+	        					musicObject = allSongs.get(0);
+	        					currentSong = 0;
 	        				}
 	        				else
-	        					myThread.resume();
+	        				{
+	        					musicObject = allSongs.get(currentSong+1);
+	        					currentSong++;
+	        				}
+	        				resetStuff();
+	        				//artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
+	        				myThread = musicObject.playTheSong();
+	        				try
+	        				{
+	        					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
+	        					ps.setInt(1, LoggedInDriverGUI.userID);
+	        					ps.setString(2, "listen");
+	        					java.util.Date utilDate = new java.util.Date();
+	        				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
+	        				    ps.setInt(3, musicObject.getMusicID());
+	        				    ps.setTimestamp(4, sqlDate);
+	        					ps.executeUpdate();
+	        					ps.close();
+	        					beingPlayed = true;
+	        					//update number of listens
+	        					PreparedStatement ps1 = (PreparedStatement) ConnectionClass.conn.prepareStatement("UPDATE music_table SET numb_playe_count= ? " + "WHERE idmusic_table = ?");
+	        					ps1.setInt(1, musicObject.getnumberOfPlayCounts()+1);
+	        					ps1.setInt(2, musicObject.getMusicID());
+	        					ps1.executeUpdate();
+	        					ps1.close();
+	        					musicObject.setnumberOfPlayCounts(musicObject.getnumberOfPlayCounts()+1);
+	        					listens.setText("Listens: "+musicObject.getnumberOfPlayCounts());
+	        				} 
+	        				catch (SQLException e1)
+	        				{
+	        					e1.printStackTrace();
+	        				}
 	                    } else {
 	                        clockwiseness = "counterclockwise";
 	                        
@@ -1492,7 +1500,8 @@ public class MusicPlayer extends JPanel{
 //	                               + ", position: " + swipe.position()
 //	                               + ", direction: " + swipe.direction()
 //	                               + ", speed: " + swipe.speed());
-	                    resumeThread();
+	                    //resumeThread();
+	                    stopThread();
 	                    break;
 	                case TYPE_SCREEN_TAP:
 	                    ScreenTapGesture screenTap = new ScreenTapGesture(gesture);
@@ -1500,6 +1509,7 @@ public class MusicPlayer extends JPanel{
 //	                               + ", " + screenTap.state()
 //	                               + ", position: " + screenTap.position()
 //	                               + ", direction: " + screenTap.direction());
+	                    resumeThread();
 	                    break;
 	                case TYPE_KEY_TAP:
 	                    KeyTapGesture keyTap = new KeyTapGesture(gesture);
@@ -1507,6 +1517,7 @@ public class MusicPlayer extends JPanel{
 //	                               + ", " + keyTap.state()
 //	                               + ", position: " + keyTap.position()
 //	                               + ", direction: " + keyTap.direction());
+	                    stopThread();
 	                    break;
 	                default:
 	                    System.out.println("Unknown gesture type.");
