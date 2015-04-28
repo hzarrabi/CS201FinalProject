@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -243,50 +244,12 @@ public class IndpMusicPlayer extends JPanel{
 		comment.setPreferredSize(new Dimension(3*dim.width/5, dim.height/24));
 		jspComments.setPreferredSize(new Dimension(dim.width, 5*dim.height/24));
 		favoritePanel.setBackground(FirstPageGUI.white);
-		commentPanel.setBackground(FirstPageGUI.white);
-		comments.setBackground(FirstPageGUI.white);
+		//commentPanel.setBackground(FirstPageGUI.white);
+		//comments.setBackground(FirstPageGUI.white);
+		comments.setBackground(FirstPageGUI.darkGrey);
 		ratePanel.setBackground(FirstPageGUI.white);
 		enter.setPreferredSize(new Dimension(dim.width/5, dim.height/24));
-		String query = "SELECT * from comments_table";
-		try {
-			Statement st = ConnectionClass.conn.createStatement();
-			ResultSet rs = st.executeQuery(query);
-			int columns = rs.getMetaData().getColumnCount();
-			Vector<Integer> userIDVector = new Vector<Integer> ();
-			Vector<String> commentVector = new Vector<String> ();
-			while (rs.next())
-			{
-				int ID = 0;
-				for (int i = 1; i <= columns; i++)
-				{
-					if (i == 1)
-					{
-						userIDVector.add(rs.getInt(i));
-						//System.out.println("ID: " + rs.getInt(i));
-						ID = rs.getInt(i);
-					}
-					if (i == 2)
-					{
-						commentVector.add(rs.getString(i));
-						//System.out.println("Comment: " + rs.getString(i));
-					}
-				}
-				String query1 = "Select username from user_table where iduser_table = " + Integer.toString(ID);
-				Statement st1 = ConnectionClass.conn.createStatement();
-				ResultSet rs1 = st1.executeQuery(query1);
-				int columns1 = rs1.getMetaData().getColumnCount();
-				while (rs1.next())
-				{
-					for (int i = 1;i <=columns1; i++)
-					{
-						System.out.println("Username: " + rs1.getString(i));
-					}
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		enter.setBorder(new RoundedBorder());
 		enter.setBackground(FirstPageGUI.darkGrey);
 		enter.setForeground(FirstPageGUI.white);
@@ -393,6 +356,7 @@ public class IndpMusicPlayer extends JPanel{
 				
 			}
 		});
+		
 		comment.addKeyListener(new KeyListener()
 		{
 			public void keyPressed(KeyEvent e){}
@@ -410,12 +374,29 @@ public class IndpMusicPlayer extends JPanel{
 						ps.setInt(2, musicObject.getMusicID());
 						ps.setString(3, comment.getText());
 						ps.executeUpdate();
-						ps.close();
+						ps.close();	
 					}
 					catch (Exception E)
 					{
 						
 					}
+					JPanel outer = new JPanel();
+					outer.setLayout(new FlowLayout(FlowLayout.LEFT));
+					outer.setPreferredSize(new Dimension(dim.width/2, 9*dim.height/200));
+					JLabel name = new JLabel();
+					name.setPreferredSize(new Dimension(dim.width/24, 9*dim.height/200));
+					name.setText("@"+LoggedInDriverGUI.username+":");
+					JLabel commentLabel = new JLabel();
+					commentLabel.setPreferredSize(new Dimension(4*dim.width/12, 9*dim.height/200));
+					commentLabel.setText(comment.getText());
+					outer.add(name);
+					System.out.println("HERE  " + comment.getText());
+					outer.add(commentLabel);
+					comment.setText("");
+					comments.add(outer);
+					comments.setBackground(FirstPageGUI.darkGrey);
+					comments.revalidate();
+					comments.repaint();
                 }       
 			}
 		});
@@ -834,29 +815,51 @@ public class IndpMusicPlayer extends JPanel{
 			}
 		});
 		
-		
-		
 		enter.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try
-				{
-					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,song_id,comment)" + "VALUES (?, ?, ?)");
-					ps.setInt(1, LoggedInDriverGUI.userID);
-					ps.setInt(2, musicObject.getMusicID());
-					ps.setString(3, comment.getText());
-					ps.executeUpdate();
-					ps.close();
-				} 
-				catch (SQLException e1)
-				{
-					e1.printStackTrace();
+				if (comment.getText().length() > 20) {
+					JOptionPane.showMessageDialog(IndpMusicPlayer.this,
+							"Number of character has to be 20 or less!",
+							"Oh No!",
+							JOptionPane.ERROR_MESSAGE);
 				}
+				else {
+					try
+					{
+						PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO comments_table (user_id,song_id,comment)" + "VALUES (?, ?, ?)");
+						ps.setInt(1, LoggedInDriverGUI.userID);
+						ps.setInt(2, musicObject.getMusicID());
+						ps.setString(3, comment.getText());
+						ps.executeUpdate();
+						ps.close();
+					} 
+					catch (SQLException e1)
+					{
+						e1.printStackTrace();
+					}
+				}
+				
+				JPanel outer = new JPanel();
+				outer.setLayout(new FlowLayout(FlowLayout.LEFT));
+				outer.setPreferredSize(new Dimension(dim.width/2, 9*dim.height/200));
+				JLabel name = new JLabel();
+				name.setPreferredSize(new Dimension(4*dim.width/24, 9*dim.height/200));
+				name.setText("@"+LoggedInDriverGUI.username+":");
+				JLabel commentLabel = new JLabel();
+				commentLabel.setPreferredSize(new Dimension(2*dim.width/12, 9*dim.height/200));
+				commentLabel.setText(comment.getText());
+				outer.add(name);
+				outer.add(commentLabel);
+				comment.setText("");
+				comments.add(outer);
+				comments.revalidate();
+				comments.repaint();
 			}
 		});
 	}
-	//when a song is changed, this function resets all the information to display the info
-	//of this new song
+	
+	
 	private void resetStuff()
 	{
 		artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
@@ -865,7 +868,7 @@ public class IndpMusicPlayer extends JPanel{
 			URL imageurl = new URL(musicObject.getAlbumPath());
 			BufferedImage img = ImageIO.read(imageurl);
 			ImageIcon icon = new ImageIcon(img);
-			Image ResizedImage = icon.getImage().getScaledInstance(3*dim.width/4, 3*dim.width/4, Image.SCALE_SMOOTH);
+			Image ResizedImage = icon.getImage().getScaledInstance(dim.width/2, dim.width/2, Image.SCALE_SMOOTH);
 			album.setIcon(new ImageIcon(ResizedImage));
 		} catch (IOException e1)
 		{
@@ -900,7 +903,6 @@ public class IndpMusicPlayer extends JPanel{
 		{
 			e1.printStackTrace();
 		}
-		comments.removeAll();
 		String query = "SELECT * from comments_table WHERE song_id= " + Integer.toString(musicObject.getMusicID());
 		try {
 			Statement st = ConnectionClass.conn.createStatement();
@@ -924,7 +926,7 @@ public class IndpMusicPlayer extends JPanel{
 				while (rs1.next()){
 					JPanel outer = new JPanel();
 					outer.setLayout(new FlowLayout(FlowLayout.LEFT));
-					outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
+					outer.setPreferredSize(new Dimension(3*dim.width/4, 9*dim.height/200));
 					JLabel name = new JLabel();
 					name.setPreferredSize(new Dimension(8*dim.width/24, 9*dim.height/200));
 					name.setText("@"+rs1.getString(1)+":");
@@ -934,29 +936,32 @@ public class IndpMusicPlayer extends JPanel{
 					outer.add(name);
 					outer.add(commentLabel);
 					comments.add(outer);
+					
 				}
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//comments.setBackground(FirstPageGUI.darkGrey);
 		comments.revalidate();
 		comments.repaint();
-		
 		double rate = musicObject.getRatingSum()/musicObject.getNumberOfRatings();
 		int listens1 = musicObject.getnumberOfPlayCounts();
 		listens.setText("#Listens: "+listens1);
 		setRating(rate);
 		mainPanel.revalidate();
 		mainPanel.repaint();
+		
 	}
-	//sets the star icons for the overall rating of the song
+	
 	private void setRating(double rate)
 	{
 		rating.setText("Overall Rating: "+rate+"  ");
 		ratingPanel.removeAll();
 		ratingPanel.add(rating);
 		int i = 0;
+		//System.out.println(rate);
 		if (rate <= 1.4 && rate>.9)
 		{
 			i = 1;
@@ -979,7 +984,7 @@ public class IndpMusicPlayer extends JPanel{
 		}
 		if (i!= 0)
 		{
-			for (int j = 0; j<=i; j++)
+			for (int j = 1; j<=i; j++)
 			{
 				JLabel temp = new JLabel("");
 				temp.setIcon(new ImageIcon("data/star2.png"));
@@ -989,7 +994,12 @@ public class IndpMusicPlayer extends JPanel{
 		ratingPanel.revalidate();
 		ratingPanel.repaint();
 	}
+
 	
+	public Thread getCurrentThread()
+	{
+		return myThread;
+	}
 	//removes the current panel (this is for tabbedPane functionality)
 	private void removePanel()
 	{

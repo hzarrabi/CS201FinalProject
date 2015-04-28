@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import java.sql.Statement;
 import java.util.Arrays;
 import java.util.Vector;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -61,6 +63,7 @@ public class LoggedInDriverGUI extends JFrame{
 	private JPanel currentGUI;
 	private JPanel previousGUI;
 	private JButton refreshButton;
+	private JPanel feedPanel;
 	
 	//this is a either a ProfileGUI or a IndpMusicPlayer
 	private JPanel tempGUI;
@@ -88,29 +91,37 @@ public class LoggedInDriverGUI extends JFrame{
 	private IndpMusicPlayer currentPlayer;
 	//private FirstPageGUI firstPage;
 	private int currentPanelNum;
+	JLabel wholeScreen;
 	
 	public LoggedInDriverGUI(int userID)
 	{		
 		super("Home Screen");
 		this.userID=userID;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
+//		wholeScreen = new JLabel();
+//		wholeScreen.setPreferredSize(new Dimension(dim.width/3, dim.height-100));
+//		ImageIcon load = new ImageIcon("data/loginLoader.gif");
+//		//Image img2 = load.getImage().getScaledInstance(dim.width/3, dim.height-100, Image.SCALE_SMOOTH);
+//		//profilePic = new ImageIcon(img2);
+//		wholeScreen.setIcon(load);
+//		add(wholeScreen);
 		dim = new Dimension(dim.width, dim.height-100);
-		testField = new JTextField();
+//		testField = new JTextField();
 		//this.firstPage = firstPage;
 		loading = new JLabel("");
-		loading.setPreferredSize(new Dimension(9*dim.width/32, 4*dim.height/5));
-		loading.setIcon(new ImageIcon("data/loading4.gif"));
-		mainPanel = new JPanel();
+		loading.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
+		loading.setIcon(new ImageIcon("data/LOADFEEDSLOW.gif"));
+	mainPanel = new JPanel();
 		mainPanel.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
 		myColor = FirstPageGUI.color;
-		mainPanel.setBackground(FirstPageGUI.darkGrey);
-		mainPanel.add(loading, BorderLayout.CENTER);
-		add(mainPanel, BorderLayout.CENTER);
-		setBackground(FirstPageGUI.darkGrey);
-		setBounds(0,0,dim.width/3, dim.height);
-		setResizable(false);
-		setSize(dim.width/3, dim.height);
-		setVisible(true);
+//		mainPanel.setBackground(FirstPageGUI.darkGrey);
+//		mainPanel.add(loading, BorderLayout.CENTER);
+//		add(mainPanel, BorderLayout.CENTER);
+//		setBackground(FirstPageGUI.darkGrey);
+//		setBounds(0,0,dim.width/3, dim.height);
+//		setResizable(false);
+//		setSize(dim.width/3, dim.height);
+		setVisible(false);
 		try{
 			sharedMusicLibrary = new MusicLibrary();
 		}catch(Exception e){
@@ -119,7 +130,6 @@ public class LoggedInDriverGUI extends JFrame{
 
 		//connect();
 		initializeComponents();
-		createGUI();
 		setEventHandlers();
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
@@ -162,16 +172,32 @@ public class LoggedInDriverGUI extends JFrame{
 		mpgButton = new JButton();
 		feedButton = new JButton();
 		searchButton = new JButton();
+		feedPanel = new JPanel();
+		feedPanel.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
+		feedPanel.setLayout(new BoxLayout(feedPanel, BoxLayout.Y_AXIS));
+		feedPanel.setBorder(null);
+		feedPanel.setBackground(FirstPageGUI.darkGrey);
+		refreshButton = new JButton();
+		JPanel temp = new JPanel();
+		temp.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		temp.setPreferredSize(new Dimension(dim.width/3, dim.height/18));
+		temp.add(refreshButton);
+		temp.setBackground(FirstPageGUI.darkGrey);
+		refreshButton.setOpaque(false);
+		refreshButton.setContentAreaFilled(false);
+		refreshButton.setBorderPainted(false);
+		refreshButton.setIcon(new ImageIcon("data/refreshButton.png"));
+		feedPanel.add(temp, BorderLayout.NORTH);
+		
 		fg = new FeedGUI(this, new Dimension(dim.width/3, dim.height), new Dimension(dim.width/3, 31*dim.height/40));
 		fgScroll = new JScrollPane(fg, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, 
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		fgScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
 		fgScroll.setBackground(FirstPageGUI.darkGrey);
+		fgScroll.setBorder(null);
 		fgScroll.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
-		
+		feedPanel.add(fgScroll);
 		setVisible(true);
-		testField.setPreferredSize(new Dimension(dim.width/3, dim.height/2));
-		testField.setEditable(true);
 		//mainPanel.setBackground(FirstPageGUI.color);
 		trgButton.setIcon(new ImageIcon("data/star1.png"));
 		tlgButton.setIcon(new ImageIcon("data/head1.png"));
@@ -225,7 +251,7 @@ public class LoggedInDriverGUI extends JFrame{
 		tlg = new TopListenedGUI(this, new Dimension(6*dim.width/96, dim.height), new Dimension(11*dim.width/48, 38*dim.height/40), false);
 		mpg = new ProfileGUI(this, new Dimension(dim.width/3, 37*dim.height/40), "current user", userID);
 		searchGUI = new SearchGUI(new Dimension(dim.width/3, 35*dim.height/40), userID, ConnectionClass.conn, this);
-
+		//new StartThread().start();
 		trgScroll = new JScrollPane(trg);
 		trgScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
 		tlgScroll = new JScrollPane(tlg);
@@ -248,13 +274,27 @@ public class LoggedInDriverGUI extends JFrame{
 		logout.setFont(FirstPageGUI.smallFont);
 		bottomColor.add(logout);
 		logout.setOpaque(true);
-		tlgButton.setEnabled(false);
-		trgButton.setEnabled(false);
-		mpgButton.setEnabled(false);
-		feedButton.setEnabled(false);
-		searchButton.setEnabled(false);
+//		tlgButton.setEnabled(false);
+//		trgButton.setEnabled(false);
+//		mpgButton.setEnabled(false);
+//		feedButton.setEnabled(false);
+//		searchButton.setEnabled(false);
+		fg.make();
+		mpg.make();
+		username = mpg.getName();
+		trg.fillButtons();
+		tlg.fillButtons();
+		musicPlayerTopRated = trg.initPlayer();
+		musicPlayerTopListened = tlg.initPlayer();
+		mainPanel.setBackground(FirstPageGUI.color);
+		mainPanel.add(feedPanel, BorderLayout.CENTER);
+		createGUI();
 		//bottomColor.add(notifications);
 		//mainPanel.setBackground(FirstPageGUI.color);
+	}
+	
+	public void startGUI(){
+		new StartThread().start();
 	}
 	
 	class StartThread extends Thread{
@@ -266,16 +306,18 @@ public class LoggedInDriverGUI extends JFrame{
 			tlg.fillButtons();
 			musicPlayerTopRated = trg.initPlayer();
 			musicPlayerTopListened = tlg.initPlayer();
-			mainPanel.remove(loading);
-			mainPanel.setBackground(FirstPageGUI.color);
-			mainPanel.add(fgScroll, BorderLayout.CENTER);
 			tlgButton.setEnabled(true);
 			trgButton.setEnabled(true);
 			mpgButton.setEnabled(true);
 			feedButton.setEnabled(true);
 			searchButton.setEnabled(true);
-			mainPanel.revalidate();
-			mainPanel.repaint();
+			mainPanel.remove(loading);
+			remove(wholeScreen);
+			mainPanel.setBackground(FirstPageGUI.color);
+			mainPanel.add(feedPanel, BorderLayout.CENTER);
+			revalidate();
+			repaint();
+			createGUI();
 		}
 	}
 	
@@ -284,7 +326,7 @@ public class LoggedInDriverGUI extends JFrame{
 			fg.refresh();
 			mainPanel.remove(loading);
 			mainPanel.setBackground(FirstPageGUI.color);
-			mainPanel.add(fgScroll, BorderLayout.CENTER);
+			mainPanel.add(feedPanel, BorderLayout.CENTER);
 			mainPanel.revalidate();
 			mainPanel.repaint();
 		}
@@ -316,7 +358,6 @@ public class LoggedInDriverGUI extends JFrame{
 		setBounds(0,0,dim.width/3, dim.height);
 		setResizable(false);
 		setVisible(true);
-		new StartThread().start();
 	}
 	
 	private void setEventHandlers()
@@ -476,18 +517,23 @@ public class LoggedInDriverGUI extends JFrame{
 			}
 		});
 		
-//		refreshButton.addActionListener(new ActionListener(){
-//			public void actionPerformed(ActionEvent e) {
-//				
-//			}
-//		});
+		refreshButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				mainPanel.remove(feedPanel);
+				mainPanel.setBackground(FirstPageGUI.darkGrey);
+				mainPanel.add(loading);
+				mainPanel.revalidate();
+				mainPanel.repaint();
+				new RefreshThread().start();
+			}
+		});
 	}
 	
 	private void removePanel()
 	{
 			if (currentJpanel == 0) 
 			{
-				mainPanel.remove(fgScroll);
+				mainPanel.remove(feedPanel);
 			}
 			else if (currentJpanel == 1)
 				mainPanel.remove(mpg);

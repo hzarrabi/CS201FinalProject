@@ -62,7 +62,9 @@ public class FirstPageGUI extends JFrame{
 	private JPanel topColor;
 	private JLabel incorrectInput;
 	private Font newfont;
+	JLabel wholeScreen;
 	private JLayeredPane pane;
+	JPanel mainPanel;
 	private JPanel main = new JPanel();
 	final static Color color = new Color(0x0AB2D8);
 	final static Color white = new Color(0xf7f7f7);
@@ -73,6 +75,7 @@ public class FirstPageGUI extends JFrame{
 	final static Font font = new Font("Helvetica Neue", Font.PLAIN, 18);
 	final static Font smallFont = new Font("Helvetica Neue", Font.PLAIN, 14);
 	final static Font smallFontBold = new Font("Helvetica Neue", Font.BOLD, 14);
+	final static Font fontBold = new Font("Helvetica Neue", Font.BOLD, 18);
 	final static Font fontTitle = new Font("Helvetica Neue", Font.PLAIN, 24);
 	final static Font smallerFont = new Font("Helvetica Neue", Font.PLAIN, 12);
 	
@@ -173,7 +176,7 @@ public class FirstPageGUI extends JFrame{
 		main.add(newUser);
 		main.add(createNewUser);
 		main.add(guest);
-		JPanel mainPanel = new JPanel();
+		mainPanel = new JPanel();
 		mainPanel.add(main, BorderLayout.CENTER);
 		incorrectInput = new JLabel("");
 		incorrectInput.setHorizontalAlignment(SwingConstants.CENTER);
@@ -340,6 +343,18 @@ public class FirstPageGUI extends JFrame{
 		});
 	}
 	
+	class MyThread extends Thread{
+		
+		private int id;
+		public MyThread(int id)
+		{
+			this.id = id;
+		}
+		public void run(){
+			new LoggedInDriverGUI(id);
+			dispose();
+		}
+	}
 	//this is the function that logs us in
 	public void loginAction() {
 		//FirstPageGUI.this.removeAll();
@@ -353,12 +368,28 @@ public class FirstPageGUI extends JFrame{
 			ResultSet rs = stat.executeQuery(sql);
 			if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
             {
-				new LoggedInDriverGUI(rs.getInt("iduser_table"));
+				//JPanel p = new LoggedInDriverGUI(rs.getInt("iduser_table"));
 				//System.out.println(rs.getInt("iduser_table"));
-				stat.close();
 				//conn.close();
 				//setVisible(false);
-				dispose();
+				remove(topColor);
+				remove(mainPanel);
+				remove(bottomColor);
+				revalidate();
+				repaint();
+				wholeScreen = new JLabel();
+				wholeScreen.setPreferredSize(new Dimension(dim.width/3, dim.height-100));
+				ImageIcon load = new ImageIcon("data/LOAD.gif");
+				//Image img2 = load.getImage().getScaledInstance(dim.width/3, dim.height-100, Image.SCALE_SMOOTH);
+				//profilePic = new ImageIcon(img2);
+				wholeScreen.setIcon(load);
+				add(wholeScreen);
+				revalidate();
+				repaint();
+				int id = rs.getInt("iduser_table");
+				new MyThread(id).start();
+				//dispose();
+				stat.close();
             }
             else
             {
@@ -372,6 +403,7 @@ public class FirstPageGUI extends JFrame{
 	}
 	
 	public void loginAction(ActionEvent e) {
+		removeAll();
 		String theUserName=userName.getText();
 		String thePassword=PasswordHash.hash(password.getText());//returning the password hashed
 		try
@@ -381,11 +413,21 @@ public class FirstPageGUI extends JFrame{
 			ResultSet rs = stat.executeQuery(sql);
 			if (rs.next() && theUserName.equals(rs.getString("username")) && thePassword.equals(rs.getString("password")))
             {
-				new LoggedInDriverGUI(rs.getInt("iduser_table"));
+				//JPanel p = new LoggedInDriverGUI(rs.getInt("iduser_table"));
 				stat.close();
+				removeAll();
 				//conn.close();
 				//setVisible(false);
-				dispose();
+//				wholeScreen = new JLabel();
+//				wholeScreen.setPreferredSize(new Dimension(dim.width/3, dim.height-100));
+//				ImageIcon load = new ImageIcon("data/loginLoader.gif");
+//				//Image img2 = load.getImage().getScaledInstance(dim.width/3, dim.height-100, Image.SCALE_SMOOTH);
+//				//profilePic = new ImageIcon(img2);
+//				wholeScreen.setIcon(load);
+//				add(wholeScreen);
+				revalidate();
+				repaint();
+				//dispose();
             }
             else
             {
