@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -446,7 +447,7 @@ public class MusicPlayer extends JPanel{
 					outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
 					JLabel name = new JLabel();
 					name.setPreferredSize(new Dimension(8*dim.width/24, 9*dim.height/200));
-					name.setText(LoggedInDriverGUI.username);
+					name.setText("@"+LoggedInDriverGUI.username+":");
 					JLabel commentLabel = new JLabel();
 					commentLabel.setPreferredSize(new Dimension(4*dim.width/12, 9*dim.height/200));
 					commentLabel.setText(comment.getText());
@@ -1017,7 +1018,7 @@ public class MusicPlayer extends JPanel{
 				outer.setPreferredSize(new Dimension(2*dim.width/2, 9*dim.height/200));
 				JLabel name = new JLabel();
 				name.setPreferredSize(new Dimension(8*dim.width/24, 9*dim.height/200));
-				name.setText(LoggedInDriverGUI.username);
+				name.setText("@"+LoggedInDriverGUI.username+":");
 				JLabel commentLabel = new JLabel();
 				commentLabel.setPreferredSize(new Dimension(4*dim.width/12, 9*dim.height/200));
 				commentLabel.setText(comment.getText());

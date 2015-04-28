@@ -38,6 +38,7 @@ public class FeedGUI extends JPanel{
 	private ImageIcon emptyStar;
 	private ImageIcon clockIcon;
 	private Dimension forProfile;
+	
 	public FeedGUI(LoggedInDriverGUI lidg, Dimension d, Dimension forProfile)
 	{
 		mainPage = lidg;

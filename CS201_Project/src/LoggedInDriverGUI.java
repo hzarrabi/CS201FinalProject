@@ -60,6 +60,7 @@ public class LoggedInDriverGUI extends JFrame{
 	static String username;
 	private JPanel currentGUI;
 	private JPanel previousGUI;
+	private JButton refreshButton;
 	
 	//this is a either a ProfileGUI or a IndpMusicPlayer
 	private JPanel tempGUI;
@@ -457,6 +458,12 @@ public class LoggedInDriverGUI extends JFrame{
 					new FirstPageGUI();	
 				}
 				if (n==1) {}
+			}
+		});
+		
+		refreshButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 	}
