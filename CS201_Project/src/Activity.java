@@ -15,12 +15,6 @@ public class Activity implements Comparable<Activity>{
 		activity_id = activID;
 		user_id = userID;
 		song_id = songID;
-		String [] args = desc.split(" ");
-		desc = args[0];
-		if (args.length > 1)
-		{
-			rate = Integer.parseInt(args[1]);
-		}
 		description = desc;
 		timestamp = time;
 	}

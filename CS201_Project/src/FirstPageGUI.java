@@ -379,7 +379,7 @@ public class FirstPageGUI extends JFrame{
 				repaint();
 				wholeScreen = new JLabel();
 				wholeScreen.setPreferredSize(new Dimension(dim.width/3, dim.height-100));
-				ImageIcon load = new ImageIcon("data/LOAD.gif");
+				ImageIcon load = new ImageIcon("data/LOADSLOW.gif");
 				//Image img2 = load.getImage().getScaledInstance(dim.width/3, dim.height-100, Image.SCALE_SMOOTH);
 				//profilePic = new ImageIcon(img2);
 				wholeScreen.setIcon(load);

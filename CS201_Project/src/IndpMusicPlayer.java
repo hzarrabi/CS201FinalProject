@@ -564,7 +564,7 @@ public class IndpMusicPlayer extends JPanel{
 				{
 					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
 					ps.setInt(1, LoggedInDriverGUI.userID);
-					ps.setString(2, "rate 1");
+					ps.setString(2, "rate");
 					java.util.Date utilDate = new java.util.Date();
 				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
 				    ps.setInt(3, musicObject.getMusicID());
@@ -607,7 +607,7 @@ public class IndpMusicPlayer extends JPanel{
 				{
 					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
 					ps.setInt(1, LoggedInDriverGUI.userID);
-					ps.setString(2, "rate 2");
+					ps.setString(2, "rate");
 					java.util.Date utilDate = new java.util.Date();
 				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
 				    ps.setInt(3, musicObject.getMusicID());
@@ -650,7 +650,7 @@ public class IndpMusicPlayer extends JPanel{
 				{
 					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
 					ps.setInt(1, LoggedInDriverGUI.userID);
-					ps.setString(2, "rate 3");
+					ps.setString(2, "rate");
 					java.util.Date utilDate = new java.util.Date();
 				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
 				    ps.setInt(3, musicObject.getMusicID());
@@ -693,7 +693,7 @@ public class IndpMusicPlayer extends JPanel{
 				{
 					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
 					ps.setInt(1, LoggedInDriverGUI.userID);
-					ps.setString(2, "rate 4");
+					ps.setString(2, "rate");
 					java.util.Date utilDate = new java.util.Date();
 				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
 				    ps.setInt(3, musicObject.getMusicID());
@@ -736,7 +736,7 @@ public class IndpMusicPlayer extends JPanel{
 				{
 					PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("INSERT INTO activity_feed (user_id,description,song_id,time_stamp)" + "VALUES (?, ?, ?, ?)");
 					ps.setInt(1, LoggedInDriverGUI.userID);
-					ps.setString(2, "rate 5");
+					ps.setString(2, "rate");
 					java.util.Date utilDate = new java.util.Date();
 				    java.sql.Timestamp sqlDate = new java.sql.Timestamp(utilDate.getTime());
 				    ps.setInt(3, musicObject.getMusicID());

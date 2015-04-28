@@ -160,7 +160,7 @@ public class FeedGUI extends JPanel{
 		
 		if (act.getDescription().equals("rate"))
 		{
-			JLabel des = new JLabel(" gave ");
+			JLabel des = new JLabel(" rated ");
 			des.setFont(FirstPageGUI.smallFont);
 			des.setForeground(FirstPageGUI.white);
 			JLabel user = new JLabel(username);
@@ -169,7 +169,7 @@ public class FeedGUI extends JPanel{
 			JLabel songN = new JLabel(model.getSongName());
 			songN.setFont(FirstPageGUI.smallFontBold);
 			songN.setForeground(FirstPageGUI.white);
-			JLabel des2 = new JLabel(" by "+model.getArtistName() + " a rating of " +act.getRate());
+			JLabel des2 = new JLabel(" by "+model.getArtistName());
 			des2.setFont(FirstPageGUI.smallFont);
 			des2.setForeground(FirstPageGUI.white);
 			description.add(user);
@@ -197,7 +197,7 @@ public class FeedGUI extends JPanel{
 			description.add(songN);
 			description.add(des2);
 		}
-		else 
+		else if (act.getDescription().equals("favorite"))
 		{
 			//description.setText(username + " listened to "+model.getSongName()+ " by "+model.getArtistName());
 			JLabel des = new JLabel(" listened to ");
