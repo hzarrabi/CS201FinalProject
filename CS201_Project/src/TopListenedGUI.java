@@ -20,12 +20,15 @@ import com.mysql.jdbc.PreparedStatement;
 public class TopListenedGUI extends TopGUI{
 	private JButton currentButton;
 	private Dimension d;
-	public TopListenedGUI(LoggedInDriverGUI main, Dimension d, Dimension dimPlayer)
+	private Boolean isGuest;
+	private MusicLibrary library;
+	public TopListenedGUI(LoggedInDriverGUI main, Dimension d, Dimension dimPlayer, Boolean isGuest)
 	{
 		super();
 		this.setPreferredSize(d);
 		this.mainPage = main;
 		this.d = d;
+		this.isGuest = isGuest;
 		this.dimPlayer = dimPlayer;
 		this.setBackground(FirstPageGUI.darkGrey);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -34,49 +37,39 @@ public class TopListenedGUI extends TopGUI{
 		//addEventHandlers();
 	}
 	
-	public TopListenedGUI( Dimension d, Dimension playerDim)
+	public TopListenedGUI( Dimension d, Dimension playerDim, Boolean isGuest)
 	{
 		super();
+		try {
+			library = new MusicLibrary();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.setPreferredSize(d);
 		this.d = d;
+		this.isGuest = isGuest;
 		this.setBackground(FirstPageGUI.darkGrey);
 		dimPlayer = playerDim;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		fillButtonsGuest();
+		fillButtons();
 
 		//addEventHandlers();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
-	
-	public void fillButtonsGuest()
-	{
-		ArrayList<MusicModel> topSongs = GuestGUI.sharedMusicLibrary.getTopListenedSongs();
-		songs = topSongs;
-		for (int j = 0; j< topSongs.size(); j++){
-			MusicModel entry = topSongs.get(j);
-			JButton newButton = new JButton(entry.getSongName());
-			newButton.setFont(FirstPageGUI.smallFont);
-			newButton.setPreferredSize(new Dimension(4*d.width/5, d.height/30));
-			newButton.setBorder(new RoundedBorder());
-			newButton.setBackground(FirstPageGUI.darkGrey);
-			newButton.setForeground(FirstPageGUI.white);
-			newButton.setOpaque(true);
-			buttons.add(newButton);	
-			//songs.add(entry);
-		}
-		for (int i = 0; i<topSongs.size(); i++){
-			this.add(buttons.get(i));	
-			//System.out.println(i);
-		}
-		JButton firstButton = buttons.get(0);
-		currentButton = firstButton;
-		currentButton.setForeground(FirstPageGUI.darkGrey);
-		currentButton.setBackground(FirstPageGUI.white);
-	}
+
 	
 	public void fillButtons() {
 		
-		ArrayList<MusicModel> topSongs = LoggedInDriverGUI.sharedMusicLibrary.getTopListenedSongs();
+		ArrayList<MusicModel> topSongs;
+		if (isGuest)
+		{
+			topSongs = library.getTopListenedSongs();
+		}
+		else
+		{
+			topSongs = LoggedInDriverGUI.sharedMusicLibrary.getTopListenedSongs();
+		}
 		songs = topSongs;
 		for (int j = 0; j< topSongs.size(); j++){
 			MusicModel entry = topSongs.get(j);
@@ -126,7 +119,7 @@ public class TopListenedGUI extends TopGUI{
 	
 	public MusicPlayer initPlayer()
 	{
-		myPlayer = new MusicPlayer(dimPlayer, buttons, songs, currentSong);
+		myPlayer = new MusicPlayer(dimPlayer, buttons,isGuest,  songs, currentSong);
 		return myPlayer;
 	}
 

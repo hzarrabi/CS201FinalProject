@@ -91,33 +91,16 @@ public class MusicPlayer extends JPanel{
 	private JLabel listens;
 	private JPanel ratingPanel;
 	JPanel mainPanel;
-	
+	private Boolean isGuest;
 	private boolean beingPlayed = false;
 	private boolean getComments = false;
-	
-	public MusicPlayer(Dimension d, ArrayList<JButton> buttons, ArrayList<MusicModel> songs, int currentSong)
-	{
-		this.currentSong = currentSong;
-		this.allButtons = buttons;
-		dim = d;
-		this.allSongs = songs;
-		emptyStar = new ImageIcon("data/starOutline.png");
-		fullStar = new ImageIcon("data/starFullBlack.png");
-		musicObject = allSongs.get(currentSong);
-		songName = musicObject.getSongName();
-		initializeComponents();
-		createUserGUI();
-		setEventHandlers();
-		setVisible(true);
-		repaint();
 
-	}
-	
 	public MusicPlayer(Dimension d, ArrayList<JButton> buttons, Boolean b, ArrayList<MusicModel> songs, int currentSong)
 	{
 		this.currentSong = currentSong;
 		this.allButtons = buttons;
 		dim = d;
+		isGuest = b;
 		this.allSongs = songs;
 		emptyStar = new ImageIcon("data/starOutline.png");
 		fullStar = new ImageIcon("data/starFullBlack.png");
@@ -223,7 +206,10 @@ public class MusicPlayer extends JPanel{
 		favoriteButton.setPreferredSize(new Dimension(dim.width/5, 5*dim.height/93));
 		
 		buttonPanel.add(commentButton);
-		buttonPanel.add(favoriteButton);
+		if (!isGuest)
+		{
+			buttonPanel.add(favoriteButton);
+		}
 		buttonPanel.add(rateButton);
 		
 		JPanel bottomPanel = new JPanel();
@@ -368,7 +354,10 @@ public class MusicPlayer extends JPanel{
 		other.add(enter, BorderLayout.WEST);
 		other.add(comment, BorderLayout.EAST);
 		commentPanel.add(jspComments, BorderLayout.CENTER);
-		commentPanel.add(other, BorderLayout.SOUTH);
+		if (!isGuest)
+		{
+			commentPanel.add(other, BorderLayout.SOUTH);
+		}
 
 		JPanel tabPanel = new JPanel();
 		
@@ -1223,145 +1212,6 @@ public class MusicPlayer extends JPanel{
 	}
 	
 	
-	private void initializeComponentsGuest(){
-		this.setSize(dim);
-		currentPanel = 0;
-		album = new JLabel("");
-		album.setPreferredSize(new Dimension(3*dim.width/4, 3*dim.width/4));
-		favoritePanel = new JPanel();
-		commentPanel = new JPanel();
-		
-		ratePanel = new JPanel();
-		comments = new JPanel();
-		comment = new JTextField("comment");
-		enter = new JButton("Enter");
-		jspComments = new JScrollPane(comments);
-		ratingButtons = new ArrayList<JButton>();
-		setPreferredSize(new Dimension(dim.width, dim.height));
-		
-		try {
-            URL imageurl = new URL(musicObject.getAlbumPath());
-            BufferedImage img = ImageIO.read(imageurl);
-            ImageIcon icon = new ImageIcon(img);
-            Image ResizedImage = icon.getImage().getScaledInstance(3*dim.width/4, 3*dim.width/4, Image.SCALE_SMOOTH);
-            album.setIcon(new ImageIcon(ResizedImage));
-         } catch (IOException e) {
-            e.printStackTrace();
-         }
-		
-		
-		artist = new JLabel(musicObject.getSongName() + " "+musicObject.getArtistName());
-		artist.setPreferredSize(new Dimension(dim.width-10, dim.height/26));
-		ratingPanel = new JPanel();
-		ratingPanel.setPreferredSize(new Dimension(dim.width-10, dim.height/20));
-		ratingPanel.setBackground(FirstPageGUI.white);
-		rating = new JLabel("Overall Rating: ");
-		ratingPanel.add(rating);
-		listens = new JLabel("# of listens");
-		listens.setPreferredSize(new Dimension(dim.width-10, dim.height/26));
-		listens.setFont(FirstPageGUI.smallFont);
-		listens.setForeground(FirstPageGUI.darkGrey);
-		listens.setHorizontalAlignment(SwingConstants.CENTER);
-
-		backButton = new JButton();
-		
-		playButton = new JButton();
-		forwardButton = new JButton();
-		pauseButton = new JButton();
-
-		rateButton = new JButton();
-		commentButton = new JButton();
-		favoriteButton = new JButton();
-	}
-	
-	private void createGuestGUI()
-	{
-		setBackground(FirstPageGUI.white);
-		JPanel buttonPanel = new JPanel();
-		//buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width/50, dim.height));
-		buttonPanel.setPreferredSize(new Dimension(dim.width, 6*dim.height/93));
-		buttonPanel.setBackground(FirstPageGUI.green);
-		
-		commentButton.setOpaque(false);
-		commentButton.setContentAreaFilled(false);
-		commentButton.setBorderPainted(false);
-		commentButton.setIcon(new ImageIcon("data/commentsSmall.png"));
-		commentButton.setPreferredSize(new Dimension(dim.width/5, 5*dim.height/93));
-		
-		rateButton.setOpaque(false);
-		rateButton.setContentAreaFilled(false);
-		rateButton.setBorderPainted(false);
-		rateButton.setIcon(new ImageIcon("data/starOutlineSmall.png"));
-		rateButton.setPreferredSize(new Dimension(dim.width/5, 5*dim.height/93));
-		
-		favoriteButton.setOpaque(false);
-		favoriteButton.setContentAreaFilled(false);
-		favoriteButton.setBorderPainted(false);
-		favoriteButton.setIcon(new ImageIcon("data/favorite_emptySmall.png"));
-		favoriteButton.setPreferredSize(new Dimension(dim.width/5, 5*dim.height/93));
-		
-		buttonPanel.add(commentButton);
-		buttonPanel.add(favoriteButton);
-		buttonPanel.add(rateButton);
-		
-		JPanel bottomPanel = new JPanel();
-		//bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width/50, dim.height));
-		bottomPanel.setPreferredSize(new Dimension(dim.width, 6*dim.height/93));
-		bottomPanel.setBackground(FirstPageGUI.green);
-	
-		backButton.setOpaque(false);
-		backButton.setContentAreaFilled(false);
-		backButton.setBorderPainted(false);
-		backButton.setIcon(new ImageIcon("data/ReverseButtonSmall.png"));
-		backButton.setPreferredSize(new Dimension(dim.width/5, 5*dim.height/93));
-		
-		playButton.setOpaque(false);
-		playButton.setContentAreaFilled(false);
-		playButton.setBorderPainted(false);
-		playButton.setIcon(new ImageIcon("data/playButtonSmall.png"));
-		playButton.setPreferredSize(new Dimension(dim.width/5, 5*dim.height/93));
-		
-		pauseButton.setOpaque(false);
-		pauseButton.setContentAreaFilled(false);
-		pauseButton.setBorderPainted(false);
-		pauseButton.setIcon(new ImageIcon("data/pauseButtonSmall.png"));
-		pauseButton.setPreferredSize(new Dimension(dim.width/5, 5*dim.height/93));
-		
-		forwardButton.setOpaque(false);
-		forwardButton.setContentAreaFilled(false);
-		forwardButton.setBorderPainted(false);
-		forwardButton.setIcon(new ImageIcon("data/forwardButtonSmall.png"));
-		forwardButton.setPreferredSize(new Dimension(dim.width/5, 5*dim.height/93));
-		
-		bottomPanel.add(backButton);
-		bottomPanel.add(playButton);
-		bottomPanel.add(pauseButton);
-		bottomPanel.add(forwardButton);
-		
-		mainPanel = new JPanel();
-		mainPanel.setBackground(FirstPageGUI.white);
-		mainPanel.setPreferredSize(new Dimension(dim.width, 50*dim.height/93));
-		mainPanel.add(album);
-		mainPanel.add(artist);
-		artist.setBackground(FirstPageGUI.white);
-		rating.setBackground(FirstPageGUI.white);
-		artist.setForeground(FirstPageGUI.darkGrey);
-		rating.setForeground(FirstPageGUI.darkGrey);
-		artist.setFont(FirstPageGUI.smallFont);
-		rating.setFont(FirstPageGUI.smallFont);
-		rating.setHorizontalAlignment(SwingConstants.CENTER);
-		artist.setHorizontalAlignment(SwingConstants.CENTER);
-		mainPanel.add(ratingPanel);
-		mainPanel.add(listens);
-		mainPanel.add(bottomPanel);
-		
-
-		resetStuff();
-		//setBackground(FirstPageGUI.green);
-		//mainPanel.setBackground(FirstPageGUI.darkGrey);
-		add(mainPanel, BorderLayout.NORTH);
-		//add(tabPanel, BorderLayout.SOUTH);
-	}
 	///////////////========================================================================START
 	class SampleListener extends Listener {
 	    public void onInit(Controller controller) {
@@ -1597,5 +1447,5 @@ public class MusicPlayer extends JPanel{
 	        controller.removeListener(listener);
 	    }
 	}
-	
+
 }

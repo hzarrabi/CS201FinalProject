@@ -1,3 +1,4 @@
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,81 +9,89 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.SwingConstants;
 
 
 public class GuestGUI extends JFrame{
-	
-	private JTabbedPane jtp;
 	private Dimension dim;
 	private TopRatedGUI trg;
 	private TopListenedGUI tlg;
-	private JLabel title;
 	private JButton logout;
-	private JPanel titlePanel;
-	JPanel bottomColor;
-	static MusicLibrary sharedMusicLibrary;
-	private int currentJpanel;
-	private Color myColor;
+	private Thread currentSongThread;
+	//private JLabel notifications;
+	private JScrollPane trgScroll;
+	private JScrollPane tlgScroll;
+	private JPanel buttonPanel;
 	private JPanel mainPanel;
 	private JButton trgButton;
 	private JButton tlgButton;
-	private JComponent buttonPanel;
+	private int currentJpanel;
+	private Color myColor;
+	JPanel bottomColor;
 	private MusicPlayer musicPlayerTopRated;
 	private MusicPlayer musicPlayerTopListened;
-	private JScrollPane trgScroll;
-	private JScrollPane tlgScroll;
+	private int currentPanelNum;
 	
-	public GuestGUI(Dimension d)
-	{
-		dim = d;
-//this.firstPage = firstPage;
+	public GuestGUI()
+	{		
+		super("Guest Screen");
+		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		dim = new Dimension(dim.width, dim.height-100);
+		mainPanel = new JPanel();
+		mainPanel.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
+		myColor = FirstPageGUI.color;
+		mainPanel.setBackground(FirstPageGUI.color);
+		initializeComponents();
+		createGUI();
+		setEventHandlers();
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter(){
 
 			@Override
 			public void windowClosing(WindowEvent e) {
 				//firstPage.setVisible(true);
-				new FirstPageGUI();
-				
-				GuestGUI.this.dispose();	
+				Object[] options = {"Yes",
+                	"No"};
+				int n = JOptionPane.showOptionDialog(GuestGUI.this,
+			    "Would you like to logout?",
+			    "",
+			    JOptionPane.OK_CANCEL_OPTION,
+			    JOptionPane.QUESTION_MESSAGE,
+			    null,
+			    options,
+			    options[0]);
+				if (n==0) {
+					MusicPlayer.stopThread();
+					new FirstPageGUI();
+					GuestGUI.this.dispose();
+				}
+				if (n==1) {}
 			}
 
 		});
-		try{
-			sharedMusicLibrary = new MusicLibrary();
-		}catch(Exception e){
-			
-		}
-		initializeComponents();
-		createGUI();
-		setEventHandlers();
-		setBounds(0,0,dim.width, dim.height);
-		setVisible(true);
+		setBounds(0,0,dim.width/3, dim.height);
 		setResizable(false);
+		setVisible(true);
 	}
 	
 	private void initializeComponents()
 	{
 		currentJpanel = 0;
-		myColor = FirstPageGUI.color;
-		mainPanel = new JPanel();
-		mainPanel.setPreferredSize(new Dimension(dim.width, 35*dim.height/40));
 		trgButton = new JButton();
 		tlgButton = new JButton();
+		//mainPanel.setBackground(FirstPageGUI.color);
 		trgButton.setIcon(new ImageIcon("data/star1.png"));
 		tlgButton.setIcon(new ImageIcon("data/head1.png"));
-		trgButton.setPreferredSize(new Dimension(dim.width/6, dim.height/16));
-		tlgButton.setPreferredSize(new Dimension(dim.width/6, dim.height/16));
+		trgButton.setDisabledIcon(new ImageIcon("data/star1.png"));
+		tlgButton.setDisabledIcon(new ImageIcon("data/head1.png"));
+		trgButton.setPreferredSize(new Dimension(dim.width/18, dim.height/16));
+		tlgButton.setPreferredSize(new Dimension(dim.width/18, dim.height/16));
 		tlgButton.setBackground(myColor);
 		tlgButton.setOpaque(false);
 		tlgButton.setContentAreaFilled(false);
@@ -91,63 +100,67 @@ public class GuestGUI extends JFrame{
 		trgButton.setOpaque(false);
 		trgButton.setContentAreaFilled(false);
 		trgButton.setBorderPainted(false);
-		
 		logout = new JButton("Logout");
-		buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, dim.width/4, dim.height/90));
-		buttonPanel.setPreferredSize(new Dimension(dim.width, 3*dim.height/40));
+		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, dim.width/10, dim.height/100));
+
 		buttonPanel.setBackground(myColor);
 		buttonPanel.add(tlgButton);
-		
 		buttonPanel.add(trgButton);
 
-		trg = new TopRatedGUI(new Dimension(6*dim.width/32, 25*dim.height/40), new Dimension(11*dim.width/16, 25*dim.height/40));
-		tlg = new TopListenedGUI(new Dimension(6*dim.width/32, 25*dim.height/40), new Dimension(11*dim.width/16, 25*dim.height/40));
-
-		musicPlayerTopRated = trg.initPlayer();
-		musicPlayerTopListened = tlg.initPlayer();
+		trg = new TopRatedGUI(new Dimension(6*dim.width/96, dim.height), new Dimension(11*dim.width/48, 38*dim.height/40), true);
+		tlg = new TopListenedGUI(new Dimension(6*dim.width/96, dim.height), new Dimension(11*dim.width/48, 38*dim.height/40), true);
 
 		trgScroll = new JScrollPane(trg);
+		trgScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
 		tlgScroll = new JScrollPane(tlg);
-		trgScroll.setPreferredSize(new Dimension(18*dim.width/64, 25*dim.height/40));
-		tlgScroll.setPreferredSize(new Dimension(18*dim.width/64, 25*dim.height/40));
+		tlgScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
+		trgScroll.setPreferredSize(new Dimension(18*dim.width/192, 38*dim.height/40));
+		tlgScroll.setPreferredSize(new Dimension(18*dim.width/192, 38*dim.height/40));
+//		fgScroll.setPreferredSize(new Dimension(dim.width/3, 35*dim.height/40));
 		trgScroll.setBorder(null);
 		tlgScroll.setBorder(null);
-		mainPanel.add(tlgScroll, BorderLayout.WEST);
-		mainPanel.add(musicPlayerTopListened, BorderLayout.CENTER);
+		//mainPanel.add(trgScroll, BorderLayout.CENTER);
 		bottomColor = new JPanel();
-		bottomColor.setPreferredSize(new Dimension(dim.width, dim.height/20));
+		bottomColor.setPreferredSize(new Dimension(dim.width/3, dim.height/20));
 		bottomColor.setBackground(myColor);
+		logout.setBorder(new RoundedBorder());
+		logout.setBackground(FirstPageGUI.darkGrey);
+		logout.setForeground(FirstPageGUI.white);
+		logout.setFont(FirstPageGUI.smallFont);
 		bottomColor.add(logout);
-		mainPanel.setBackground(FirstPageGUI.white);
+		logout.setOpaque(true);
+		trg.fillButtons();
+		tlg.fillButtons();
+		musicPlayerTopRated = trg.initPlayer();
+		musicPlayerTopListened = tlg.initPlayer();
+		mainPanel.add(tlgScroll, BorderLayout.WEST);
+		mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
 	}
 	
 	private void createGUI()
 	{
-		setLayout(new FlowLayout());
 		add(buttonPanel, BorderLayout.NORTH);
 		add(mainPanel, BorderLayout.CENTER);
 		add(bottomColor, BorderLayout.SOUTH);
+		setBounds(0,0,dim.width/3, dim.height);
+		setResizable(false);
+		setVisible(true);
 	}
 	
 	private void setEventHandlers()
 	{
-		logout.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				dispose();
-				new FirstPageGUI();
-			}
-		});
 		
 		trgButton.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removePanel();
-				mainPanel.add(trgScroll, BorderLayout.WEST);
-				mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
-				currentJpanel = 1;
-	            mainPanel.revalidate();
-	            mainPanel.repaint();
+					removePanel();
+					musicPlayerTopRated = trg.refresh();
+					mainPanel.add(trgScroll, BorderLayout.WEST);
+					mainPanel.add(musicPlayerTopRated, BorderLayout.EAST);
+					currentJpanel = 1;
+		            mainPanel.revalidate();
+		            mainPanel.repaint();
+				
 			}
 		});
 		
@@ -155,28 +168,55 @@ public class GuestGUI extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				removePanel();
-				mainPanel.add(tlgScroll, BorderLayout.WEST);
-				mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
-				currentJpanel = 0;
-	            mainPanel.revalidate();
-	            mainPanel.repaint();
+					musicPlayerTopListened = tlg.refresh();
+					mainPanel.add(tlgScroll, BorderLayout.WEST);
+					mainPanel.add(musicPlayerTopListened, BorderLayout.EAST);
+					currentJpanel = 0;
+		            mainPanel.revalidate();
+		            mainPanel.repaint();
+			}
+		});
+	
+		logout.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				Object[] options = {"Yes",
+	                    "No"};
+				int n = JOptionPane.showOptionDialog(GuestGUI.this,
+			    "Would you like to logout?",
+			    "",
+			    JOptionPane.OK_CANCEL_OPTION,
+			    JOptionPane.QUESTION_MESSAGE,
+			    null,
+			    options,
+			    options[0]);
+				if (n==0) {
+					MusicPlayer.stopThread();
+					dispose();
+					new FirstPageGUI();	
+				}
+				if (n==1) {}
 			}
 		});
 	}
-	
-	private void removePanel()
-	{
+
+	private void removePanel(){
 			if (currentJpanel == 1) 
 			{
 				mainPanel.remove(trgScroll);
 				mainPanel.remove(musicPlayerTopRated);
+	            mainPanel.revalidate();
+	            mainPanel.repaint();
 				trg.stopSong();
 			}
 			else if (currentJpanel == 0)
 			{
 				mainPanel.remove(tlgScroll);
 				mainPanel.remove(musicPlayerTopListened);
+	            mainPanel.revalidate();
+	            mainPanel.repaint();
 				tlg.stopSong();
 			}
+	
 	}
+	
 }

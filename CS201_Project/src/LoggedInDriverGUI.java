@@ -220,8 +220,8 @@ public class LoggedInDriverGUI extends JFrame{
 
 		currentPanelNum = 0;
 
-		trg = new TopRatedGUI(this, new Dimension(6*dim.width/96, dim.height), new Dimension(11*dim.width/48, 38*dim.height/40));
-		tlg = new TopListenedGUI(this, new Dimension(6*dim.width/96, dim.height), new Dimension(11*dim.width/48, 38*dim.height/40));
+		trg = new TopRatedGUI(this, new Dimension(6*dim.width/96, dim.height), new Dimension(11*dim.width/48, 38*dim.height/40), false);
+		tlg = new TopListenedGUI(this, new Dimension(6*dim.width/96, dim.height), new Dimension(11*dim.width/48, 38*dim.height/40), false);
 		mpg = new ProfileGUI(this, new Dimension(dim.width/3, 37*dim.height/40), "current user", userID);
 		searchGUI = new SearchGUI(new Dimension(dim.width/3, 35*dim.height/40), userID, ConnectionClass.conn, this);
 
