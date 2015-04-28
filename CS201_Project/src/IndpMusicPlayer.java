@@ -132,7 +132,7 @@ public class IndpMusicPlayer extends JPanel{
 		comments = new JPanel();
 		comment = new JTextField("comment");
 		enter = new JButton("Enter");
-		jspComments = new JScrollPane(comment);
+		jspComments = new JScrollPane(comments);
 		ratingButtons = new ArrayList<JButton>();
 		setPreferredSize(new Dimension(dim.width, dim.height));
 
@@ -245,8 +245,8 @@ public class IndpMusicPlayer extends JPanel{
 		jspComments.setPreferredSize(new Dimension(dim.width, 5*dim.height/24));
 		favoritePanel.setBackground(FirstPageGUI.white);
 		//commentPanel.setBackground(FirstPageGUI.white);
-		//comments.setBackground(FirstPageGUI.white);
-		comments.setBackground(FirstPageGUI.darkGrey);
+		comments.setBackground(FirstPageGUI.white);
+		//comments.setBackground(FirstPageGUI.darkGrey);
 		ratePanel.setBackground(FirstPageGUI.white);
 		enter.setPreferredSize(new Dimension(dim.width/5, dim.height/24));
 		
@@ -394,7 +394,7 @@ public class IndpMusicPlayer extends JPanel{
 					outer.add(commentLabel);
 					comment.setText("");
 					comments.add(outer);
-					comments.setBackground(FirstPageGUI.darkGrey);
+					//comments.setBackground(FirstPageGUI.darkGrey);
 					comments.revalidate();
 					comments.repaint();
                 }       
