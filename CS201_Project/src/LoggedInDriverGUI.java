@@ -224,7 +224,6 @@ public class LoggedInDriverGUI extends JFrame{
 		tlg = new TopListenedGUI(this, new Dimension(6*dim.width/96, dim.height), new Dimension(11*dim.width/48, 38*dim.height/40));
 		mpg = new ProfileGUI(this, new Dimension(dim.width/3, 37*dim.height/40), "current user", userID);
 		searchGUI = new SearchGUI(new Dimension(dim.width/3, 35*dim.height/40), userID, ConnectionClass.conn, this);
-		username = mpg.getName();
 
 		trgScroll = new JScrollPane(trg);
 		trgScroll.getVerticalScrollBar().setPreferredSize(new Dimension(0,0));
@@ -261,6 +260,7 @@ public class LoggedInDriverGUI extends JFrame{
 		public void run(){
 			fg.make();
 			mpg.make();
+			username = mpg.getName();
 			trg.fillButtons();
 			tlg.fillButtons();
 			musicPlayerTopRated = trg.initPlayer();
