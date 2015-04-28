@@ -91,6 +91,7 @@ public class LoggedInDriverGUI extends JFrame{
 	public LoggedInDriverGUI(int userID)
 	{		
 		super("Home Screen");
+		this.userID=userID;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		dim = new Dimension(dim.width, dim.height-100);
 		testField = new JTextField();
@@ -109,7 +110,6 @@ public class LoggedInDriverGUI extends JFrame{
 		setResizable(false);
 		setSize(dim.width/3, dim.height);
 		setVisible(true);
-		this.userID=userID;
 		try{
 			sharedMusicLibrary = new MusicLibrary();
 		}catch(Exception e){
