@@ -879,17 +879,26 @@ public class MusicPlayer extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if (myThread != null)
 					myThread.suspend();
+				JButton currentButton = allButtons.get(currentSong);
+				currentButton.setForeground(FirstPageGUI.white);
+				currentButton.setBackground(FirstPageGUI.darkGrey);
+				jspComments.getVerticalScrollBar().setValue(0);
 				if (currentSong == allSongs.size()-1)
 				{
 					musicObject = allSongs.get(0);
 					currentSong = 0;
+					JButton currentButton1 = allButtons.get(currentSong);
+					currentButton1.setForeground(FirstPageGUI.darkGrey);
+					currentButton1.setBackground(FirstPageGUI.white);
 				}
 				else
 				{
 					musicObject = allSongs.get(currentSong+1);
 					currentSong++;
+					JButton currentButton1 = allButtons.get(currentSong);
+					currentButton1.setForeground(FirstPageGUI.darkGrey);
+					currentButton1.setBackground(FirstPageGUI.white);
 				}
-				resetStuff();
 				//artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
 				myThread = musicObject.playTheSong();
 				try
@@ -917,6 +926,7 @@ public class MusicPlayer extends JPanel{
 				{
 					e1.printStackTrace();
 				}
+				resetStuff();
 			}
 			
 		});
@@ -926,17 +936,26 @@ public class MusicPlayer extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if (myThread != null)
 					myThread.suspend();
+				JButton currentButton = allButtons.get(currentSong);
+				currentButton.setForeground(FirstPageGUI.white);
+				currentButton.setBackground(FirstPageGUI.darkGrey);
+				jspComments.getVerticalScrollBar().setValue(0);
 				if (currentSong == 0)
 				{
 					musicObject = allSongs.get(allSongs.size()-1);
 					currentSong = allSongs.size()-1;
+					JButton currentButton1 = allButtons.get(currentSong);
+					currentButton1.setForeground(FirstPageGUI.darkGrey);
+					currentButton1.setBackground(FirstPageGUI.white);
 				}
 				else
 				{
 					musicObject = allSongs.get(currentSong-1);
 					currentSong--;
+					JButton currentButton1 = allButtons.get(currentSong);
+					currentButton1.setForeground(FirstPageGUI.darkGrey);
+					currentButton1.setBackground(FirstPageGUI.white);
 				}
-				resetStuff();
 				//artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
 				myThread = musicObject.playTheSong();
 				try
@@ -964,6 +983,7 @@ public class MusicPlayer extends JPanel{
 				{
 					e1.printStackTrace();
 				}
+				resetStuff();
 			}
 		});	
 		enter.addActionListener(new ActionListener(){
@@ -1014,6 +1034,7 @@ public class MusicPlayer extends JPanel{
 		if (myThread != null)
 			myThread.suspend();
 		musicObject = m;
+		jspComments.getVerticalScrollBar().setValue(0);
 		currentSong = currentSg;
 		resetStuff();
 		myThread = m.playTheSong();
@@ -1395,15 +1416,25 @@ public class MusicPlayer extends JPanel{
 	                        System.out.println(clockwiseness);
 	                        if (myThread != null)
 	        					myThread.suspend();
+	        				JButton currentButton = allButtons.get(currentSong);
+	        				currentButton.setForeground(FirstPageGUI.white);
+	        				currentButton.setBackground(FirstPageGUI.darkGrey);
+	        				jspComments.getVerticalScrollBar().setValue(0);
 	        				if (currentSong == allSongs.size()-1)
 	        				{
 	        					musicObject = allSongs.get(0);
 	        					currentSong = 0;
+	        					JButton currentButton1 = allButtons.get(currentSong);
+	        					currentButton1.setForeground(FirstPageGUI.darkGrey);
+	        					currentButton1.setBackground(FirstPageGUI.white);
 	        				}
 	        				else
 	        				{
 	        					musicObject = allSongs.get(currentSong+1);
 	        					currentSong++;
+	        					JButton currentButton1 = allButtons.get(currentSong);
+	        					currentButton1.setForeground(FirstPageGUI.darkGrey);
+	        					currentButton1.setBackground(FirstPageGUI.white);
 	        				}
 	        				resetStuff();
 	        				//artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());
@@ -1441,15 +1472,25 @@ public class MusicPlayer extends JPanel{
 	                        
 	                        if (myThread != null)
 	        					myThread.suspend();
+	        				JButton currentButton = allButtons.get(currentSong);
+	        				currentButton.setForeground(FirstPageGUI.white);
+	        				currentButton.setBackground(FirstPageGUI.darkGrey);
+	        				jspComments.getVerticalScrollBar().setValue(0);
 	        				if (currentSong == 0)
 	        				{
 	        					musicObject = allSongs.get(allSongs.size()-1);
 	        					currentSong = allSongs.size()-1;
+	        					JButton currentButton1 = allButtons.get(currentSong);
+	        					currentButton1.setForeground(FirstPageGUI.darkGrey);
+	        					currentButton1.setBackground(FirstPageGUI.white);
 	        				}
 	        				else
 	        				{
 	        					musicObject = allSongs.get(currentSong-1);
 	        					currentSong--;
+	        					JButton currentButton1 = allButtons.get(currentSong);
+	        					currentButton1.setForeground(FirstPageGUI.darkGrey);
+	        					currentButton1.setBackground(FirstPageGUI.white);
 	        				}
 	        				resetStuff();
 	        				//artist.setText(musicObject.getArtistName() + " "+musicObject.getSongName());

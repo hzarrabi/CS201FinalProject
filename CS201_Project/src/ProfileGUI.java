@@ -919,6 +919,7 @@ public class ProfileGUI extends JPanel{
 			String sqlQuery = "SELECT COUNT(1) FROM friend_relationship WHERE EXISTS user = "+ userId+" AND user_being_followed = "+id+")";
 			ProfileGUI newProfile;
 			newProfile = new ProfileGUI(mainPage, dim, relation, id);
+			newProfile.make();
 			mainPage.addCurrent(newProfile);
 		}
 		

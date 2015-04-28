@@ -243,7 +243,7 @@ public class SearchGUI extends JPanel {
 					{
 						//System.out.println("here");
 						ImageIcon icon = new ImageIcon("data/headphone_default.jpg");
-						Image ResizedImage = icon.getImage().getScaledInstance(dim.width/15, dim.width/15, Image.SCALE_SMOOTH);
+						Image ResizedImage = icon.getImage().getScaledInstance(dim.width/10, dim.width/10, Image.SCALE_SMOOTH);
 						profileImage.setIcon(new ImageIcon(ResizedImage));
 					}
 					else
@@ -253,7 +253,7 @@ public class SearchGUI extends JPanel {
 							URL imageurl = new URL(profilePath);
 							BufferedImage img = ImageIO.read(imageurl);
 							ImageIcon icon = new ImageIcon(img);
-							Image ResizedImage = icon.getImage().getScaledInstance(dim.width/15, dim.width/15, Image.SCALE_SMOOTH);
+							Image ResizedImage = icon.getImage().getScaledInstance(dim.width/10, dim.width/10, Image.SCALE_SMOOTH);
 							profileImage.setIcon(new ImageIcon(ResizedImage));
 						} catch (IOException e1)
 						{
@@ -263,10 +263,15 @@ public class SearchGUI extends JPanel {
 
 					JPanel temp = new JPanel();
 					temp.setPreferredSize(new Dimension(dim.width, dim.height/13));
+					profileImage.setBorder(null);
+					name.setBorder(null);
+					name.setBackground(FirstPageGUI.darkGrey);
+					name.setFont(FirstPageGUI.font);
+					name.setForeground(FirstPageGUI.white);
 					temp.add(profileImage);
-					temp.add(name);
-					temp.setBackground(FirstPageGUI.white);
-					userPanel.add(temp);
+					temp.add(name, BorderLayout.WEST);
+					temp.setBackground(FirstPageGUI.darkGrey);
+					userPanel.add(temp, BorderLayout.WEST);
 					userPanel.revalidate();
 					userPanel.repaint();
 					//String profilePicPath
@@ -304,7 +309,7 @@ public class SearchGUI extends JPanel {
 					URL imageurl = new URL(MusicObject.getAlbumPath());
 					BufferedImage img = ImageIO.read(imageurl);
 					ImageIcon icon = new ImageIcon(img);
-					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
+					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/10, dim.height/10, Image.SCALE_SMOOTH);
 				//album.setIcon(new ImageIcon(ResizedImage));
 					profileImage.setIcon(new ImageIcon(ResizedImage));
 				}
@@ -314,10 +319,15 @@ public class SearchGUI extends JPanel {
 				}
 				JPanel temp = new JPanel();
 				temp.setPreferredSize(new Dimension(dim.width, dim.height/13));
+				profileImage.setBorder(null);
+				name.setBorder(null);
+				name.setBackground(FirstPageGUI.darkGrey);
+				name.setFont(FirstPageGUI.font);
+				name.setForeground(FirstPageGUI.white);
 				temp.add(profileImage);
-				temp.add(name);
-				temp.setBackground(FirstPageGUI.white);
-				songPanel.add(temp);
+				temp.add(name, BorderLayout.WEST);
+				temp.setBackground(FirstPageGUI.darkGrey);
+				songPanel.add(temp, BorderLayout.WEST);
 				songPanel.revalidate();
 				songPanel.repaint();
 				System.out.println("found song");
@@ -349,7 +359,7 @@ public class SearchGUI extends JPanel {
 					URL imageurl = new URL(MusicObject.getAlbumPath());
 					BufferedImage img = ImageIO.read(imageurl);
 					ImageIcon icon = new ImageIcon(img);
-					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/15, dim.height/15, Image.SCALE_SMOOTH);
+					Image ResizedImage = icon.getImage().getScaledInstance(dim.height/10, dim.height/10, Image.SCALE_SMOOTH);
 				//album.setIcon(new ImageIcon(ResizedImage));
 					profileImage.setIcon(new ImageIcon(ResizedImage));
 				}
@@ -359,10 +369,15 @@ public class SearchGUI extends JPanel {
 				}
 				JPanel temp = new JPanel();
 				temp.setPreferredSize(new Dimension(dim.width, dim.height/13));
-				temp.add(profileImage);
+				profileImage.setBorder(null);
+				name.setBorder(null);
+				name.setBackground(FirstPageGUI.darkGrey);
+				name.setFont(FirstPageGUI.font);
+				name.setForeground(FirstPageGUI.white);
+				temp.add(profileImage, BorderLayout.WEST);
 				temp.add(name);
-				temp.setBackground(FirstPageGUI.white);
-				artistPanel.add(temp);
+				temp.setBackground(FirstPageGUI.darkGrey);
+				artistPanel.add(temp, BorderLayout.WEST);
 				artistPanel.revalidate();
 				artistPanel.repaint();
 				System.out.println("Artist " + searchText + " exists!");
@@ -416,6 +431,7 @@ public class SearchGUI extends JPanel {
 		}
 		public void actionPerformed(ActionEvent e) {
 			ProfileGUI newProfile = new ProfileGUI(mainPage, dim, relation, id);
+			newProfile.make();
 				//IndpMusicPlayer player = new IndpMusicPlayer
 			mainPage.addCurrent(newProfile);
 			
