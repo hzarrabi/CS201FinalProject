@@ -262,7 +262,7 @@ public class MusicPlayer extends JPanel{
 		
 		mainPanel = new JPanel();
 		mainPanel.setBackground(FirstPageGUI.white);
-		mainPanel.setPreferredSize(new Dimension(dim.width, 99*dim.height/186));
+		mainPanel.setPreferredSize(new Dimension(dim.width, 102*dim.height/186));
 		mainPanel.add(album);
 		mainPanel.add(artist);
 		artist.setBackground(FirstPageGUI.white);
@@ -292,11 +292,11 @@ public class MusicPlayer extends JPanel{
 		
 		//fiveStar.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
 		commentPanel = new JPanel();
-		commentPanel.setPreferredSize(new Dimension(dim.width, 50*dim.height/186));
+		commentPanel.setPreferredSize(new Dimension(dim.width, 46*dim.height/186));
 		ratePanel.setPreferredSize(new Dimension(dim.width,48*dim.height/186));
 		comments.setPreferredSize(new Dimension(dim.width, dim.height));
 		comment.setPreferredSize(new Dimension(3*dim.width/5, 6*dim.height/186));
-		jspComments.setPreferredSize(new Dimension(dim.width, 38*dim.height/186));
+		jspComments.setPreferredSize(new Dimension(dim.width, 33*dim.height/186));
 		//comments.setBackground(FirstPageGUI.darkGrey);
 		//jspComments.setBackground(FirstPageGUI.darkGrey);
 		//commentPanel.setBackground(FirstPageGUI.darkGrey);
@@ -364,7 +364,7 @@ public class MusicPlayer extends JPanel{
 		}
 		
 		JPanel other = new JPanel();
-		other.setPreferredSize(new Dimension(dim.width, 18*dim.height/186));
+		other.setPreferredSize(new Dimension(dim.width, 14*dim.height/186));
 		other.add(enter, BorderLayout.WEST);
 		other.add(comment, BorderLayout.EAST);
 		commentPanel.add(jspComments, BorderLayout.CENTER);
@@ -373,10 +373,10 @@ public class MusicPlayer extends JPanel{
 		JPanel tabPanel = new JPanel();
 		
 		
-		tabPanel.setPreferredSize(new Dimension(dim.width, 80*dim.height/186));
+		tabPanel.setPreferredSize(new Dimension(dim.width, 66*dim.height/186));
 		tabPanel.setBackground(FirstPageGUI.white);
 		tabPanelMain = new JPanel();
-		tabPanelMain.setPreferredSize(new Dimension(dim.width, 50*dim.height/186));
+		tabPanelMain.setPreferredSize(new Dimension(dim.width, 46*dim.height/186));
 		//tabPanelMain.setBackground(Fir);
 		//tabPanel.setBackground(FirstPageGUI.darkGrey);
 		//tabPanelMain.setBackground(FirstPageGUI.darkGrey);

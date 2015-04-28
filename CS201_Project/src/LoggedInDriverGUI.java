@@ -91,8 +91,9 @@ public class LoggedInDriverGUI extends JFrame{
 	public LoggedInDriverGUI(int userID)
 	{		
 		super("Home Screen");
+		this.userID=userID;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		dim = new Dimension(dim.width, dim.height-80);
+		dim = new Dimension(dim.width, dim.height-100);
 		testField = new JTextField();
 		//this.firstPage = firstPage;
 		loading = new JLabel("");
@@ -107,9 +108,8 @@ public class LoggedInDriverGUI extends JFrame{
 		setBackground(FirstPageGUI.darkGrey);
 		setBounds(0,0,dim.width/3, dim.height);
 		setResizable(false);
-		setSize(dim.width/3, dim.height-20);
+		setSize(dim.width/3, dim.height);
 		setVisible(true);
-		this.userID=userID;
 		try{
 			sharedMusicLibrary = new MusicLibrary();
 		}catch(Exception e){
@@ -223,7 +223,7 @@ public class LoggedInDriverGUI extends JFrame{
 		trg = new TopRatedGUI(this, new Dimension(6*dim.width/96, dim.height), new Dimension(11*dim.width/48, 38*dim.height/40));
 		tlg = new TopListenedGUI(this, new Dimension(6*dim.width/96, dim.height), new Dimension(11*dim.width/48, 38*dim.height/40));
 		mpg = new ProfileGUI(this, new Dimension(dim.width/3, 37*dim.height/40), "current user", userID);
-		searchGUI = new SearchGUI(new Dimension(dim.width/3, 37*dim.height/40), userID, ConnectionClass.conn, this);
+		searchGUI = new SearchGUI(new Dimension(dim.width/3, 35*dim.height/40), userID, ConnectionClass.conn, this);
 		username = mpg.getName();
 
 		trgScroll = new JScrollPane(trg);
