@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.Box;
@@ -64,6 +65,15 @@ public class FeedGUI extends JPanel{
 		setVisible(true);
 	}
 	
+	public void refresh()
+	{
+		this.removeAll();
+		makeActivities();
+		makeGUI();
+		this.revalidate();
+		this.repaint();
+	}
+	
 	public void makeGUI()
 	{
 		emptyHeart = new ImageIcon("data/heartOutlineWhite.png");
@@ -97,22 +107,23 @@ public class FeedGUI extends JPanel{
 		rateAndFavorite.setLayout(new FlowLayout(FlowLayout.CENTER));
 		newActivity.setPreferredSize(new Dimension(dim.width, dim.width));
 		timeAndUser.setPreferredSize(new Dimension(dim.width, dim.width/10));
-		songAndInfo.setPreferredSize(new Dimension(dim.width, dim.width/10));
+		songAndInfo.setPreferredSize(new Dimension(dim.width, dim.width/8));
 		rateAndFavorite.setPreferredSize(new Dimension(5*dim.width/6, dim.width/10));
 		
 		
 		JButton userButton = new JButton("");
 		JButton songButton = new JButton();
 		JLabel timeStamp = new JLabel("");
-		timeStamp.setPreferredSize(new Dimension(dim.width/4, dim.width/10));
+		timeStamp.setPreferredSize(new Dimension(dim.width/2, dim.width/10));
 		timeStamp.setFont(FirstPageGUI.smallFont);
 		timeStamp.setForeground(FirstPageGUI.white);
-		JLabel description = new JLabel("");
+		JPanel description = new JPanel();
 		description.setFont(FirstPageGUI.smallFont);
-		description.setPreferredSize(new Dimension(dim.width, dim.width/10));
-		description.setHorizontalAlignment(SwingConstants.CENTER);
+		description.setPreferredSize(new Dimension(dim.width, dim.width/8));
+		//description.setHorizontalAlignment(SwingConstants.CENTER);
 		//description.setFont(FirstPageGUI.smallerFont);
 		description.setForeground(FirstPageGUI.white);
+		description.setBackground(FirstPageGUI.darkGrey);
 		MusicModel model = null;
 		String username = "";
 		String profilePath = "";
@@ -149,17 +160,63 @@ public class FeedGUI extends JPanel{
 		
 		if (act.getDescription().equals("rate"))
 		{
-			description.setText(username + " rated "+model.getSongName()+ " by "+model.getArtistName());
+			JLabel des = new JLabel(" gave ");
+			des.setFont(FirstPageGUI.smallFont);
+			des.setForeground(FirstPageGUI.white);
+			JLabel user = new JLabel(username);
+			user.setFont(FirstPageGUI.fontBold);
+			user.setForeground(FirstPageGUI.white);
+			JLabel songN = new JLabel(model.getSongName());
+			songN.setFont(FirstPageGUI.smallFontBold);
+			songN.setForeground(FirstPageGUI.white);
+			JLabel des2 = new JLabel(" by "+model.getArtistName() + " a rating of " +act.getRate());
+			des2.setFont(FirstPageGUI.smallFont);
+			des2.setForeground(FirstPageGUI.white);
+			description.add(user);
+			description.add(des);
+			description.add(songN);
+			description.add(des2);
 		}
 		else if (act.getDescription().equals("listen"))
 		{
-			description.setText(username + " favorited "+model.getSongName()+ " by "+model.getArtistName());
+			//description.setText(username + " favorited "+model.getSongName()+ " by "+model.getArtistName());
+			JLabel des = new JLabel(" favorited ");
+			des.setFont(FirstPageGUI.smallFont);
+			des.setForeground(FirstPageGUI.white);
+			JLabel user = new JLabel(username);
+			user.setFont(FirstPageGUI.fontBold);
+			user.setForeground(FirstPageGUI.white);
+			JLabel songN = new JLabel(model.getSongName());
+			songN.setFont(FirstPageGUI.smallFontBold);
+			songN.setForeground(FirstPageGUI.white);
+			JLabel des2 = new JLabel(" by "+model.getArtistName());
+			des2.setFont(FirstPageGUI.smallFont);
+			des2.setForeground(FirstPageGUI.white);
+			description.add(user);
+			description.add(des);
+			description.add(songN);
+			description.add(des2);
 		}
 		else 
 		{
-			description.setText(username + " listened to "+model.getSongName()+ " by "+model.getArtistName());
+			//description.setText(username + " listened to "+model.getSongName()+ " by "+model.getArtistName());
+			JLabel des = new JLabel(" listened to ");
+			des.setFont(FirstPageGUI.smallFont);
+			des.setForeground(FirstPageGUI.white);
+			JLabel user = new JLabel(username);
+			user.setFont(FirstPageGUI.fontBold);
+			user.setForeground(FirstPageGUI.white);
+			JLabel songN = new JLabel(model.getSongName());
+			songN.setFont(FirstPageGUI.smallFontBold);
+			songN.setForeground(FirstPageGUI.white);
+			JLabel des2 = new JLabel(" by "+model.getArtistName());
+			des2.setFont(FirstPageGUI.smallFont);
+			des2.setForeground(FirstPageGUI.white);
+			description.add(user);
+			description.add(des);
+			description.add(songN);
+			description.add(des2);
 		}
-		
 		timeStamp.setText(act.getDateTime().toString());
 		
 		try
@@ -584,10 +641,6 @@ class StarActionListener implements ActionListener{
 		}
 		
 	}
-	
-	public void refresh()
-	{
-		
-	}
+
 }
 
