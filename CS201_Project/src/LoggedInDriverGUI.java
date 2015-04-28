@@ -146,7 +146,6 @@ public class LoggedInDriverGUI extends JFrame{
 			}
 
 		});
-		hasIndpFrame = false;
 		testButton = new JButton("Search");
 		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0,0,dim.width/3, dim.height);
@@ -157,6 +156,7 @@ public class LoggedInDriverGUI extends JFrame{
 	private void initializeComponents()
 	{
 		currentJpanel = 0;
+		hasIndpFrame = false;
 		trgButton = new JButton();
 		tlgButton = new JButton();
 		mpgButton = new JButton();
@@ -274,6 +274,17 @@ public class LoggedInDriverGUI extends JFrame{
 			mpgButton.setEnabled(true);
 			feedButton.setEnabled(true);
 			searchButton.setEnabled(true);
+			mainPanel.revalidate();
+			mainPanel.repaint();
+		}
+	}
+	
+	class RefreshThread extends Thread{
+		public void run(){
+			fg.refresh();
+			mainPanel.remove(loading);
+			mainPanel.setBackground(FirstPageGUI.color);
+			mainPanel.add(fgScroll, BorderLayout.CENTER);
 			mainPanel.revalidate();
 			mainPanel.repaint();
 		}
@@ -400,17 +411,21 @@ public class LoggedInDriverGUI extends JFrame{
 					currentJpanel = 0;
 					hasIndpFrame = false;
 					currentGUI = null;
-					mainPanel.add(fgScroll, BorderLayout.CENTER);
+					mainPanel.setBackground(FirstPageGUI.darkGrey);
+					mainPanel.add(loading);
 					mainPanel.revalidate();
 					mainPanel.repaint();
+					new RefreshThread().start();
 				}
 				else
 				{
 					removePanel();
 					currentJpanel = 0;
-					mainPanel.add(fgScroll, BorderLayout.CENTER);
+					mainPanel.setBackground(FirstPageGUI.darkGrey);
+					mainPanel.add(loading);
 					mainPanel.revalidate();
 					mainPanel.repaint();
+					new RefreshThread().start();
 				}
 			}
 		});

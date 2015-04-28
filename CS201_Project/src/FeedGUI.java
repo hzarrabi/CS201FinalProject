@@ -64,6 +64,15 @@ public class FeedGUI extends JPanel{
 		setVisible(true);
 	}
 	
+	public void refresh()
+	{
+		this.removeAll();
+		makeActivities();
+		makeGUI();
+		this.revalidate();
+		this.repaint();
+	}
+	
 	public void makeGUI()
 	{
 		emptyHeart = new ImageIcon("data/heartOutlineWhite.png");
@@ -584,10 +593,6 @@ class StarActionListener implements ActionListener{
 		}
 		
 	}
-	
-	public void refresh()
-	{
-		
-	}
+
 }
 
