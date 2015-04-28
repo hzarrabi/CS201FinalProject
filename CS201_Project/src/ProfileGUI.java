@@ -116,49 +116,6 @@ public class ProfileGUI extends JPanel{
 		//backButton.addActionListener(forBackButton);
 		//profilePic = new ImageIcon("data/MomAndMoose.jpg");
 		
-		try{
-	        String sql="select profile_picture from user_table where iduser_table=?";
-	        PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement(sql);
-	        ps.setInt(1,userId);
-	        //ps.setInt(2,userId);
-	        ResultSet RS = ps.executeQuery();
-	        int columns = RS.getMetaData().getColumnCount();
-	        String finalPathToPicture = null;
-	        while (RS.next())
-	        {
-	    
-	        	for (int i = 1; i <= columns; i++)
-	        	{
-	        		//System.out.println(RS.getString(i) + "GOOZ");
-	        		finalPathToPicture = RS.getString(i);
-	        	}
-	        }
-	        if(!finalPathToPicture.equals(null)){
-	        	URL imageurl = new URL(finalPathToPicture);
-	            BufferedImage img = ImageIO.read(imageurl);
-	    		ImageIcon newIcon2 = new ImageIcon(img);
-	    		System.out.println(finalPathToPicture+"GOOOOOOOOZE");
-	    		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
-	    		profilePic = new ImageIcon(img2);
-	        }
-	        
-	        else{
-	    		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
-	    		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
-	    		profilePic = new ImageIcon(img2);
-	        }
-	        
-
-		}
-		catch(Exception e4){
-			//e4.printStackTrace();
-    		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
-    		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
-    		profilePic = new ImageIcon(img2);
-
-		}
-		
-		
 
 		this.setPreferredSize(dim);
 		initializeComponents();
@@ -166,12 +123,6 @@ public class ProfileGUI extends JPanel{
 		setVisible(true);
 		
 		//Server Side Profile Picture Upload
-		try{
-			s = new Socket("104.236.176.180",5000);
-			oos = new ObjectOutputStream(s.getOutputStream());
-		}catch(Exception e){
-			e.printStackTrace();
-		}
 		
 	}
 	
@@ -195,7 +146,6 @@ public class ProfileGUI extends JPanel{
 		pictureButton = new JButton("");
 		pictureButton.setPreferredSize(new Dimension(dim.width/2, dim.height/4));
 		//pictureButton.setBorder(new RoundedBorder());
-		pictureButton.setIcon(profilePic);
 		editFirstName = new JTextField();
 		editLastName = new JTextField();
 		editEmail = new JTextField();
@@ -246,7 +196,6 @@ public class ProfileGUI extends JPanel{
 		//jpFollowers.setLayout()
 		//jpFollowing.setLayout(new BoxLayout(jpFollowing, BoxLayout.Y_AXIS));
 		//jpFavorites.setLayout(new BoxLayout(jpFavorites, BoxLayout.Y_AXIS));
-		populate();
 		JPanel bottomPanel = new JPanel();
 		bottomPanel.setBackground(FirstPageGUI.color);
 		bottomPanel.setLayout(new GridLayout(1, 3));
@@ -311,31 +260,6 @@ public class ProfileGUI extends JPanel{
 		unFollow.setOpaque(true);
 		follow.setOpaque(true);
 		editEmail.setText("email");
-		
-		try
-		{
-			Statement stat = (Statement) ConnectionClass.conn.createStatement();
-			String sql = "Select * from user_table Where iduser_table='" + userId+"'";
-			ResultSet rs = stat.executeQuery(sql);
-			if (rs.next())
-            {
-				name.setText(rs.getString("first_name")+" "+rs.getString("last_name"));
-				email.setText(rs.getString("email"));
-				System.out.println(rs.getString("bio"));
-				bio.setText(rs.getString("bio"));
-				username = rs.getString("username");
-				rs.close();
-				stat.close();
-            }
-            else
-            {
-            	System.out.println("something wrong");
-            }
-		} catch (SQLException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		editEmail.setFont(FirstPageGUI.smallFont);
 		editFirstName.setText("first name");
@@ -408,6 +332,86 @@ public class ProfileGUI extends JPanel{
 		//setBackground(FirstPageGUI.color);
 		repaint();
 		setVisible(true);
+		
+	}
+	
+	public void make()
+	{
+		try{
+			s = new Socket("104.236.176.180",5000);
+			oos = new ObjectOutputStream(s.getOutputStream());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		try{
+	        String sql="select profile_picture from user_table where iduser_table=?";
+	        PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement(sql);
+	        ps.setInt(1,userId);
+	        //ps.setInt(2,userId);
+	        ResultSet RS = ps.executeQuery();
+	        int columns = RS.getMetaData().getColumnCount();
+	        String finalPathToPicture = null;
+	        while (RS.next())
+	        {
+	    
+	        	for (int i = 1; i <= columns; i++)
+	        	{
+	        		//System.out.println(RS.getString(i) + "GOOZ");
+	        		finalPathToPicture = RS.getString(i);
+	        	}
+	        }
+	        if(!finalPathToPicture.equals(null)){
+	        	URL imageurl = new URL(finalPathToPicture);
+	            BufferedImage img = ImageIO.read(imageurl);
+	    		ImageIcon newIcon2 = new ImageIcon(img);
+	    		System.out.println(finalPathToPicture+"GOOOOOOOOZE");
+	    		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+	    		profilePic = new ImageIcon(img2);
+	        }
+	        
+	        else{
+	    		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
+	    		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+	    		profilePic = new ImageIcon(img2);
+	        }
+	        
+
+		}
+		catch(Exception e4){
+			//e4.printStackTrace();
+    		ImageIcon newIcon2 = new ImageIcon("data/headphone_default.jpg");
+    		Image img2 = newIcon2.getImage().getScaledInstance(dim.width/2, dim.height/4, Image.SCALE_SMOOTH);
+    		profilePic = new ImageIcon(img2);
+
+		}
+		
+		pictureButton.setIcon(profilePic);
+		picturePic.setIcon(profilePic);
+		try
+		{
+			Statement stat = (Statement) ConnectionClass.conn.createStatement();
+			String sql = "Select * from user_table Where iduser_table='" + userId+"'";
+			ResultSet rs = stat.executeQuery(sql);
+			if (rs.next())
+            {
+				name.setText(rs.getString("first_name")+" "+rs.getString("last_name"));
+				email.setText(rs.getString("email"));
+				System.out.println(rs.getString("bio"));
+				bio.setText(rs.getString("bio"));
+				username = rs.getString("username");
+				rs.close();
+				stat.close();
+            }
+            else
+            {
+            	System.out.println("something wrong");
+            }
+		} catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		populate();
 		
 	}
 	

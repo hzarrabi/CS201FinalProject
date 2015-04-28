@@ -29,11 +29,8 @@ public class TopListenedGUI extends TopGUI{
 		this.dimPlayer = dimPlayer;
 		this.setBackground(FirstPageGUI.darkGrey);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		fillButtons();
-		JButton firstButton = buttons.get(0);
-		currentButton = firstButton;
-		currentButton.setForeground(FirstPageGUI.darkGrey);
-		currentButton.setBackground(FirstPageGUI.white);
+		//fillButtons();
+
 		//addEventHandlers();
 	}
 	
@@ -46,10 +43,7 @@ public class TopListenedGUI extends TopGUI{
 		dimPlayer = playerDim;
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		fillButtonsGuest();
-		JButton firstButton = buttons.get(0);
-		currentButton = firstButton;
-		currentButton.setForeground(FirstPageGUI.darkGrey);
-		currentButton.setBackground(FirstPageGUI.white);
+
 		//addEventHandlers();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 	}
@@ -74,6 +68,10 @@ public class TopListenedGUI extends TopGUI{
 			this.add(buttons.get(i));	
 			//System.out.println(i);
 		}
+		JButton firstButton = buttons.get(0);
+		currentButton = firstButton;
+		currentButton.setForeground(FirstPageGUI.darkGrey);
+		currentButton.setBackground(FirstPageGUI.white);
 	}
 	
 	public void fillButtons() {
@@ -98,6 +96,10 @@ public class TopListenedGUI extends TopGUI{
 			this.add(buttons.get(i));	
 			//System.out.println(i);
 		}
+		JButton firstButton = buttons.get(0);
+		currentButton = firstButton;
+		currentButton.setForeground(FirstPageGUI.darkGrey);
+		currentButton.setBackground(FirstPageGUI.white);
 	}
 	
 	class ActionListenerButtons implements ActionListener{

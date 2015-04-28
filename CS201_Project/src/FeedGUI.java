@@ -52,11 +52,15 @@ public class FeedGUI extends JPanel{
 		//this.setPreferredSize(dim);
 		setBounds(0,0,dim.width/3, dim.height);
 		//setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		setVisible(true);
 		setBackground(FirstPageGUI.darkGrey);
+		//setResizable(false);
+	}
+	
+	public void make()
+	{
 		makeActivities();
 		makeGUI();
-		//setResizable(false);
+		setVisible(true);
 	}
 	
 	public void makeGUI()
@@ -67,7 +71,7 @@ public class FeedGUI extends JPanel{
 		fullStar = new ImageIcon("data/star1.png");
 		clockIcon = new ImageIcon("data/clock.png");
 		Collections.sort(activities);
-		System.out.println("Size of activities array " + activities.size());
+		//System.out.println("Size of activities array " + activities.size());
 		for (int i = activities.size()-1; i > -1; i--)
 		{
 			Activity act = activities.get(i);
@@ -117,12 +121,12 @@ public class FeedGUI extends JPanel{
 			Statement st = ConnectionClass.conn.createStatement();
 			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
 			String queryCheck = "SELECT first_name, last_name, profile_picture FROM user_table WHERE iduser_table = " + act.getUserID();
-			System.out.println(act.getUserID());
+		//	System.out.println(act.getUserID());
 			ResultSet rs = st.executeQuery(queryCheck);
 			//int columns = rs.getMetaData().getColumnCount();
 			while (rs.next())
 			{
-				System.out.println("is this one working?");
+				//System.out.println("is this one working?");
 				username = rs.getString(1) + " " + rs.getString(2);
 				profilePath = rs.getString(3);
 			}
@@ -135,7 +139,7 @@ public class FeedGUI extends JPanel{
 		//	int columns1 = rs1.getMetaData().getColumnCount();
 			while (rs1.next())
 			{
-				System.out.println("here");
+				//System.out.println("here");
 				model = LoggedInDriverGUI.sharedMusicLibrary.getMusicModelMap().get(rs1.getString(1));
 			}
 			st1.close();
@@ -221,6 +225,11 @@ public class FeedGUI extends JPanel{
 		JButton fourStar = new JButton();
 		JButton fiveStar = new JButton();
 		JButton favoriteButton = new JButton();
+		favoriteButton.setOpaque(false);
+		favoriteButton.setContentAreaFilled(false);
+		favoriteButton.setBorderPainted(false);
+		favoriteButton.addActionListener(new FavoriteActionListener(model, favoriteButton));
+		favoriteButton.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
 		
 		try
 		{
@@ -228,16 +237,18 @@ public class FeedGUI extends JPanel{
 			
 			Statement st = ConnectionClass.conn.createStatement();
 			//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
-			String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID) + " AND song_id = " + act.getSongID();
+			String queryCheck = "SELECT song_id FROM favorite_songs WHERE user_id = " + LoggedInDriverGUI.userID + " AND song_id = " + act.getSongID();
 			ResultSet rs = st.executeQuery(queryCheck);
-			int columns = rs.getMetaData().getColumnCount();
-			if (rs.next())
+			//int columns = rs.getMetaData().getColumnCount();
+			if (!rs.next())
 			{
-				favoriteButton.setIcon(fullHeart);
+				//System.out.println("THIS NOT WAS NOT FAVORITES "+act.getSongID());
+				favoriteButton.setIcon(emptyHeart);
 			}
 			else
 			{
-				favoriteButton.setIcon(emptyHeart);
+				//System.out.println("THIS SONG IS ALREADY FAVORITED " + rs.getInt(1) + " ACT ID "+act.getSongID());
+				favoriteButton.setIcon(fullHeart);
 			}
 		}
 		catch (SQLException e1)
@@ -245,11 +256,6 @@ public class FeedGUI extends JPanel{
 			e1.printStackTrace();
 		}
 		
-		favoriteButton.setOpaque(false);
-		favoriteButton.setContentAreaFilled(false);
-		favoriteButton.setBorderPainted(false);
-		//favoriteButton.setIcon(emptyHeart);
-		favoriteButton.setPreferredSize(new Dimension(dim.width/6, dim.height/13));
 		
 		oneStar.setOpaque(false);
 		oneStar.setContentAreaFilled(false);
@@ -295,7 +301,6 @@ public class FeedGUI extends JPanel{
 		rateAndFavorite.add(empty2);
 		//Box.createGlue();
 		rateAndFavorite.add(favoriteButton);
-		favoriteButton.addActionListener(new FavoriteActionListener(model, favoriteButton));
 		songButton.addActionListener(new ActionListenerSong(model, forProfile));
 		oneStar.addActionListener(new StarActionListener(oneStar, twoStar, threeStar, fourStar, fiveStar, 1, model));
 		twoStar.addActionListener(new StarActionListener(oneStar, twoStar, threeStar, fourStar, fiveStar, 2, model));
@@ -320,9 +325,9 @@ public class FeedGUI extends JPanel{
 			while (rs.next() && j < 11)
 			{
 				j++;
-				System.out.println("getting activity of follwing");
+				//System.out.println("getting activity of follwing");
 				Statement st2 = ConnectionClass.conn.createStatement();
-				System.out.println(Integer.toString(rs.getInt(1)));
+				//System.out.println(Integer.toString(rs.getInt(1)));
 				//PreparedStatement ps = (PreparedStatement) ConnectionClass.conn.prepareStatement("SELECT song_id FROM favorite_songs WHERE user_id = " + Integer.toString(LoggedInDriverGUI.userID));
 				String queryCheck2 = "SELECT activity_id, user_id, song_id, description, time_stamp FROM activity_feed WHERE user_id = " + rs.getInt(1);
 				ResultSet rs2 = st2.executeQuery(queryCheck2);
@@ -361,8 +366,8 @@ public class FeedGUI extends JPanel{
 				activities.add(newActivity);
 			}
 			st3.close();
-			System.out.println("after user act");
-			System.out.println(Integer.toString(activities.size()));
+			//System.out.println("after user act");
+			//System.out.println(Integer.toString(activities.size()));
 		}
 		catch (Exception e) {}
 	}
